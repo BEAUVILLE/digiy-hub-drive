@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>DIGIY ♾️ — DRIVE</title>
   <meta name="theme-color" content="#16a34a"/>
   <meta name="description" content="DIGIY DRIVE — orientation rapide vers les modules. NDIMBAL, Travail, Pay, Jobs, etc." />
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
@@ -20,45 +24,60 @@
     }
     *{box-sizing:border-box}
     body{
-      margin:0;min-height:100vh;
+      margin:0;
+      min-height:100vh;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      background:radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%), var(--bg);
+      background:
+        radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%),
+        var(--bg);
       color:var(--text);
-      display:flex;flex-direction:column;
+      display:flex;
+      flex-direction:column;
     }
     header{
       padding:18px 16px 10px;
       text-align:center;
       border-bottom:1px solid var(--line);
       background:rgba(6,27,20,.72);
-      backdrop-filter:blur(10px);
     }
     .brand{
-      font-weight:950;letter-spacing:.12em;font-size:18px;
-      display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+      font-weight:950;
+      letter-spacing:.12em;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
     }
-    .brand .badge{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
       background:rgba(0,0,0,.18);
-      font-weight:950;font-size:12px;letter-spacing:.06em;
+      font-weight:950;
+      font-size:12px;
     }
-    .subtitle{margin-top:8px;font-weight:800;color:var(--muted);font-size:13px;}
+    .subtitle{
+      margin-top:8px;
+      font-weight:800;
+      color:var(--muted);
+      font-size:13px;
+    }
     main{
       flex:1;
       padding:14px;
       max-width:560px;
       margin:0 auto;
       width:100%;
-      display:flex;flex-direction:column;gap:12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
     .card{
       background:rgba(255,255,255,.06);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:14px;
-      box-shadow:0 18px 40px rgba(0,0,0,.18);
     }
     .btn{
       width:100%;
@@ -79,31 +98,19 @@
       font-size:13px;
       font-weight:800;
       color:var(--muted);
-      line-height:1.25;
     }
     .btn.primary{
       background:linear-gradient(135deg,#16a34a,#22c55e);
       color:var(--dark);
       border:none;
     }
-    .btn.primary span{color:var(--dark);opacity:.85;}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    @media(max-width:560px){
-      .grid2{grid-template-columns:1fr;}
-      header{backdrop-filter:none;}
+    .btn.primary span{color:var(--dark)}
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
-    .mini{padding:14px 14px;font-size:15px;}
-    .pillrow{
-      display:flex;gap:8px;flex-wrap:wrap;
-      justify-content:center;margin-top:10px;
-    }
-    .pill{
-      padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.14);
-      font-weight:900;font-size:12px;
-      color:rgba(234,255,241,.86);
-    }
+    .mini{padding:14px;font-size:15px}
     footer{
       text-align:center;
       padding:14px 10px;
@@ -114,82 +121,16 @@
       background:rgba(6,27,20,.55);
     }
     a{color:#86efac;text-decoration:none;font-weight:950}
-    .footrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
   </style>
-
-  <!-- ✅ Supabase SDK (une seule fois) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    /* =========================================================
-      DIGIY — SUPABASE SINGLETON (ANTI "already declared")
-      -> on stocke le client dans window.DIGIY_SB
-    ========================================================= */
-    (function(){
-      const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-      const SUPABASE_ANON_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
-
-      // 👇 jamais "const supabase = ..." (ça casse dès qu’on recolle 2 fois)
-      if(!window.DIGIY_SB){
-        window.DIGIY_SB = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      }
-    })();
-  </script>
-
-  <script>
-    /* =========================================================
-      DIGIY — GUARD UNIVERSEL (optionnel)
-      - si pas connecté -> reste sur DRIVE (ou tu peux rediriger plus tard)
-    ========================================================= */
-    async function digiyGuard(rules = {}){
-      try{
-        const sb = window.DIGIY_SB;
-        if(!sb) return { user:null, profile:null };
-
-        const { data: sessionData } = await sb.auth.getSession();
-        const user = sessionData?.session?.user;
-        if(!user){
-          // Ici on laisse sur DRIVE (pas de 404 / pas de boucle)
-          return { user:null, profile:null };
-        }
-
-        const { data: profile } = await sb
-          .from("profiles")
-          .select("id, role_auto, pro_type, active_modules")
-          .eq("id", user.id)
-          .single();
-
-        if(!profile) return { user, profile:null };
-
-        const roleOK = !rules.role_auto || (Array.isArray(rules.role_auto) && rules.role_auto.includes(profile.role_auto));
-        const proOK  = !rules.pro_type  || (Array.isArray(rules.pro_type)  && rules.pro_type.includes(profile.pro_type));
-
-        if(!roleOK || !proOK){
-          return { user, profile };
-        }
-
-        return { user, profile };
-      }catch(e){
-        console.warn("digiyGuard:", e);
-        return { user:null, profile:null };
-      }
-    }
-    // digiyGuard(); // si tu veux activer partout
-  </script>
 </head>
 
 <body>
+
 <header>
   <div class="brand">
     ♾️ DIGIY <span class="badge">DRIVE</span>
   </div>
-  <div class="subtitle">Des solutions simples pour avancer — orientation rapide (terrain)</div>
-  <div class="pillrow">
-    <div class="pill">Mobile-first</div>
-    <div class="pill">0% commission</div>
-    <div class="pill">Direct au peuple</div>
-  </div>
+  <div class="subtitle">Des solutions simples pour avancer — orientation rapide</div>
 </header>
 
 <main>
@@ -197,97 +138,70 @@
   <div class="card">
     <button class="btn primary" onclick="go('ndimbal')">
       ♾️ NDIMBAL
-      <span>Besoin d’aide, mission rapide, entraide — lecture ultra rapide</span>
+      <span>Besoin d’aide, mission rapide, entraide</span>
     </button>
 
     <div style="height:10px"></div>
 
     <button class="btn" onclick="go('jobs')">
       💼 Trouver du travail
-      <span>Voir les missions disponibles (plus récent en haut)</span>
+      <span>Missions disponibles</span>
     </button>
   </div>
 
   <div class="grid2">
     <button class="btn mini" onclick="go('pay')">
       💳 Payer / Recevoir
-      <span>Argent, services, transactions</span>
+      <span>Transactions & services</span>
     </button>
 
     <button class="btn mini" onclick="go('transport')">
       🚗 Transport
-      <span>Se déplacer, livrer</span>
+      <span>Déplacement & livraison</span>
     </button>
   </div>
 
   <div class="card">
-    <div style="font-weight:950;letter-spacing:.06em;margin-bottom:10px;">Accès directs</div>
+    <div style="font-weight:950;margin-bottom:10px;">Accès directs</div>
 
     <div class="grid2">
-      <button class="btn mini" onclick="openPath('/digiy-jef.html')">
-        ♾️ JËF (complet)
-        <span>Version complète</span>
-      </button>
-
-      <button class="btn mini" onclick="openPath('/publish-mission.htm')">
-        ➕ Publier mission
-        <span>Créer une annonce</span>
-      </button>
-
-      <button class="btn mini" onclick="openPath('/digiy-jobs.html')">
-        🧑🏾‍💼 JOBS PRO
-        <span>Recrutement structuré</span>
-      </button>
-
-      <button class="btn mini" onclick="openPath('/digiy-pay.html')">
-        💳 DIGIY PAY
-        <span>Paiements & outils</span>
-      </button>
+      <button class="btn mini" onclick="nav('digiy-jef.html')">♾️ JËF</button>
+      <button class="btn mini" onclick="nav('publish-mission.htm')">➕ Publier mission</button>
+      <button class="btn mini" onclick="nav('digiy-jobs.html')">🧑🏾‍💼 JOBS PRO</button>
+      <button class="btn mini" onclick="nav('digiy-pay.html')">💳 DIGIY PAY</button>
     </div>
   </div>
 
 </main>
 
 <footer>
-  <div class="footrow">
-    <!-- ✅ RETOUR = vitrine DIGIY HUB (pas atelier) -->
-    <a href="https://beauville.github.io/digiy-hub/">← Retour vitrine DIGIY HUB</a>
-    <span style="opacity:.55">•</span>
-    <a href="https://beauville.github.io/digiy-hub-drive/">Accueil DRIVE</a>
-  </div>
+  DIGIYLYFE ♾️ —
+  <a href="https://beauville.github.io/digiy-hub-drive/">Accueil</a>
 </footer>
 
 <script>
 /* =========================
-   DIGIY HUB DRIVE — GitHub Pages
+   ROUTING FINAL — ANTI 404
 ========================= */
-const BASE = "/digiy-hub-drive";
 
-function openPath(path){
-  location.href = BASE + path;
+const BASE = "https://beauville.github.io/digiy-hub-drive/";
+
+function nav(file){
+  window.location.href = BASE + file;
 }
 
 function go(target){
-  try{
-    localStorage.setItem("digiy_intent", JSON.stringify({ from:"HUB_DRIVE", action:target, ts:Date.now() }));
-  }catch(e){}
-
   switch(target){
     case "ndimbal":
     case "jobs":
-      location.href = BASE + "/digiy-jef-lite.html";
+      nav("digiy-jef-lite.html");
       break;
-
     case "pay":
-      location.href = BASE + "/digiy-pay.html";
+      nav("digiy-pay.html");
       break;
-
     case "transport":
       alert("Transport bientôt disponible");
       break;
-
-    default:
-      alert("Module indisponible pour le moment");
   }
 }
 </script>
