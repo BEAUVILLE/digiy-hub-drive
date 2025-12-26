@@ -3,21 +3,19 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>DIGIY ♾️ — Avancer simplement</title>
+  <title>DIGIY ♾️ — DRIVE</title>
   <meta name="theme-color" content="#16a34a"/>
+  <meta name="description" content="DIGIY DRIVE — orientation rapide vers les modules. NDIMBAL, Travail, Pay, Jobs, etc." />
 
   <style>
-    /* =========================
-       HUB V2 MINIMAL — DIGIY
-       Mobile first • Ultra-light
-    ========================= */
     :root{
       --green:#16a34a;
       --bg:#061b14;
       --card:#0b2a1f;
       --line:rgba(255,255,255,.14);
       --text:#eafff1;
-      --muted:rgba(234,255,241,.75);
+      --muted:rgba(234,255,241,.78);
+      --dark:#052e16;
       --radius:18px;
     }
     *{box-sizing:border-box}
@@ -25,7 +23,9 @@
       margin:0;
       min-height:100vh;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      background:var(--bg);
+      background:
+        radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%),
+        var(--bg);
       color:var(--text);
       display:flex;
       flex-direction:column;
@@ -33,30 +33,56 @@
     header{
       padding:18px 16px 10px;
       text-align:center;
+      border-bottom:1px solid var(--line);
+      background:rgba(6,27,20,.72);
+      backdrop-filter:blur(10px);
     }
     .brand{
       font-weight:950;
       letter-spacing:.12em;
       font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
     }
-    .brand small{
-      display:block;
-      margin-top:6px;
+    .brand .badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:.06em;
+    }
+    .subtitle{
+      margin-top:8px;
       font-weight:800;
-      letter-spacing:0;
-      opacity:.8;
+      color:var(--muted);
       font-size:13px;
     }
 
     main{
       flex:1;
       padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      max-width:520px;
+      max-width:560px;
       margin:0 auto;
       width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:0 18px 40px rgba(0,0,0,.18);
     }
 
     .btn{
@@ -78,15 +104,48 @@
       font-size:13px;
       font-weight:800;
       color:var(--muted);
+      line-height:1.25;
     }
     .btn.primary{
       background:linear-gradient(135deg,#16a34a,#22c55e);
-      color:#052e16;
+      color:var(--dark);
       border:none;
     }
     .btn.primary span{
-      color:#052e16;
+      color:var(--dark);
       opacity:.85;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    @media(max-width:560px){
+      .grid2{grid-template-columns:1fr;}
+      header{backdrop-filter:none;}
+    }
+
+    .mini{
+      padding:14px 14px;
+      font-size:15px;
+    }
+
+    .pillrow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:10px;
+    }
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.14);
+      font-weight:900;
+      font-size:12px;
+      color:rgba(234,255,241,.86);
     }
 
     footer{
@@ -94,8 +153,11 @@
       padding:14px 10px;
       font-size:12px;
       font-weight:800;
-      color:var(--muted);
+      color:rgba(234,255,241,.72);
+      border-top:1px solid rgba(255,255,255,.10);
+      background:rgba(6,27,20,.55);
     }
+    a{color:#86efac; text-decoration:none; font-weight:950}
   </style>
 </head>
 
@@ -103,52 +165,93 @@
 
 <header>
   <div class="brand">
-    ♾️ DIGIY
-    <small>Des solutions simples pour avancer</small>
+    ♾️ DIGIY <span class="badge">DRIVE</span>
+  </div>
+  <div class="subtitle">Des solutions simples pour avancer — orientation rapide (terrain)</div>
+  <div class="pillrow">
+    <div class="pill">Mobile-first</div>
+    <div class="pill">0% commission</div>
+    <div class="pill">Direct au peuple</div>
   </div>
 </header>
 
 <main>
 
-  <!-- ♾️ NDIMBAL -->
-  <button class="btn primary" onclick="go('ndimbal')">
-    ♾️ NDIMBAL
-    <span>Besoin d’aide, mission rapide, entraide</span>
-  </button>
+  <div class="card">
+    <button class="btn primary" onclick="go('ndimbal')">
+      ♾️ NDIMBAL
+      <span>Besoin d’aide, mission rapide, entraide — lecture ultra rapide</span>
+    </button>
 
-  <!-- Travail -->
-  <button class="btn" onclick="go('jobs')">
-    💼 Trouver du travail
-    <span>Voir les missions disponibles</span>
-  </button>
+    <div style="height:10px"></div>
 
-  <!-- Paiement -->
-  <button class="btn" onclick="go('pay')">
-    💳 Payer / Recevoir
-    <span>Argent, services, transactions</span>
-  </button>
+    <button class="btn" onclick="go('jobs')">
+      💼 Trouver du travail
+      <span>Voir les missions disponibles (plus récent en haut)</span>
+    </button>
+  </div>
 
-  <!-- Transport -->
-  <button class="btn" onclick="go('transport')">
-    🚗 Transport
-    <span>Se déplacer, livrer</span>
-  </button>
+  <div class="grid2">
+    <button class="btn mini" onclick="go('pay')">
+      💳 Payer / Recevoir
+      <span>Argent, services, transactions</span>
+    </button>
+
+    <button class="btn mini" onclick="go('transport')">
+      🚗 Transport
+      <span>Se déplacer, livrer</span>
+    </button>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:950;letter-spacing:.06em;margin-bottom:10px;">Accès directs</div>
+
+    <div class="grid2">
+      <button class="btn mini" onclick="openPath('/digiy-jef.html')">
+        ♾️ JËF (complet)
+        <span>Version complète</span>
+      </button>
+
+      <button class="btn mini" onclick="openPath('/publish-mission.htm')">
+        ➕ Publier mission
+        <span>Créer une annonce</span>
+      </button>
+
+      <button class="btn mini" onclick="openPath('/digiy-jobs.html')">
+        🧑🏾‍💼 JOBS PRO
+        <span>Recrutement structuré</span>
+      </button>
+
+      <button class="btn mini" onclick="openPath('/digiy-pay.html')">
+        💳 DIGIY PAY
+        <span>Paiements & outils</span>
+      </button>
+    </div>
+  </div>
 
 </main>
 
 <footer>
-  DIGIYLYFE ♾️ — direct • simple • pour le peuple
+  DIGIYLYFE ♾️ — <a href="/digiy-hub-drive/">Accueil</a>
 </footer>
 
 <script>
 /* =========================
-   HUB V2 — REDIRECTION PURE
-   ZÉRO logique métier
+   DIGIY HUB DRIVE — GitHub Pages
+   Repo: /digiy-hub-drive
+   Routes: fichiers à la racine
 ========================= */
+const BASE = "/digiy-hub-drive";
+
+function openPath(path){
+  // path attendu comme "/digiy-jef.html"
+  location.href = BASE + path;
+}
+
 function go(target){
   try{
     localStorage.setItem("digiy_intent", JSON.stringify({
-      from:"HUB_V2",
+      from:"HUB_DRIVE",
       action:target,
       ts:Date.now()
     }));
@@ -157,14 +260,18 @@ function go(target){
   switch(target){
     case "ndimbal":
     case "jobs":
-      location.href = "/modules/jef/digiy-jef-lite.html";
+      location.href = BASE + "/digiy-jef-lite.html";
       break;
+
     case "pay":
-      location.href = "/modules/pay/digiy-pay.html";
+      location.href = BASE + "/digiy-pay.html";
       break;
+
     case "transport":
-      location.href = "/modules/driver/digiy-driver.html";
+      // Branchera plus tard vers ton module driver quand il est posé
+      alert("Transport bientôt disponible");
       break;
+
     default:
       alert("Module indisponible pour le moment");
   }
