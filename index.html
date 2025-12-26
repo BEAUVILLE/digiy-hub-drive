@@ -1,107 +1,14 @@
 <!doctype html>
 <html lang="fr">
-<!-- ✅ SDK Supabase (OBLIGATOIRE) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-/* =========================================================
-   DIGIY — GUARD UNIVERSEL (HUB DRIVE / CLIENT / PRO)
-   - Vérifie session Supabase
-   - Charge profil (profiles)
-   - Applique règles (role_auto / pro_type)
-   - Sinon redirige vers HUB-DRIVE
-========================================================= */
-
-const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
-
-const HUB_DRIVE_URL = "https://beauville.github.io/digiy-hub-drive/";
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/**
- * Guard DIGIY
- * @param {Object} rules
- *  - role_auto: ['client','chauffeur','pro']  (optionnel)
- *  - pro_type: ['driver','fret','resto','loc','pos'] (optionnel)
- *
- * @returns {Promise<{user:any, profile:any}>} utile si tu veux utiliser profile ensuite
- */
-async function digiyGuard(rules = {}) {
-  try {
-    // 1) Session
-    const { data: sessionData, error: sessionErr } = await supabase.auth.getSession();
-    if (sessionErr) console.warn("DIGIY GUARD session error:", sessionErr);
-
-    const user = sessionData?.session?.user;
-
-    // ❌ Pas connecté → HUB DRIVE
-    if (!user) {
-      location.replace(HUB_DRIVE_URL);
-      return { user: null, profile: null };
-    }
-
-    // 2) Profil
-    const { data: profile, error: profErr } = await supabase
-      .from("profiles")
-      .select("id, role_auto, pro_type, active_modules")
-      .eq("id", user.id)
-      .single();
-
-    // ❌ Pas de profil → HUB DRIVE
-    if (profErr || !profile) {
-      console.warn("DIGIY GUARD profile error:", profErr);
-      location.replace(HUB_DRIVE_URL);
-      return { user, profile: null };
-    }
-
-    // 3) Règles
-    const roleOK =
-      !rules.role_auto ||
-      (Array.isArray(rules.role_auto) && rules.role_auto.includes(profile.role_auto));
-
-    const proTypeOK =
-      !rules.pro_type ||
-      (Array.isArray(rules.pro_type) && rules.pro_type.includes(profile.pro_type));
-
-    if (!roleOK || !proTypeOK) {
-      // 🚫 Mauvais endroit
-      location.replace(HUB_DRIVE_URL);
-      return { user, profile };
-    }
-
-    // ✅ OK
-    console.log("✅ DIGIY GUARD OK:", { role: profile.role_auto, pro_type: profile.pro_type });
-    return { user, profile };
-
-  } catch (e) {
-    console.error("DIGIY GUARD fatal:", e);
-    location.replace(HUB_DRIVE_URL);
-    return { user: null, profile: null };
-  }
-}
-
-/* =========================================================
-   EXEMPLES D’UTILISATION (décommente selon la page)
-========================================================= */
-
-// ✅ Exemple: page CLIENT
-// digiyGuard({ role_auto: ["client"] });
-
-// ✅ Exemple: page CHAUFFEUR DRIVER
-// digiyGuard({ role_auto: ["chauffeur"], pro_type: ["driver"] });
-
-// ✅ Exemple: page PRO RESTO
-// digiyGuard({ role_auto: ["pro"], pro_type: ["resto"] });
-
-</script>
-  <head>
+<head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>DIGIY ♾️ — DRIVE</title>
   <meta name="theme-color" content="#16a34a"/>
   <meta name="description" content="DIGIY DRIVE — orientation rapide vers les modules. NDIMBAL, Travail, Pay, Jobs, etc." />
+
+  <!-- ✅ SDK Supabase (une seule fois, au bon endroit) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
@@ -255,6 +162,78 @@ async function digiyGuard(rules = {}) {
     }
     a{color:#86efac; text-decoration:none; font-weight:950}
   </style>
+
+  <script>
+  /* =========================================================
+     ✅ CONFIG URLs (1 place, 0 confusion)
+  ========================================================= */
+  const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+
+  // ✅ BASE GitHub Pages (avec slash final)
+  const BASE = "/digiy-hub-drive/";
+
+  // ✅ VITRINE DIGIY HUB (mets ici TA page “modules”)
+  // IMPORTANT : remplace si ta vitrine est ailleurs
+  const HUB_VITRINE_URL = "https://digiylyfe.com/menus-pages";
+
+  // ✅ Accueil HUB DRIVE
+  const HUB_DRIVE_URL = "https://beauville.github.io/digiy-hub-drive/";
+
+  // ✅ FIX: pas "supabase" (variable) → "sb"
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  /**
+   * Guard DIGIY
+   * - Vérifie session Supabase
+   * - Charge profil (profiles)
+   * - Applique règles
+   * - Sinon redirige vers HUB DRIVE
+   */
+  async function digiyGuard(rules = {}) {
+    try {
+      const { data: sessionData } = await sb.auth.getSession();
+      const user = sessionData?.session?.user;
+
+      if (!user) {
+        location.replace(HUB_DRIVE_URL);
+        return { user: null, profile: null };
+      }
+
+      const { data: profile, error: profErr } = await sb
+        .from("profiles")
+        .select("id, role_auto, pro_type, active_modules")
+        .eq("id", user.id)
+        .single();
+
+      if (profErr || !profile) {
+        location.replace(HUB_DRIVE_URL);
+        return { user, profile: null };
+      }
+
+      const roleOK =
+        !rules.role_auto ||
+        (Array.isArray(rules.role_auto) && rules.role_auto.includes(profile.role_auto));
+
+      const proTypeOK =
+        !rules.pro_type ||
+        (Array.isArray(rules.pro_type) && rules.pro_type.includes(profile.pro_type));
+
+      if (!roleOK || !proTypeOK) {
+        location.replace(HUB_DRIVE_URL);
+        return { user, profile };
+      }
+
+      console.log("✅ DIGIY GUARD OK:", { role: profile.role_auto, pro_type: profile.pro_type });
+      return { user, profile };
+    } catch (e) {
+      console.error("DIGIY GUARD fatal:", e);
+      location.replace(HUB_DRIVE_URL);
+      return { user: null, profile: null };
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -303,22 +282,22 @@ async function digiyGuard(rules = {}) {
     <div style="font-weight:950;letter-spacing:.06em;margin-bottom:10px;">Accès directs</div>
 
     <div class="grid2">
-      <button class="btn mini" onclick="openPath('/digiy-jef.html')">
+      <button class="btn mini" onclick="openPath('digiy-jef.html')">
         ♾️ JËF (complet)
         <span>Version complète</span>
       </button>
 
-      <button class="btn mini" onclick="openPath('/publish-mission.htm')">
+      <button class="btn mini" onclick="openPath('publish-mission.htm')">
         ➕ Publier mission
         <span>Créer une annonce</span>
       </button>
 
-      <button class="btn mini" onclick="openPath('/digiy-jobs.html')">
+      <button class="btn mini" onclick="openPath('digiy-jobs.html')">
         🧑🏾‍💼 JOBS PRO
         <span>Recrutement structuré</span>
       </button>
 
-      <button class="btn mini" onclick="openPath('/digiy-pay.html')">
+      <button class="btn mini" onclick="openPath('digiy-pay.html')">
         💳 DIGIY PAY
         <span>Paiements & outils</span>
       </button>
@@ -328,20 +307,34 @@ async function digiyGuard(rules = {}) {
 </main>
 
 <footer>
-  DIGIYLYFE ♾️ — <a href="/digiy-hub-drive/">Accueil</a>
+  <!-- ✅ Retour propre -->
+  <a href="#" onclick="returnToHub(); return false;">← Retour vitrine DIGIY HUB</a>
+  &nbsp;•&nbsp;
+  <a href="#" onclick="goHome(); return false;">Accueil DRIVE</a>
 </footer>
 
 <script>
 /* =========================
-   DIGIY HUB DRIVE — GitHub Pages
-   Repo: /digiy-hub-drive
-   Routes: fichiers à la racine
+   ROUTING SAFE — GitHub Pages
+   ✅ zero 404
 ========================= */
-const BASE = "/digiy-hub-drive";
 
-function openPath(path){
-  // path attendu comme "/digiy-jef.html"
-  location.href = BASE + path;
+function urlOf(file){
+  // file attendu: "digiy-jef.html"
+  return BASE + file;
+}
+
+function openPath(file){
+  location.href = urlOf(file);
+}
+
+function goHome(){
+  location.href = HUB_DRIVE_URL; // URL absolue = safe
+}
+
+function returnToHub(){
+  // ✅ Retour vers la vitrine “modules”
+  location.href = HUB_VITRINE_URL;
 }
 
 function go(target){
@@ -356,15 +349,14 @@ function go(target){
   switch(target){
     case "ndimbal":
     case "jobs":
-      location.href = BASE + "/digiy-jef-lite.html";
+      location.href = urlOf("digiy-jef-lite.html");
       break;
 
     case "pay":
-      location.href = BASE + "/digiy-pay.html";
+      location.href = urlOf("digiy-pay.html");
       break;
 
     case "transport":
-      // Branchera plus tard vers ton module driver quand il est posé
       alert("Transport bientôt disponible");
       break;
 
