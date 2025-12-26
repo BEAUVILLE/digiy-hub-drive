@@ -3,182 +3,235 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>DIGIY JËF — Lite (DIAG)</title>
+  <title>DIGIY JËF — Missions disponibles</title>
   <meta name="theme-color" content="#16a34a"/>
-  <meta name="description" content="DIGIY JËF Lite — diagnostic visible à l'écran." />
+  <meta name="description" content="DIGIY JËF — Lecture seule ultra rapide. Missions disponibles. Appel direct." />
 
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#061b14; --card:#0b2a1f; --line:rgba(255,255,255,.14);
-      --text:#eafff1; --muted:rgba(234,255,241,.75); --radius:16px;
+      --green:#16a34a;
+      --bg:#061b14;
+      --card:#0b2a1f;
+      --line:rgba(255,255,255,.12);
+      --text:#eafff1;
+      --muted:rgba(234,255,241,.75);
+      --radius:16px;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text)}
-    header{padding:12px;border-bottom:1px solid var(--line);background:#071f16;display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .brand{font-weight:950}
-    .btn-back{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer}
-    main{padding:12px;max-width:720px;margin:0 auto}
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#07271c;font-weight:900;font-size:12px}
-    .card{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:var(--radius);padding:12px;margin-top:10px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;color:rgba(234,255,241,.92)}
-    .list{display:grid;gap:10px;margin-top:10px}
-    .mission{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
-    .m-title{font-weight:950}
-    .m-meta{margin-top:6px;color:var(--muted);font-weight:800;font-size:12px}
-    .btn{margin-top:10px;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#16a34a,#22c55e);color:#052e16;font-weight:950;cursor:pointer}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+    header{
+      padding:12px;
+      border-bottom:1px solid var(--line);
+      background:#071f16;
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .brand{font-weight:950;letter-spacing:.06em}
+    .brand small{display:block;margin-top:2px;color:var(--muted);font-weight:800;letter-spacing:0;font-size:12px}
+    .btn-back{
+      border:1px solid var(--line);
+      background:transparent;color:var(--text);
+      border-radius:12px;padding:9px 11px;
+      font-weight:950;cursor:pointer;
+      white-space:nowrap;
+    }
+    main{padding:12px;max-width:780px;margin:0 auto}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+    .pill{
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:#07271c;
+      font-weight:900;font-size:12px;
+    }
+    .list{display:grid;gap:10px}
+    .mission{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:12px;
+    }
+    .m-title{font-weight:950;font-size:16px}
+    .m-meta{margin-top:6px;color:var(--muted);font-weight:800;font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      margin-top:10px;
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      color:#052e16;
+      font-weight:950;font-size:16px;
+      cursor:pointer;
+    }
+    .empty{text-align:center;padding:20px;color:var(--muted);font-weight:900}
+    footer{text-align:center;padding:12px;color:var(--muted);font-weight:800;font-size:12px}
   </style>
 </head>
 
 <body>
+
 <header>
-  <div class="brand">♾️ DIGIY JËF — Lite</div>
-  <button class="btn-back" onclick="location.href='/digiy-hub-drive/'">← DRIVE</button>
+  <div class="brand">♾️ DIGIY JËF
+    <small>Missions disponibles • appel direct</small>
+  </div>
+  <button class="btn-back" type="button" onclick="goDrive()">← DRIVE</button>
 </header>
 
 <main>
-  <div class="pill" id="status">Chargement…</div>
-
-  <div class="card">
-    <div style="font-weight:950;margin-bottom:8px;">DIAG (impossible à ignorer)</div>
-    <div id="diag" class="mono">Init…</div>
+  <div class="row">
+    <div class="pill" id="count">0 mission</div>
+    <div class="pill" id="status">Chargement…</div>
   </div>
 
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-      <div class="pill" id="count">0 mission</div>
-      <div class="pill" id="phase">—</div>
-    </div>
-    <div class="list" id="list"></div>
-  </div>
+  <div class="list" id="list"></div>
 </main>
 
-<script>
-/* IMPORTANT: ne JAMAIS déclarer une variable nommée "supabase" */
-const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+<footer>
+  DIGIYLYFE ♾️ — simplicité • efficacité • 0% commission
+</footer>
 
-const elStatus = document.getElementById("status");
-const elDiag   = document.getElementById("diag");
-const elPhase  = document.getElementById("phase");
-const elCount  = document.getElementById("count");
-const elList   = document.getElementById("list");
+<script>
+/* ======================================================
+   GitHub Pages (repo)
+====================================================== */
+const BASE = "/digiy-hub-drive";
+function goDrive(){ location.href = BASE + "/"; }
+
+/* ======================================================
+   Supabase — singleton global (ne pas déclarer "supabase")
+====================================================== */
+(function initSupabaseOnce(){
+  const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+
+  if(!window.supabase || !window.supabase.createClient){
+    document.getElementById("status").textContent = "SDK Supabase KO";
+    return;
+  }
+  if(!window.digiySupabase){
+    window.digiySupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+})();
+
+/* ======================================================
+   UI helpers
+====================================================== */
+const list = document.getElementById("list");
+const count = document.getElementById("count");
+const statusPill = document.getElementById("status");
 
 function esc(s){
   return String(s ?? "").replace(/[&<>"']/g, m => ({
     "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
   }[m]));
 }
-function logDiag(line){
-  elDiag.textContent += "\n" + line;
+function cleanPhone(p){
+  const raw = String(p||"").trim();
+  const plus = raw.startsWith("+") ? "+" : "";
+  const digits = raw.replace(/[^\d]/g,"");
+  return plus + digits;
 }
 function timeLabel(d){
-  const diff = Math.floor((Date.now()-new Date(d))/86400000);
-  if(diff<=0) return "Aujourd’hui";
-  if(diff===1) return "Hier";
-  return "Il y a "+diff+" j";
+  const diff = Math.floor((Date.now() - new Date(d).getTime())/86400000);
+  if(diff <= 0) return "Aujourd’hui";
+  if(diff === 1) return "Hier";
+  return "Il y a " + diff + " j";
 }
 
-(async function boot(){
+/* ======================================================
+   Render (anti-doublon)
+====================================================== */
+function render(items){
+  list.innerHTML = "";
+
+  // Anti doublon visuel (même title+zone+phone+created_at)
+  const seen = new Set();
+  const filtered = [];
+
+  for(const m of items){
+    const key = [
+      (m.title||"").trim(),
+      (m.zone||"").trim(),
+      (m.phone||"").trim(),
+      (m.created_at||"").toString()
+    ].join("|");
+
+    if(seen.has(key)) continue;
+    seen.add(key);
+    filtered.push(m);
+  }
+
+  count.textContent = filtered.length + (filtered.length>1 ? " missions" : " mission");
+
+  if(!filtered.length){
+    list.innerHTML = `<div class="empty">Aucune mission disponible</div>`;
+    return;
+  }
+
+  filtered.forEach(m=>{
+    const phone = cleanPhone(m.phone);
+
+    const div = document.createElement("div");
+    div.className = "mission";
+    div.innerHTML = `
+      <div class="m-title">${esc(m.title)}</div>
+      <div class="m-meta">
+        <span>📍 ${esc(m.zone || "—")}</span>
+        <span>🕒 ${esc(timeLabel(m.created_at))}</span>
+      </div>
+      <button class="btn" type="button">📞 Contacter</button>
+    `;
+
+    div.querySelector(".btn").onclick = ()=>{
+      if(!phone){
+        alert("Numéro indisponible pour cette mission.");
+        return;
+      }
+      if(confirm("Appeler ce numéro ?")){
+        location.href = "tel:" + phone;
+      }
+    };
+
+    list.appendChild(div);
+  });
+}
+
+/* ======================================================
+   Load (plus récent en haut)
+====================================================== */
+async function load(){
   try{
-    elDiag.textContent = "";
-    logDiag("1) Page OK. JS démarre.");
-    logDiag("2) URL: " + location.href);
-
-    // SDK check
-    elPhase.textContent = "SDK";
-    if(!window.supabase || !window.supabase.createClient){
-      elStatus.textContent = "SDK Supabase KO";
-      logDiag("❌ SDK Supabase absent. CDN bloqué / offline / adblock ?");
-      return;
-    }
-    logDiag("✅ SDK Supabase présent.");
-
-    // create client once
-    elPhase.textContent = "CLIENT";
-    if(!window.digiySupabase){
-      window.digiySupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      logDiag("✅ Client créé: window.digiySupabase");
-    }else{
-      logDiag("✅ Client déjà présent: réutilisation.");
-    }
-
-    // quick fetch test to supabase REST (network)
-    elPhase.textContent = "NETWORK";
-    try{
-      const ping = await fetch(SUPABASE_URL + "/rest/v1/", { method:"GET" });
-      logDiag("✅ Network ping /rest/v1/ status=" + ping.status);
-    }catch(e){
-      elStatus.textContent = "Réseau KO";
-      logDiag("❌ fetch vers Supabase impossible: " + (e?.message || e));
-      return;
-    }
-
-    // query
-    elPhase.textContent = "QUERY";
-    elStatus.textContent = "Chargement…";
-    logDiag("3) Requête: jef_missions WHERE status=approved ORDER created_at desc LIMIT 100");
+    statusPill.textContent = "Chargement…";
 
     const { data, error } = await window.digiySupabase
       .from("jef_missions")
-      .select("title,zone,phone,created_at,status")
+      .select("title,zone,phone,created_at")
       .eq("status","approved")
       .order("created_at",{ascending:false})
       .limit(100);
 
     if(error){
-      elStatus.textContent = "Erreur Supabase";
-      logDiag("❌ Supabase error.code=" + (error.code || "—"));
-      logDiag("❌ Supabase error.message=" + (error.message || "—"));
-      logDiag("❌ Supabase error.details=" + (error.details || "—"));
-      logDiag("❌ Supabase error.hint=" + (error.hint || "—"));
-      elList.innerHTML = `<div class="mission"><div class="m-title">Erreur Supabase</div><div class="m-meta">${esc(error.message || "")}</div></div>`;
+      statusPill.textContent = "Erreur Supabase";
+      list.innerHTML = `<div class="empty">${esc(error.message || "Erreur")}</div>`;
       return;
     }
 
-    const items = data || [];
-    elStatus.textContent = "OK";
-    elCount.textContent = items.length + (items.length>1 ? " missions" : " mission");
-    logDiag("✅ Data reçue: " + items.length + " ligne(s).");
-
-    if(!items.length){
-      elList.innerHTML = `<div class="mission"><div class="m-title">Aucune mission approved</div><div class="m-meta">Soit la table est vide, soit le status n’est pas 'approved', soit RLS filtre.</div></div>`;
-      return;
-    }
-
-    // render minimal
-    elList.innerHTML = "";
-    items.forEach(m=>{
-      const div = document.createElement("div");
-      div.className = "mission";
-      div.innerHTML = `
-        <div class="m-title">${esc(m.title)}</div>
-        <div class="m-meta">📍 ${esc(m.zone||"—")} • 🕒 ${esc(timeLabel(m.created_at))}</div>
-        <button class="btn">📞 Contacter</button>
-      `;
-      div.querySelector(".btn").onclick = ()=>{
-        const phone = String(m.phone||"").replace(/[^\d+]/g,"");
-        if(!phone){ alert("Numéro indisponible."); return; }
-        if(confirm("Appeler ce numéro ?")){
-          location.href = "tel:" + phone;
-        }
-      };
-      elList.appendChild(div);
-    });
+    statusPill.textContent = "OK";
+    render(data || []);
 
   }catch(e){
-    elStatus.textContent = "Erreur JS";
-    logDiag("💥 Exception JS: " + (e?.message || e));
-  }finally{
-    elPhase.textContent = "FIN";
-    logDiag("— FIN DIAG —");
+    statusPill.textContent = "Erreur JS";
+    list.innerHTML = `<div class="empty">${esc(e?.message || e)}</div>`;
   }
-})();
+}
+
+load();
 </script>
 
 </body>
 </html>
+
 
