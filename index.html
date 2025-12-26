@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>DIGIY ♾️ — Avancer simplement</title>
+  <meta name="theme-color" content="#16a34a"/>
+
+  <style>
+    /* =========================
+       HUB V2 MINIMAL — DIGIY
+       Mobile first • Ultra-light
+    ========================= */
+    :root{
+      --green:#16a34a;
+      --bg:#061b14;
+      --card:#0b2a1f;
+      --line:rgba(255,255,255,.14);
+      --text:#eafff1;
+      --muted:rgba(234,255,241,.75);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+    }
+    header{
+      padding:18px 16px 10px;
+      text-align:center;
+    }
+    .brand{
+      font-weight:950;
+      letter-spacing:.12em;
+      font-size:18px;
+    }
+    .brand small{
+      display:block;
+      margin-top:6px;
+      font-weight:800;
+      letter-spacing:0;
+      opacity:.8;
+      font-size:13px;
+    }
+
+    main{
+      flex:1;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      max-width:520px;
+      margin:0 auto;
+      width:100%;
+    }
+
+    .btn{
+      width:100%;
+      padding:18px 16px;
+      border:none;
+      border-radius:var(--radius);
+      background:var(--card);
+      border:1px solid var(--line);
+      color:var(--text);
+      text-align:left;
+      font-weight:950;
+      font-size:16px;
+      cursor:pointer;
+    }
+    .btn span{
+      display:block;
+      margin-top:6px;
+      font-size:13px;
+      font-weight:800;
+      color:var(--muted);
+    }
+    .btn.primary{
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      color:#052e16;
+      border:none;
+    }
+    .btn.primary span{
+      color:#052e16;
+      opacity:.85;
+    }
+
+    footer{
+      text-align:center;
+      padding:14px 10px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    ♾️ DIGIY
+    <small>Des solutions simples pour avancer</small>
+  </div>
+</header>
+
+<main>
+
+  <!-- ♾️ NDIMBAL -->
+  <button class="btn primary" onclick="go('ndimbal')">
+    ♾️ NDIMBAL
+    <span>Besoin d’aide, mission rapide, entraide</span>
+  </button>
+
+  <!-- Travail -->
+  <button class="btn" onclick="go('jobs')">
+    💼 Trouver du travail
+    <span>Voir les missions disponibles</span>
+  </button>
+
+  <!-- Paiement -->
+  <button class="btn" onclick="go('pay')">
+    💳 Payer / Recevoir
+    <span>Argent, services, transactions</span>
+  </button>
+
+  <!-- Transport -->
+  <button class="btn" onclick="go('transport')">
+    🚗 Transport
+    <span>Se déplacer, livrer</span>
+  </button>
+
+</main>
+
+<footer>
+  DIGIYLYFE ♾️ — direct • simple • pour le peuple
+</footer>
+
+<script>
+/* =========================
+   HUB V2 — REDIRECTION PURE
+   ZÉRO logique métier
+========================= */
+function go(target){
+  try{
+    localStorage.setItem("digiy_intent", JSON.stringify({
+      from:"HUB_V2",
+      action:target,
+      ts:Date.now()
+    }));
+  }catch(e){}
+
+  switch(target){
+    case "ndimbal":
+    case "jobs":
+      location.href = "/modules/jef/digiy-jef-lite.html";
+      break;
+    case "pay":
+      location.href = "/modules/pay/digiy-pay.html";
+      break;
+    case "transport":
+      location.href = "/modules/driver/digiy-driver.html";
+      break;
+    default:
+      alert("Module indisponible pour le moment");
+  }
+}
+</script>
+
+</body>
+</html>
