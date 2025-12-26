@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>DIGIY — Redirection</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#020617" />
+</head>
+
+<body style="background:#020617;color:#e5e7eb;font-family:system-ui;display:grid;place-items:center;height:100vh;">
+  <div>Chargement DIGIY…</div>
+
+  <!-- ✅ SDK Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+  /* ======================================================
+     DIGIY — REDIRECT INTELLIGENT
+     - Pas connecté → vitrine (index.html)
+     - Connecté → selon rôle / pro_type
+  ====================================================== */
+
+  const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+
+  const HUB_DRIVE_URL = "https://beauville.github.io/digiy-hub-drive/";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  async function go() {
+    try {
+      // 1️⃣ Session
+      const { data: sessionData, error: sessionErr } =
+        await supabase.auth.getSession();
+
+      if (sessionErr) console.warn("Session error:", sessionErr);
+
+      const user = sessionData?.session?.user;
+
+      // ❌ Pas connecté → vitrine
+      if (!user) {
+        location.replace("index.html");
+        return;
+      }
+
+      // 2️⃣ Profil
+      const { data: profile, error: profErr } = await supabase
+        .from("profiles")
+        .select("role_auto, pro_type, active_modules")
+        .eq("id", user.id)
+        .single();
+
+      // ❌ Pas de profil → client par défaut
+      if (profErr || !profile) {
+        location.replace("client.html");
+        return;
+      }
+
+      // 3️⃣ Redirections métier
+      if (profile.pro_type === "driver") {
+        location.replace("espace-chauffeur.html");
+        return;
+      }
+
+      if (profile.pro_type === "fret") {
+        location.replace("douane.html");
+        return;
+      }
+
+      if (profile.role_auto === "pro") {
+        location.replace(HUB_DRIVE_URL);
+        return;
+      }
+
+      // 4️⃣ Client par défaut
+      location.replace("client.html");
+
+    } catch (e) {
+      console.error("DIGIY redirect fatal:", e);
+      location.replace("index.html");
+    }
+  }
+
+  go();
+  </script>
+</body>
+</html>
