@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>DIGIY JËF — Missions disponibles</title>
   <meta name="theme-color" content="#16a34a"/>
-  <meta name="description" content="DIGIY JËF — Lecture seule. Missions disponibles. Appel direct." />
 
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -21,75 +20,44 @@
       --radius:16px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
+    body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text)}
     header{
       padding:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
       border-bottom:1px solid var(--line);
       background:#071f16;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
     }
-    .brand{
-      font-weight:950;
-      letter-spacing:.06em;
-      font-size:15px;
-    }
+    .brand{font-weight:950}
     .btn-back{
-      border:none;
+      padding:8px 10px;
       border-radius:12px;
-      padding:10px 12px;
-      font-weight:950;
-      cursor:pointer;
+      border:1px solid var(--line);
       background:transparent;
       color:var(--text);
-      border:1px solid var(--line);
+      font-weight:900;
+      cursor:pointer;
     }
     main{padding:12px}
-    .row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-    }
+    .row{display:flex;gap:8px;justify-content:space-between;margin-bottom:10px}
     .pill{
       padding:6px 10px;
       border-radius:999px;
-      border:1px solid var(--line);
       background:#07271c;
+      border:1px solid var(--line);
       font-weight:900;
       font-size:12px;
     }
-    .list{
-      display:grid;
-      gap:10px;
-    }
+    .list{display:grid;gap:10px}
     .mission{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:12px;
     }
-    .m-title{
-      font-weight:950;
-      font-size:16px;
-    }
-    .m-meta{
-      margin-top:6px;
-      color:var(--muted);
-      font-weight:800;
-      font-size:12px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+    .m-title{font-weight:950}
+    .m-meta{font-size:12px;color:var(--muted);margin-top:6px}
     .btn{
       margin-top:10px;
       width:100%;
@@ -99,22 +67,10 @@
       background:linear-gradient(135deg,#16a34a,#22c55e);
       color:#052e16;
       font-weight:950;
-      font-size:16px;
       cursor:pointer;
     }
-    .empty{
-      text-align:center;
-      padding:20px;
-      color:var(--muted);
-      font-weight:900;
-    }
-    footer{
-      text-align:center;
-      padding:14px 10px;
-      color:var(--muted);
-      font-weight:800;
-      font-size:12px;
-    }
+    .empty{text-align:center;padding:20px;color:var(--muted);font-weight:900}
+    footer{text-align:center;padding:12px;font-size:12px;color:var(--muted)}
   </style>
 </head>
 
@@ -122,7 +78,7 @@
 
 <header>
   <div class="brand">♾️ DIGIY JËF</div>
-  <button class="btn-back" onclick="goBack()">← DRIVE</button>
+  <button class="btn-back" onclick="location.href='/digiy-hub-drive/'">← DRIVE</button>
 </header>
 
 <main>
@@ -130,108 +86,61 @@
     <div class="pill" id="count">0 mission</div>
     <div class="pill" id="status">Chargement…</div>
   </div>
-
   <div class="list" id="list"></div>
 </main>
 
 <footer>
-  DIGIYLYFE ♾️ — lecture seule • appel direct • 0% commission
+  DIGIYLYFE ♾️ — simplicité • efficacité • 0% commission
 </footer>
 
 <script>
 /* ======================================================
-   CONFIG — GitHub Pages
+   SUPABASE — SINGLETON GLOBAL (ANTI DOUBLE DECLARATION)
 ====================================================== */
-const BASE = "/digiy-hub-drive";
+(function initSupabaseOnce(){
+  const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
-/* ======================================================
-   SUPABASE
-====================================================== */
-const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+  if(!window.supabase || !window.supabase.createClient){
+    document.getElementById("status").textContent = "SDK Supabase KO";
+    return;
+  }
 
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+  if(!window.digiySupabase){
+    window.digiySupabase = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+  }
+})();
+
+const supabase = window.digiySupabase;
 
 /* ======================================================
    UTILS
-====================================================== */
-function esc(s){
-  return String(s ?? "").replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-  }[m]));
-}
-function cleanPhone(p){
-  const raw = String(p||"").trim();
-  const plus = raw.startsWith("+") ? "+" : "";
-  const digits = raw.replace(/[^\d]/g,"");
-  return plus + digits;
-}
-function timeLabel(d){
-  const diff = Math.floor((Date.now() - new Date(d).getTime())/86400000);
-  if(diff <= 0) return "Aujourd’hui";
-  if(diff === 1) return "Hier";
-  return "Il y a " + diff + " j";
-}
-
-/* ======================================================
-   NAV
-====================================================== */
-function goBack(){
-  location.href = BASE + "/";
-}
-
-/* ======================================================
-   RENDER
 ====================================================== */
 const list = document.getElementById("list");
 const count = document.getElementById("count");
 const statusPill = document.getElementById("status");
 
-function render(items){
-  count.textContent = items.length + (items.length>1 ? " missions" : " mission");
-  list.innerHTML = "";
-
-  if(!items.length){
-    list.innerHTML = `<div class="empty">Aucune mission disponible</div>`;
-    return;
-  }
-
-  items.forEach(m=>{
-    const phone = cleanPhone(m.phone);
-    const div = document.createElement("div");
-    div.className = "mission";
-    div.innerHTML = `
-      <div class="m-title">${esc(m.title)}</div>
-      <div class="m-meta">
-        <span>📍 ${esc(m.zone || "—")}</span>
-        <span>🕒 ${timeLabel(m.created_at)}</span>
-      </div>
-      <button class="btn">📞 Contacter</button>
-    `;
-    const btn = div.querySelector(".btn");
-    btn.onclick = ()=>{
-      if(!phone){
-        alert("Numéro indisponible pour cette mission.");
-        return;
-      }
-      if(confirm("Appeler ce numéro ?")){
-        location.href = "tel:" + phone;
-      }
-    };
-    list.appendChild(div);
-  });
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g,m=>(
+    {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]
+  ));
+}
+function timeLabel(d){
+  const diff = Math.floor((Date.now()-new Date(d))/86400000);
+  if(diff<=0) return "Aujourd’hui";
+  if(diff===1) return "Hier";
+  return "Il y a "+diff+" j";
 }
 
 /* ======================================================
-   LOAD — plus récent en haut
+   LOAD DATA
 ====================================================== */
 async function load(){
   try{
-    statusPill.textContent = "Chargement…";
     const { data, error } = await supabase
       .from("jef_missions")
       .select("title,zone,phone,created_at")
@@ -240,18 +149,38 @@ async function load(){
       .limit(100);
 
     if(error){
-      console.error(error);
-      statusPill.textContent = "Erreur réseau";
-      list.innerHTML = `<div class="empty">Réseau lent. Réessaie.</div>`;
+      statusPill.textContent = "Erreur Supabase";
+      list.innerHTML = `<div class="empty">${esc(error.message)}</div>`;
       return;
     }
 
     statusPill.textContent = "OK";
-    render(data || []);
+    count.textContent = data.length + (data.length>1?" missions":" mission");
+
+    if(!data.length){
+      list.innerHTML = `<div class="empty">Aucune mission disponible</div>`;
+      return;
+    }
+
+    data.forEach(m=>{
+      const div=document.createElement("div");
+      div.className="mission";
+      div.innerHTML=`
+        <div class="m-title">${esc(m.title)}</div>
+        <div class="m-meta">📍 ${esc(m.zone||"—")} • 🕒 ${timeLabel(m.created_at)}</div>
+        <button class="btn">📞 Contacter</button>
+      `;
+      div.querySelector(".btn").onclick=()=>{
+        if(confirm("Appeler ce numéro ?")){
+          location.href="tel:"+String(m.phone||"").replace(/[^\d+]/g,"");
+        }
+      };
+      list.appendChild(div);
+    });
+
   }catch(e){
-    console.error(e);
-    statusPill.textContent = "Erreur";
-    list.innerHTML = `<div class="empty">Impossible de charger.</div>`;
+    statusPill.textContent="Erreur JS";
+    list.innerHTML=`<div class="empty">${esc(e.message)}</div>`;
   }
 }
 
@@ -260,4 +189,3 @@ load();
 
 </body>
 </html>
-
