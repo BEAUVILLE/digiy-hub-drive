@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>DIGIY JËF — Missions disponibles</title>
   <meta name="theme-color" content="#16a34a"/>
+  <meta name="description" content="DIGIY JËF — Lecture seule. Missions disponibles. Appel direct." />
 
-  <!-- Supabase SDK (1 seule dépendance) -->
+  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* ================================
-       DIGIY JËF — LECTURE SEULE ULTRA-LIGHT
-       Mobile first • Android bas de gamme OK
-    ================================ */
     :root{
       --green:#16a34a;
       --bg:#061b14;
@@ -34,25 +31,46 @@
       padding:12px;
       border-bottom:1px solid var(--line);
       background:#071f16;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
     .brand{
-      font-weight:950; letter-spacing:.06em;
+      font-weight:950;
+      letter-spacing:.06em;
+      font-size:15px;
     }
-    .brand small{
-      display:block; font-weight:800; opacity:.8; margin-top:2px;
+    .btn-back{
+      border:none;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:950;
+      cursor:pointer;
+      background:transparent;
+      color:var(--text);
+      border:1px solid var(--line);
     }
     main{padding:12px}
     .row{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
       margin-bottom:10px;
     }
     .pill{
-      padding:6px 10px; border-radius:999px;
+      padding:6px 10px;
+      border-radius:999px;
       border:1px solid var(--line);
       background:#07271c;
-      font-weight:900; font-size:12px;
+      font-weight:900;
+      font-size:12px;
     }
-    .list{display:grid; gap:10px}
+    .list{
+      display:grid;
+      gap:10px;
+    }
     .mission{
       background:var(--card);
       border:1px solid var(--line);
@@ -60,14 +78,17 @@
       padding:12px;
     }
     .m-title{
-      font-weight:950; font-size:16px;
+      font-weight:950;
+      font-size:16px;
     }
     .m-meta{
       margin-top:6px;
       color:var(--muted);
       font-weight:800;
       font-size:12px;
-      display:flex; gap:8px; flex-wrap:wrap;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
     }
     .btn{
       margin-top:10px;
@@ -94,24 +115,14 @@
       font-weight:800;
       font-size:12px;
     }
-
-    /* ================================
-       Mobile ultra-light (sécurité)
-    ================================ */
-    @media (max-width:520px){
-      .brand{font-size:14px}
-      .brand small{font-size:11px}
-      .btn{font-size:15px}
-    }
   </style>
 </head>
 
 <body>
 
 <header>
-  <div class="brand">♾️ DIGIY JËF
-    <small>Missions disponibles • appel direct</small>
-  </div>
+  <div class="brand">♾️ DIGIY JËF</div>
+  <button class="btn-back" onclick="goBack()">← DRIVE</button>
 </header>
 
 <main>
@@ -124,12 +135,17 @@
 </main>
 
 <footer>
-  DIGIYLYFE ♾️ — simplicité • efficacité • 0% commission
+  DIGIYLYFE ♾️ — lecture seule • appel direct • 0% commission
 </footer>
 
 <script>
 /* ======================================================
-   SUPABASE — client unique
+   CONFIG — GitHub Pages
+====================================================== */
+const BASE = "/digiy-hub-drive";
+
+/* ======================================================
+   SUPABASE
 ====================================================== */
 const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
 const SUPABASE_ANON_KEY =
@@ -141,7 +157,7 @@ const supabase = window.supabase.createClient(
 );
 
 /* ======================================================
-   UTILITAIRES
+   UTILS
 ====================================================== */
 function esc(s){
   return String(s ?? "").replace(/[&<>"']/g, m => ({
@@ -162,7 +178,14 @@ function timeLabel(d){
 }
 
 /* ======================================================
-   RENDU
+   NAV
+====================================================== */
+function goBack(){
+  location.href = BASE + "/";
+}
+
+/* ======================================================
+   RENDER
 ====================================================== */
 const list = document.getElementById("list");
 const count = document.getElementById("count");
@@ -190,20 +213,21 @@ function render(items){
       <button class="btn">📞 Contacter</button>
     `;
     const btn = div.querySelector(".btn");
-    btn.addEventListener("click", ()=>{
+    btn.onclick = ()=>{
       if(!phone){
         alert("Numéro indisponible pour cette mission.");
         return;
       }
-      const ok = confirm("Appeler ce numéro ?");
-      if(ok) window.location.href = "tel:" + phone;
-    });
+      if(confirm("Appeler ce numéro ?")){
+        location.href = "tel:" + phone;
+      }
+    };
     list.appendChild(div);
   });
 }
 
 /* ======================================================
-   CHARGEMENT — 1 requête, plus récent en haut
+   LOAD — plus récent en haut
 ====================================================== */
 async function load(){
   try{
@@ -231,9 +255,9 @@ async function load(){
   }
 }
 
-// GO
 load();
 </script>
 
 </body>
 </html>
+
