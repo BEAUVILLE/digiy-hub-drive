@@ -95,27 +95,25 @@
 
 <script>
 /* ======================================================
-   SUPABASE — SINGLETON GLOBAL (ANTI DOUBLE DECLARATION)
+   SUPABASE — INIT UNIQUE (SANS JAMAIS DÉCLARER "supabase")
 ====================================================== */
 (function initSupabaseOnce(){
   const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
-  if(!window.supabase || !window.supabase.createClient){
+  if (!window.supabase || !window.supabase.createClient) {
     document.getElementById("status").textContent = "SDK Supabase KO";
     return;
   }
 
-  if(!window.digiySupabase){
+  if (!window.digiySupabase) {
     window.digiySupabase = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_ANON_KEY
     );
   }
 })();
-
-const supabase = window.digiySupabase;
 
 /* ======================================================
    UTILS
@@ -125,9 +123,9 @@ const count = document.getElementById("count");
 const statusPill = document.getElementById("status");
 
 function esc(s){
-  return String(s ?? "").replace(/[&<>"']/g,m=>(
-    {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]
-  ));
+  return String(s ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[m]));
 }
 function timeLabel(d){
   const diff = Math.floor((Date.now()-new Date(d))/86400000);
@@ -137,11 +135,13 @@ function timeLabel(d){
 }
 
 /* ======================================================
-   LOAD DATA
+   LOAD — UTILISE window.digiySupabase DIRECTEMENT
 ====================================================== */
 async function load(){
   try{
-    const { data, error } = await supabase
+    statusPill.textContent = "Chargement…";
+
+    const { data, error } = await window.digiySupabase
       .from("jef_missions")
       .select("title,zone,phone,created_at")
       .eq("status","approved")
@@ -155,7 +155,7 @@ async function load(){
     }
 
     statusPill.textContent = "OK";
-    count.textContent = data.length + (data.length>1?" missions":" mission");
+    count.textContent = data.length + (data.length>1 ? " missions" : " mission");
 
     if(!data.length){
       list.innerHTML = `<div class="empty">Aucune mission disponible</div>`;
@@ -163,24 +163,24 @@ async function load(){
     }
 
     data.forEach(m=>{
-      const div=document.createElement("div");
-      div.className="mission";
-      div.innerHTML=`
+      const div = document.createElement("div");
+      div.className = "mission";
+      div.innerHTML = `
         <div class="m-title">${esc(m.title)}</div>
         <div class="m-meta">📍 ${esc(m.zone||"—")} • 🕒 ${timeLabel(m.created_at)}</div>
         <button class="btn">📞 Contacter</button>
       `;
-      div.querySelector(".btn").onclick=()=>{
+      div.querySelector(".btn").onclick = ()=>{
         if(confirm("Appeler ce numéro ?")){
-          location.href="tel:"+String(m.phone||"").replace(/[^\d+]/g,"");
+          location.href = "tel:" + String(m.phone||"").replace(/[^\d+]/g,"");
         }
       };
       list.appendChild(div);
     });
 
   }catch(e){
-    statusPill.textContent="Erreur JS";
-    list.innerHTML=`<div class="empty">${esc(e.message)}</div>`;
+    statusPill.textContent = "Erreur JS";
+    list.innerHTML = `<div class="empty">${esc(e.message)}</div>`;
   }
 }
 
