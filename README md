@@ -1,0 +1,57 @@
+
+Si le HUB tombe, **les modules continuent de fonctionner**.
+
+---
+
+## 🛡️ Règles de Gouvernance (IMPORTANT)
+
+1. ❌ Aucune logique métier dans la vitrine
+2. ❌ Aucune requête Supabase dans le HUB V2
+3. ✅ Un module = un espace autonome
+4. ✅ Le HUB redirige, il n’exécute jamais
+5. ✅ Un déploiement ne doit jamais casser tout l’écosystème
+
+Ces règles sont **fondamentales**.
+
+---
+
+## 📱 Terrain First
+
+DIGIY est conçu pour :
+- Android bas de gamme
+- réseaux faibles
+- utilisateurs non techniques
+- usage réel, quotidien
+
+La performance n’est pas une option.
+
+---
+
+## ♾️ Vision
+
+DIGIYLYFE vise à construire un **écosystème digital africain souverain**,  
+respectueux des cultures locales,  
+offrant des outils simples, puissants et accessibles à tous.
+
+---
+
+## 🚀 Déploiement
+
+- Hébergement : **GitHub Pages**
+- Déploiement progressif
+- Aucun “big bang”
+- Stabilité avant nouveauté
+
+---
+
+## 🤝 Contribution
+
+Toute évolution doit respecter :
+- la séparation Vitrine / HUB / Modules
+- la simplicité
+- l’intérêt du terrain
+
+---
+
+DIGIYLYFE ♾️  
+**Direct. Simple. Pour le peuple.**
