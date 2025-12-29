@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>DIGIY ♾️ JËF — Missions</title>
+  <meta name="theme-color" content="#16a34a"/>
+  <meta name="description" content="Liste publique des missions validées DIGIY JËF." />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --green:#16a34a; --green2:#22c55e;
+      --bg:#061b14; --line:rgba(255,255,255,.14);
+      --text:#eafff1; --muted:rgba(234,255,241,.78);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background: radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%), var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      background:rgba(6,27,20,.72);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{font-weight:950; letter-spacing:.1em}
+    .btn{
+      border:none; cursor:pointer;
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:950;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--text);
+    }
+    main{max-width:900px; margin:0 auto; padding:14px; display:flex; flex-direction:column; gap:12px;}
+    .card{background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:var(--radius); padding:14px;}
+    .muted{color:var(--muted); font-weight:800; font-size:13px}
+    .grid{display:grid; gap:10px}
+    .mission{
+      background:rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+    }
+    .topline{display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap}
+    .title{font-weight:950; font-size:16px}
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      font-weight:950; font-size:12px;
+    }
+    .meta{margin-top:6px; display:flex; flex-wrap:wrap; gap:8px; font-weight:850; font-size:13px; color:var(--muted)}
+    .actions{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap}
+    footer{
+      text-align:center;
+      padding:14px 10px;
+      font-size:12px;
+      font-weight:800;
+      color:rgba(234,255,241,.72);
+      border-top:1px solid rgba(255,255,255,.10);
+      background:rgba(6,27,20,.55);
+    }
+    a{color:#86efac; text-decoration:none; font-weight:950}
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">♾️ DIGIY JËF — MISSIONS</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn" id="btnReload" type="button">↻ Rafraîchir</button>
+    <button class="btn" id="btnBackHub" type="button">← Retour HUB</button>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div style="font-weight:950;margin-bottom:6px;">Missions validées</div>
+    <div class="muted">Ici tu vois seulement les missions <b>approuvées</b>. Pour publier, passe par JËF.</div>
+  </div>
+
+  <div class="card">
+    <div class="muted" id="count">—</div>
+  </div>
+
+  <div id="list" class="grid"></div>
+</main>
+
+<footer>
+  DIGIYLYFE ♾️ — direct au peuple • 0% commission •
+  <a href="https://beauville.github.io/digiy-hub-drive/">Retour HUB</a>
+</footer>
+
+<script>
+const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+
+const SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const listEl = document.getElementById("list");
+const countEl = document.getElementById("count");
+
+function esc(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+function render(rows){
+  listEl.innerHTML = "";
+  if(!rows || rows.length === 0){
+    listEl.innerHTML = `<div class="card"><div class="muted">Aucune mission pour le moment.</div></div>`;
+    return;
+  }
+
+  rows.forEach(r=>{
+    const whenTxt = r.when ? `⏰ ${esc(r.when)}` : "";
+    const detTxt  = r.details ? esc(r.details) : "—";
+
+    const div = document.createElement("div");
+    div.className = "mission";
+    div.innerHTML = `
+      <div class="topline">
+        <div class="title">📝 ${esc(r.title)}</div>
+        <span class="pill">✅ Validée</span>
+      </div>
+
+      <div class="meta">
+        <span>📍 ${esc(r.zone || "—")}</span>
+        ${whenTxt ? `<span>${whenTxt}</span>` : ""}
+        <span>📞 ${esc(r.phone || "—")}</span>
+      </div>
+
+      <div class="muted" style="margin-top:8px;line-height:1.45">
+        ${detTxt}
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="button"
+          onclick="window.open('https://wa.me/${String(r.phone||"").replace(/\D/g,"")}?text=${encodeURIComponent("Salam, j'ai vu ta mission DIGIY JËF : "+(r.title||""))}','_blank')">
+          💬 WhatsApp
+        </button>
+
+        <button class="btn" type="button" onclick="copyText('${esc(r.title)} | ${esc(r.zone)} | ${esc(r.phone)}')">
+          📋 Copier
+        </button>
+      </div>
+    `;
+    listEl.appendChild(div);
+  });
+}
+
+async function load(){
+  countEl.textContent = "Chargement…";
+
+  const { data, error } = await SB
+    .from("jef_missions")
+    .select("id,created_at,title,zone,phone,when,details,status")
+    .eq("status","approved")
+    .order("created_at", { ascending:false })
+    .limit(200);
+
+  if(error){
+    countEl.textContent = "Erreur: " + error.message;
+    listEl.innerHTML = "";
+    return;
+  }
+
+  countEl.textContent = `${(data||[]).length} mission(s) disponible(s)`;
+  render(data || []);
+}
+
+function copyText(txt){
+  try{
+    navigator.clipboard.writeText(txt);
+    alert("Copié ✅");
+  }catch(e){
+    alert("Copie impossible sur ce navigateur.");
+  }
+}
+
+document.getElementById("btnReload").addEventListener("click", load);
+document.getElementById("btnBackHub").addEventListener("click", ()=> window.location.href="https://beauville.github.io/digiy-hub-drive/");
+
+load();
+</script>
+
+</body>
+</html>
