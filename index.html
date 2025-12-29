@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="fr">
-
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
@@ -8,7 +7,7 @@
   <meta name="theme-color" content="#16a34a"/>
   <meta name="description" content="DIGIY DRIVE — orientation rapide vers les modules. NDIMBAL, Travail, Pay, Jobs, etc." />
 
-  <!-- Supabase SDK -->
+  <!-- Supabase SDK (ok, même si pas utilisé ici) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -182,29 +181,80 @@
 <script>
 /* =========================
    ROUTING FINAL — ANTI 404
+   - Essaie d'abord le fichier du DRIVE
+   - Sinon fallback vers les apps LIVE / WhatsApp
 ========================= */
 
-const BASE = "https://beauville.github.io/digiy-hub-drive/";
+const DRIVE_BASE = "https://beauville.github.io/digiy-hub-drive/";
 
-function nav(file){
-  window.location.href = BASE + file;
+/** Fallbacks sûrs (zéro 404) */
+const LIVE = {
+  pay:   "https://beauville.github.io/digiy-pay/",
+  jobs:  "https://beauville.github.io/digiy-jobs/",
+  jef:   "https://beauville.github.io/digiy-jef-lite/",
+  hub:   "https://beauville.github.io/digiy-hub-drive/",
+  help:  "https://wa.me/221771342889?text=SOS%20NDIMBAL%20—%20j’ai%20besoin%20d’aide%20sur%20le%20DRIVE"
+};
+
+/** Test si une URL existe (sans CORS blocant) */
+async function urlExists(url){
+  try{
+    // no-cors ne donne pas le status, donc on fait une astuce:
+    // on charge en <img> : si ça 404 -> error, si ça répond -> on considère ok.
+    // Pour HTML ça ne marche pas. Donc on utilise fetch normal; sur GitHub pages ça passe.
+    const res = await fetch(url, { method:"GET", cache:"no-store" });
+    return !!res && res.ok;
+  }catch(e){
+    return false;
+  }
 }
 
-function go(target){
+/** nav: ouvre un fichier dans le DRIVE, sinon fallback si fourni */
+async function nav(file, fallbackUrl){
+  const url = DRIVE_BASE + String(file || "").replace(/^\//,"");
+  const ok = await urlExists(url);
+
+  if(ok){
+    window.location.href = url;
+    return;
+  }
+
+  // fallback
+  window.location.href = fallbackUrl || LIVE.help;
+}
+
+/** go: routing logique (NDIMBAL / JOBS / PAY / TRANSPORT) */
+async function go(target){
   switch(target){
     case "ndimbal":
+      // ✅ Si tu as une page NDIMBAL dans le DRIVE un jour, mets-la ici:
+      // await nav("ndimbal.html", LIVE.help);
+      // Pour l'instant -> WhatsApp direct (zéro 404)
+      window.location.href = LIVE.help;
+      break;
+
     case "jobs":
-      nav("digiy-jef-lite.html");
+      // 1) tente la page locale DRIVE si elle existe
+      // 2) sinon -> app live jobs
+      await nav("digiy-jobs.html", LIVE.jobs);
       break;
+
     case "pay":
-      nav("digiy-pay.html");
+      await nav("digiy-pay.html", LIVE.pay);
       break;
+
     case "transport":
-      alert("Transport bientôt disponible");
+      // si tu as un fichier transport local plus tard, exemple:
+      // await nav("digiy-transport.html", "https://beauville.github.io/digiy-fret-client/");
+      alert("Transport bientôt disponible ✅");
       break;
+
+    default:
+      window.location.href = LIVE.hub;
   }
 }
 </script>
 
 </body>
 </html>
+
