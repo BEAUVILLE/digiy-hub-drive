@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>DIGIY ♾️ — DRIVE</title>
   <meta name="theme-color" content="#16a34a"/>
-  <meta name="description" content="DIGIY DRIVE — orientation rapide vers les modules. NDIMBAL, Travail, Pay, Jobs, etc." />
+  <meta name="description" content="DIGIY DRIVE — orientation rapide vers les modules. NDIMBAL, JOBS, Pay, etc." />
 
-  <!-- Supabase SDK (ok, même si pas utilisé ici) -->
+  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -78,6 +78,11 @@
       border-radius:var(--radius);
       padding:14px;
     }
+    .card-title{
+      font-weight:950;
+      margin-bottom:10px;
+      font-size:15px;
+    }
     .btn{
       width:100%;
       padding:18px 16px;
@@ -134,20 +139,41 @@
 
 <main>
 
+  <!-- NDIMBAL : Missions courtes / Entraide -->
   <div class="card">
+    <div class="card-title">♾️ NDIMBAL — Missions courtes</div>
+    
     <button class="btn primary" onclick="go('ndimbal')">
-      ♾️ NDIMBAL
-      <span>Besoin d’aide, mission rapide, entraide</span>
+      📝 Publier une mission
+      <span>Besoin d'aide, mission rapide, entraide</span>
     </button>
 
     <div style="height:10px"></div>
 
-    <button class="btn" onclick="go('jobs')">
-      💼 Trouver du travail
-      <span>Missions disponibles</span>
+    <button class="btn" onclick="nav('missions.html')">
+      👀 Voir les missions disponibles
+      <span>Missions ponctuelles approuvées</span>
     </button>
   </div>
 
+  <!-- JOBS : Emploi formel -->
+  <div class="card">
+    <div class="card-title">💼 DIGIY JOBS — Emploi</div>
+
+    <div class="grid2">
+      <button class="btn mini" onclick="nav('digiy-jobs-candidat.html')">
+        🔍 Chercher emploi
+        <span>Voir offres</span>
+      </button>
+
+      <button class="btn mini" onclick="nav('digiy-jobs-recruteur.html')">
+        📢 Recruter
+        <span>Poster offre</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Services DIGIY -->
   <div class="grid2">
     <button class="btn mini" onclick="go('pay')">
       💳 Payer / Recevoir
@@ -160,14 +186,15 @@
     </button>
   </div>
 
+  <!-- Accès directs -->
   <div class="card">
-    <div style="font-weight:950;margin-bottom:10px;">Accès directs</div>
+    <div class="card-title">Accès directs</div>
 
     <div class="grid2">
       <button class="btn mini" onclick="nav('digiy-jef.html')">♾️ JËF</button>
-      <button class="btn mini" onclick="nav('publish-mission.htm')">➕ Publier mission</button>
-      <button class="btn mini" onclick="nav('digiy-jobs.html')">🧑🏾‍💼 JOBS PRO</button>
-      <button class="btn mini" onclick="nav('digiy-pay.html')">💳 DIGIY PAY</button>
+      <button class="btn mini" onclick="nav('publish-mission.html')">➕ Mission</button>
+      <button class="btn mini" onclick="nav('digiy-pay.html')">💳 PAY</button>
+      <button class="btn mini" onclick="nav('jef-admin.html')">🔐 Admin JËF</button>
     </div>
   </div>
 
@@ -181,8 +208,6 @@
 <script>
 /* =========================
    ROUTING FINAL — ANTI 404
-   - Essaie d'abord le fichier du DRIVE
-   - Sinon fallback vers les apps LIVE / WhatsApp
 ========================= */
 
 const DRIVE_BASE = "https://beauville.github.io/digiy-hub-drive/";
@@ -193,15 +218,12 @@ const LIVE = {
   jobs:  "https://beauville.github.io/digiy-jobs/",
   jef:   "https://beauville.github.io/digiy-jef-lite/",
   hub:   "https://beauville.github.io/digiy-hub-drive/",
-  help:  "https://wa.me/221771342889?text=SOS%20NDIMBAL%20—%20j’ai%20besoin%20d’aide%20sur%20le%20DRIVE"
+  help:  "https://wa.me/221771342889?text=SOS%20NDIMBAL%20—%20j'ai%20besoin%20d'aide%20sur%20le%20DRIVE"
 };
 
-/** Test si une URL existe (sans CORS blocant) */
+/** Test si une URL existe */
 async function urlExists(url){
   try{
-    // no-cors ne donne pas le status, donc on fait une astuce:
-    // on charge en <img> : si ça 404 -> error, si ça répond -> on considère ok.
-    // Pour HTML ça ne marche pas. Donc on utilise fetch normal; sur GitHub pages ça passe.
     const res = await fetch(url, { method:"GET", cache:"no-store" });
     return !!res && res.ok;
   }catch(e){
@@ -223,20 +245,17 @@ async function nav(file, fallbackUrl){
   window.location.href = fallbackUrl || LIVE.help;
 }
 
-/** go: routing logique (NDIMBAL / JOBS / PAY / TRANSPORT) */
+/** go: routing logique */
 async function go(target){
   switch(target){
     case "ndimbal":
-      // ✅ Si tu as une page NDIMBAL dans le DRIVE un jour, mets-la ici:
-      // await nav("ndimbal.html", LIVE.help);
-      // Pour l'instant -> WhatsApp direct (zéro 404)
-      window.location.href = LIVE.help;
+      // Publication de mission courte
+      await nav("publish-mission.html", LIVE.help);
       break;
 
     case "jobs":
-      // 1) tente la page locale DRIVE si elle existe
-      // 2) sinon -> app live jobs
-      await nav("digiy-jobs.html", LIVE.jobs);
+      // JOBS candidat par défaut
+      await nav("digiy-jobs-candidat.html", LIVE.jobs);
       break;
 
     case "pay":
@@ -244,8 +263,6 @@ async function go(target){
       break;
 
     case "transport":
-      // si tu as un fichier transport local plus tard, exemple:
-      // await nav("digiy-transport.html", "https://beauville.github.io/digiy-fret-client/");
       alert("Transport bientôt disponible ✅");
       break;
 
@@ -257,4 +274,3 @@ async function go(target){
 
 </body>
 </html>
-
