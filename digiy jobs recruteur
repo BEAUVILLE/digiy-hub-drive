@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>DIGIY ♾️ JOBS — Recruteur</title>
+  <meta name="theme-color" content="#16a34a"/>
+  <meta name="description" content="Publiez vos offres d'emploi sur DIGIY JOBS — 0% commission"/>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --green:#16a34a; --green2:#22c55e;
+      --bg:#061b14; --card:#0b2a1f; --line:rgba(255,255,255,.14);
+      --text:#eafff1; --muted:rgba(234,255,241,.78); --dark:#052e16;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background: radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%), var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:18px 16px 12px;
+      border-bottom:1px solid var(--line);
+      background:rgba(6,27,20,.72);
+      text-align:center;
+    }
+    .brand{
+      font-weight:950;
+      letter-spacing:.12em;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      font-weight:950;
+      font-size:12px;
+    }
+    .subtitle{
+      margin-top:8px;
+      font-weight:800;
+      color:var(--muted);
+      font-size:13px;
+    }
+    main{
+      max-width:680px;
+      margin:0 auto;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .info-box{
+      background:#ecfdf5;
+      color:#065f46;
+      border:1px solid #bbf7d0;
+      border-radius:14px;
+      padding:14px;
+      font-size:14px;
+      font-weight:800;
+      line-height:1.5;
+    }
+    .card{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+    }
+    .card-title{
+      font-weight:950;
+      margin-bottom:12px;
+      font-size:16px;
+    }
+    label{
+      display:block;
+      font-weight:900;
+      margin:14px 0 6px;
+      font-size:14px;
+    }
+    input, textarea, select{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#052e16;
+      color:var(--text);
+      font-weight:800;
+      font-size:14px;
+      outline:none;
+    }
+    select{
+      cursor:pointer;
+    }
+    textarea{
+      resize:vertical;
+      min-height:80px;
+      line-height:1.5;
+    }
+    .btn{
+      width:100%;
+      padding:16px;
+      border:none;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:var(--dark);
+      font-weight:950;
+      font-size:16px;
+      cursor:pointer;
+      margin-top:12px;
+    }
+    .btn:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .btn.ghost{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--text);
+    }
+    .note{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+      font-weight:800;
+    }
+    .required{
+      color:#f87171;
+    }
+    footer{
+      text-align:center;
+      padding:16px 10px;
+      font-size:12px;
+      font-weight:800;
+      color:rgba(234,255,241,.72);
+      border-top:1px solid rgba(255,255,255,.10);
+      background:rgba(6,27,20,.55);
+    }
+    a{
+      color:#86efac;
+      text-decoration:none;
+      font-weight:950;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    ♾️ DIGIY <span class="badge">JOBS RECRUTEUR</span>
+  </div>
+  <div class="subtitle">Publiez vos offres d'emploi — 0% commission</div>
+</header>
+
+<main>
+
+  <div class="info-box">
+    <strong>💼 Comment ça marche ?</strong><br>
+    1️⃣ Vous publiez votre offre d'emploi gratuitement<br>
+    2️⃣ L'équipe DIGIY valide votre offre (anti-spam)<br>
+    3️⃣ Les candidats vous contactent directement<br>
+    <strong>0% commission • Contact direct • Simplicité</strong>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Informations entreprise</div>
+
+    <label>Nom de l'entreprise <span class="required">*</span></label>
+    <input id="company_name" placeholder="Ex: DIGIYLYFE SARL"/>
+
+    <label>Votre nom (recruteur)</label>
+    <input id="recruiter_name" placeholder="Ex: Amadou Diallo"/>
+
+    <label>Téléphone (WhatsApp) <span class="required">*</span></label>
+    <input id="recruiter_phone" type="tel" placeholder="+221771234567"/>
+
+    <label>Email (optionnel)</label>
+    <input id="recruiter_email" type="email" placeholder="contact@entreprise.sn"/>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💼 Détails du poste</div>
+
+    <label>Titre du poste <span class="required">*</span></label>
+    <input id="job_title" placeholder="Ex: Développeur Web Full-Stack"/>
+
+    <label>Type de contrat <span class="required">*</span></label>
+    <select id="job_type">
+      <option value="">-- Sélectionner --</option>
+      <option value="CDI">CDI</option>
+      <option value="CDD">CDD</option>
+      <option value="Stage">Stage</option>
+      <option value="Freelance">Freelance</option>
+      <option value="Intérim">Intérim</option>
+      <option value="Alternance">Alternance</option>
+    </select>
+
+    <label>Localisation <span class="required">*</span></label>
+    <input id="location" placeholder="Ex: Dakar, Plateau"/>
+
+    <label>Fourchette salariale (optionnel)</label>
+    <input id="salary_range" placeholder="Ex: 300 000 - 500 000 FCFA/mois"/>
+
+    <label>Description du poste <span class="required">*</span></label>
+    <textarea id="description" rows="5" placeholder="Décrivez les missions, responsabilités, environnement de travail..."></textarea>
+
+    <label>Profil recherché / Compétences requises</label>
+    <textarea id="requirements" rows="4" placeholder="Ex: Bac+3, 2 ans d'expérience, maîtrise de React/Node.js..."></textarea>
+  </div>
+
+  <div class="card">
+    <button class="btn" id="btnSubmit" onclick="submitOffer()">
+      📤 Publier l'offre
+    </button>
+    <div class="note">
+      ⚠️ Tous les champs marqués <span class="required">*</span> sont obligatoires.<br>
+      Votre offre sera vérifiée avant publication (24-48h).
+    </div>
+
+    <button class="btn ghost" onclick="location.href='index.html'" style="margin-top:10px">
+      ← Retour au HUB
+    </button>
+  </div>
+
+</main>
+
+<footer>
+  DIGIYLYFE ♾️ — direct au peuple • 0% commission •
+  <a href="index.html">Retour HUB</a>
+</footer>
+
+<script>
+/* =========================
+   SUPABASE
+========================= */
+const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+
+const SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* =========================
+   VALIDATION & SUBMIT
+========================= */
+async function submitOffer(){
+  const btnSubmit = document.getElementById("btnSubmit");
+
+  // Récupération des valeurs
+  const company_name = document.getElementById("company_name").value.trim();
+  const recruiter_name = document.getElementById("recruiter_name").value.trim();
+  const recruiter_phone = document.getElementById("recruiter_phone").value.trim();
+  const recruiter_email = document.getElementById("recruiter_email").value.trim();
+  
+  const job_title = document.getElementById("job_title").value.trim();
+  const job_type = document.getElementById("job_type").value;
+  const location = document.getElementById("location").value.trim();
+  const salary_range = document.getElementById("salary_range").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const requirements = document.getElementById("requirements").value.trim();
+
+  // Validation champs obligatoires
+  if(!company_name){
+    alert("⚠️ Le nom de l'entreprise est obligatoire.");
+    return;
+  }
+  if(!recruiter_phone){
+    alert("⚠️ Le téléphone (WhatsApp) est obligatoire.");
+    return;
+  }
+  if(!job_title || job_title.length < 5){
+    alert("⚠️ Le titre du poste doit faire au moins 5 caractères.");
+    return;
+  }
+  if(!job_type){
+    alert("⚠️ Sélectionnez un type de contrat.");
+    return;
+  }
+  if(!location){
+    alert("⚠️ La localisation est obligatoire.");
+    return;
+  }
+  if(!description || description.length < 20){
+    alert("⚠️ La description doit faire au moins 20 caractères.");
+    return;
+  }
+
+  // Confirmation
+  const confirmed = confirm(
+    `📋 Récapitulatif :\n\n` +
+    `Entreprise : ${company_name}\n` +
+    `Poste : ${job_title}\n` +
+    `Type : ${job_type}\n` +
+    `Lieu : ${location}\n\n` +
+    `Publier cette offre ?`
+  );
+
+  if(!confirmed) return;
+
+  // Désactivation du bouton
+  btnSubmit.disabled = true;
+  btnSubmit.textContent = "📤 Publication en cours...";
+
+  try{
+    const payload = {
+      company_name,
+      recruiter_name: recruiter_name || null,
+      recruiter_phone,
+      recruiter_email: recruiter_email || null,
+      job_title,
+      job_type,
+      location,
+      salary_range: salary_range || null,
+      description,
+      requirements: requirements || null,
+      status: "pending"
+    };
+
+    const { error } = await SB
+      .from("job_offers")
+      .insert(payload);
+
+    if(error){
+      console.error("Erreur Supabase:", error);
+      alert("❌ Erreur lors de la publication. Réessayez.");
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = "📤 Publier l'offre";
+      return;
+    }
+
+    alert(
+      "✅ Offre publiée avec succès !\n\n" +
+      "Votre offre sera validée par notre équipe dans les 24-48h.\n" +
+      "Vous recevrez les candidatures directement par WhatsApp."
+    );
+
+    // Retour au HUB
+    location.href = "index.html";
+
+  }catch(err){
+    console.error("Erreur:", err);
+    alert("❌ Une erreur est survenue. Réessayez.");
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = "📤 Publier l'offre";
+  }
+}
+</script>
+
+</body>
+</html>
