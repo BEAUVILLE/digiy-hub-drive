@@ -7,12 +7,11 @@
   <title>DIGIY JËF — Jobs & Missions</title>
   <meta name="theme-color" content="#16a34a"/>
 
-  <!-- ✅ Supabase (1 seule fois) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --green:#16a34a;
+      --green:#16a34a; --green2:#22c55e;
       --bg:#061b14;
       --card:rgba(255,255,255,.06);
       --line:rgba(255,255,255,.12);
@@ -29,38 +28,55 @@
         radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.25), transparent 60%),
         var(--bg);
       color:var(--text);
+      min-height:100vh;
     }
     header{
-      position:sticky; top:0; z-index:10;
-      background:rgba(6,27,20,.72);
-      backdrop-filter:blur(10px);
+      position:sticky; top:0; z-index:100;
+      background:rgba(6,27,20,.85);
+      backdrop-filter:blur(12px);
       border-bottom:1px solid var(--line);
       padding:14px;
+      box-shadow:0 2px 8px rgba(0,0,0,.2);
     }
     .top{
       max-width:980px; margin:0 auto;
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .brand{font-weight:950; letter-spacing:.08em}
-    .brand small{display:block; font-weight:800; letter-spacing:0; opacity:.8; margin-top:2px}
+    .brand{font-weight:950; letter-spacing:.08em; font-size:17px}
+    .brand small{
+      display:block; font-weight:800; letter-spacing:0; 
+      opacity:.85; margin-top:3px; font-size:11px;
+    }
     .btn{
-      border:none; border-radius:14px; padding:10px 12px;
-      font-weight:950; cursor:pointer;
+      border:none; border-radius:14px; padding:11px 14px;
+      font-weight:950; cursor:pointer; font-size:14px;
+      transition:all .2s;
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+    .btn:active{
+      transform:translateY(0);
     }
     .btn-primary{
       background:linear-gradient(135deg,#16a34a,#22c55e);
       color:var(--dark);
+      box-shadow:0 2px 8px rgba(34,197,94,.3);
     }
     .btn-ghost{
-      background:transparent; color:var(--text);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
       border:1px solid var(--line);
     }
-    main{max-width:980px; margin:0 auto; padding:14px}
+    main{
+      max-width:980px; margin:0 auto; 
+      padding:14px; padding-bottom:80px;
+    }
     .card{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:14px;
+      padding:16px;
       box-shadow:0 18px 40px rgba(0,0,0,.18);
     }
     .row{
@@ -69,172 +85,396 @@
     }
     .pill{
       display:inline-flex; align-items:center; gap:6px;
-      padding:7px 10px; border-radius:999px;
+      padding:7px 11px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.14);
       font-weight:900; font-size:12px;
+      transition:all .2s;
+    }
+    .pill.status-ok{
+      background:rgba(34,197,94,.15);
+      border-color:rgba(34,197,94,.3);
+      color:#86efac;
+    }
+    .pill.status-loading{
+      background:rgba(251,191,36,.15);
+      border-color:rgba(251,191,36,.3);
+      color:#fcd34d;
+    }
+    .pill.status-error{
+      background:rgba(239,68,68,.15);
+      border-color:rgba(239,68,68,.3);
+      color:#fca5a5;
     }
 
-    /* ===== Clarification JËF vs JOBS PRO ===== */
-    .digiy-clarify{
+    /* Stats Row */
+    .stats-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+      gap:10px;
       margin-top:12px;
+    }
+    .stat-card{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      text-align:center;
+    }
+    .stat-value{
+      font-weight:950;
+      font-size:24px;
+      color:var(--green2);
+    }
+    .stat-label{
+      font-weight:800;
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    /* Clarification JËF vs JOBS PRO */
+    .digiy-clarify{
+      margin-top:14px;
       background:rgba(236,253,245,.10);
       border:1px solid rgba(187,247,208,.28);
       border-radius:16px;
-      padding:12px;
+      padding:14px;
     }
     .digiy-clarify-title{
       font-weight:950;
       letter-spacing:.06em;
       color:rgba(134,239,172,.95);
+      font-size:15px;
     }
     .digiy-clarify-text{
-      margin-top:6px;
+      margin-top:8px;
       color:rgba(234,255,241,.88);
       font-weight:800;
-      line-height:1.35;
+      line-height:1.4;
+      font-size:13px;
     }
     .digiy-clarify-actions{
-      margin-top:10px;
+      margin-top:12px;
       display:flex; gap:10px; flex-wrap:wrap; align-items:center;
     }
     .digiy-clarify-btn{
       display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 12px; border-radius:14px;
+      padding:11px 14px; border-radius:14px;
       font-weight:950; text-decoration:none;
       background:linear-gradient(135deg,#16a34a,#22c55e);
       color:#052e16;
+      font-size:13px;
+      transition:all .2s;
+    }
+    .digiy-clarify-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 4px 12px rgba(34,197,94,.3);
     }
     .digiy-clarify-link{
       background:transparent;
       border:1px solid rgba(255,255,255,.14);
       color:rgba(234,255,241,.9);
-      padding:10px 12px; border-radius:14px;
+      padding:11px 14px; border-radius:14px;
       font-weight:900; cursor:pointer;
+      font-size:13px;
+      transition:all .2s;
+    }
+    .digiy-clarify-link:hover{
+      background:rgba(255,255,255,.08);
     }
     .digiy-clarify-faq{
-      margin-top:10px;
+      margin-top:12px;
       background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.12);
       border-radius:14px;
-      padding:10px;
+      padding:12px;
       color:rgba(234,255,241,.88);
       font-weight:800;
-      line-height:1.35;
+      line-height:1.4;
       display:none;
+      font-size:13px;
     }
 
-    /* ===== NDIMBAL Context ===== */
+    /* NDIMBAL Context */
     .ndimb{
-      margin-top:12px;
-      background:rgba(250,204,21,.10);
-      border:1px solid rgba(250,204,21,.22);
+      margin-top:14px;
+      background:rgba(250,204,21,.12);
+      border:1px solid rgba(250,204,21,.25);
       border-radius:16px;
-      padding:12px;
+      padding:14px;
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse{
+      0%,100%{border-color:rgba(250,204,21,.25)}
+      50%{border-color:rgba(250,204,21,.45)}
     }
     .ndimb h3{
       margin:0;
       font-weight:950;
       letter-spacing:.06em;
       color:rgba(250,204,21,.95);
-      font-size:14px;
+      font-size:15px;
     }
     .ndimb p{
-      margin:8px 0 0;
+      margin:10px 0 0;
       color:rgba(234,255,241,.9);
       font-weight:850;
-      line-height:1.35;
+      line-height:1.4;
+      font-size:13px;
     }
     .ndimb .actions{
-      margin-top:10px;
+      margin-top:12px;
       display:flex; gap:10px; flex-wrap:wrap;
     }
 
+    /* Filters */
     .filters{
-      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;
+      display:grid; 
+      grid-template-columns:1fr 1fr; 
+      gap:10px; 
+      margin-top:14px;
     }
-    @media(max-width:700px){ .filters{grid-template-columns:1fr} }
+    @media(max-width:700px){ 
+      .filters{grid-template-columns:1fr} 
+    }
 
     input,select,textarea{
       width:100%; padding:12px; border-radius:14px;
       border:1px solid var(--line);
       background:rgba(0,0,0,.18);
       color:var(--text); outline:none; font-weight:800;
+      font-size:14px;
+      transition:border-color .2s;
+    }
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--green);
     }
     textarea{min-height:88px; resize:vertical}
 
-    .list{display:grid; gap:10px; margin-top:12px}
+    /* Mission List */
+    .list{display:grid; gap:12px; margin-top:14px}
     .mission{
       background:rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.10);
       border-radius:16px;
-      padding:12px;
+      padding:14px;
+      transition:all .2s;
+      cursor:pointer;
     }
-    .m-title{font-weight:950; font-size:15px}
+    .mission:hover{
+      background:rgba(255,255,255,.08);
+      border-color:rgba(34,197,94,.3);
+      transform:translateY(-2px);
+    }
+    .mission-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:start;
+      gap:10px;
+    }
+    .m-title{
+      font-weight:950; 
+      font-size:16px;
+      line-height:1.3;
+      flex:1;
+    }
+    .m-badge{
+      padding:5px 9px;
+      border-radius:8px;
+      background:rgba(34,197,94,.15);
+      color:#86efac;
+      font-weight:950;
+      font-size:10px;
+      white-space:nowrap;
+    }
     .m-meta{
-      margin-top:6px; display:flex; gap:10px; flex-wrap:wrap;
-      color:var(--muted); font-weight:800; font-size:13px;
+      margin-top:10px; 
+      display:flex; gap:10px; flex-wrap:wrap;
+      color:var(--muted); 
+      font-weight:800; 
+      font-size:12px;
     }
-    .m-actions{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap}
+    .m-detail{
+      margin-top:8px;
+      padding:10px;
+      background:rgba(0,0,0,.15);
+      border-radius:10px;
+      color:rgba(234,255,241,.85);
+      font-weight:800;
+      font-size:12px;
+      line-height:1.4;
+    }
+    .m-actions{
+      margin-top:12px; 
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .m-actions .btn{
+      flex:1;
+      min-width:140px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+    }
+    .btn-wa{
+      background:linear-gradient(135deg,#25d366,#128c7e);
+      color:white;
+    }
     a{color:#86efac; text-decoration:none; font-weight:950}
 
-    .footer{
-      text-align:center; color:rgba(234,255,241,.65);
-      font-weight:800; padding:20px 10px;
+    .empty{
+      text-align:center;
+      padding:40px 20px;
+      color:var(--muted);
+      font-weight:900;
+    }
+    .empty-icon{
+      font-size:48px;
+      opacity:.5;
+      margin-bottom:12px;
     }
 
-    /* ===== Modal Publish ===== */
-    .modal{
-      position:fixed; inset:0; z-index:50;
-      display:none;
-      background:rgba(0,0,0,.55);
-      backdrop-filter:blur(6px);
-      padding:14px;
+    .footer{
+      text-align:center; 
+      color:rgba(234,255,241,.65);
+      font-weight:800; 
+      padding:24px 10px;
+      font-size:12px;
+      border-top:1px solid var(--line);
+      background:rgba(6,27,20,.6);
     }
-    .modal.open{display:flex; align-items:center; justify-content:center}
+
+    /* Modal Publish */
+    .modal{
+      position:fixed; inset:0; z-index:500;
+      display:none;
+      background:rgba(0,0,0,.65);
+      backdrop-filter:blur(8px);
+      padding:14px;
+      overflow-y:auto;
+    }
+    .modal.open{
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+    }
     .modal-card{
       width:min(720px, 100%);
-      background:rgba(6,27,20,.95);
+      background:rgba(6,27,20,.98);
       border:1px solid rgba(255,255,255,.14);
       border-radius:18px;
-      box-shadow:0 20px 60px rgba(0,0,0,.45);
-      padding:14px;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      padding:16px;
+      max-height:90vh;
+      overflow-y:auto;
     }
     .modal-head{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      display:flex; 
+      align-items:flex-start; 
+      justify-content:space-between; 
+      gap:10px;
       border-bottom:1px solid rgba(255,255,255,.10);
-      padding-bottom:10px;
+      padding-bottom:12px;
     }
-    .modal-title{font-weight:950; letter-spacing:.06em}
+    .modal-title{
+      font-weight:950; 
+      letter-spacing:.06em;
+      font-size:17px;
+    }
+    .modal-subtitle{
+      margin-top:4px;
+      color:rgba(234,255,241,.75);
+      font-weight:850;
+      font-size:12px;
+    }
     .modal-close{
       border:1px solid rgba(255,255,255,.14);
-      background:transparent; color:var(--text);
-      border-radius:12px; padding:8px 10px; font-weight:950; cursor:pointer;
+      background:transparent; 
+      color:var(--text);
+      border-radius:12px; 
+      padding:9px 12px; 
+      font-weight:950; 
+      cursor:pointer;
+      font-size:13px;
+      transition:all .2s;
+    }
+    .modal-close:hover{
+      background:rgba(255,255,255,.08);
     }
     .grid{
-      margin-top:12px;
-      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+      margin-top:14px;
+      display:grid; 
+      grid-template-columns:1fr 1fr; 
+      gap:12px;
     }
-    @media(max-width:700px){ .grid{grid-template-columns:1fr} }
+    @media(max-width:700px){ 
+      .grid{grid-template-columns:1fr} 
+    }
+    label{
+      display:block;
+      font-weight:900;
+      opacity:.9;
+      margin-bottom:6px;
+      font-size:13px;
+    }
     .hint{
-      margin-top:10px;
+      margin-top:12px;
       color:rgba(234,255,241,.78);
       font-weight:850;
-      line-height:1.35;
+      line-height:1.4;
       background:rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.10);
       border-radius:14px;
-      padding:10px;
+      padding:12px;
+      font-size:12px;
     }
     .danger{
-      margin-top:10px;
+      margin-top:12px;
       background:rgba(239,68,68,.12);
-      border:1px solid rgba(239,68,68,.22);
+      border:1px solid rgba(239,68,68,.25);
       border-radius:14px;
-      padding:10px;
+      padding:12px;
       color:rgba(255,230,230,.95);
       font-weight:900;
       display:none;
+      font-size:13px;
+      line-height:1.4;
+    }
+    .success-msg{
+      margin-top:12px;
+      background:rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.25);
+      border-radius:14px;
+      padding:12px;
+      color:#86efac;
+      font-weight:900;
+      display:none;
+      font-size:13px;
+    }
+
+    /* Refresh Button */
+    .refresh-btn{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:none;
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#052e16;
+      font-size:24px;
+      cursor:pointer;
+      box-shadow:0 4px 16px rgba(0,0,0,.4);
+      transition:all .2s;
+      z-index:99;
+    }
+    .refresh-btn:hover{
+      transform:scale(1.1) rotate(180deg);
+    }
+    .refresh-btn:active{
+      transform:scale(0.95);
     }
   </style>
 </head>
@@ -247,7 +487,7 @@
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
       <button class="btn btn-ghost" id="btn-home" type="button">← HUB</button>
-      <button class="btn btn-primary" id="btn-new" type="button">+ Publier</button>
+      <button class="btn btn-primary" id="btn-new" type="button">➕ Publier</button>
     </div>
   </div>
 </header>
@@ -256,23 +496,45 @@
   <div class="card">
     <div class="row">
       <div>
-        <div style="font-weight:950">Trouver une mission</div>
-        <div id="toast" class="pill">Chargement…</div>
+        <div style="font-weight:950;font-size:16px">🔍 Trouver une mission</div>
+        <div id="toast" class="pill status-loading" style="margin-top:8px">
+          <span>⏳</span>
+          <span>Chargement…</span>
+        </div>
       </div>
-      <div class="pill" id="countPill">0 mission</div>
+      <div class="pill" id="countPill">
+        <span>📋</span>
+        <span id="countText">0 mission</span>
+      </div>
     </div>
 
-    <!-- ♾️ NDIMBAL Context (HUB → JËF) -->
+    <!-- Stats Row -->
+    <div class="stats-row" id="statsRow" style="display:none">
+      <div class="stat-card">
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">Missions totales</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statToday">0</div>
+        <div class="stat-label">Aujourd'hui</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statZones">0</div>
+        <div class="stat-label">Zones actives</div>
+      </div>
+    </div>
+
+    <!-- NDIMBAL Context -->
     <div class="ndimb" id="ndimbBox" style="display:none">
       <h3>♾️ NDIMBAL — Demande venue du HUB</h3>
       <p id="ndimbText">Contexte…</p>
       <div class="actions">
-        <button class="btn btn-primary" id="btn-use-ctx" type="button">Publier cette mission</button>
-        <button class="btn btn-ghost" id="btn-clear-ctx" type="button">Ignorer</button>
+        <button class="btn btn-primary" id="btn-use-ctx" type="button">✅ Publier cette mission</button>
+        <button class="btn btn-ghost" id="btn-clear-ctx" type="button">🗑️ Ignorer</button>
       </div>
     </div>
 
-    <!-- 🔎 Clarification -->
+    <!-- Clarification -->
     <div class="digiy-clarify">
       <div class="digiy-clarify-title">♾️ DIGIY JËF vs DIGIY JOBS PRO</div>
       <div class="digiy-clarify-text">
@@ -280,23 +542,23 @@
         <b>JOBS PRO</b> : recrutement structuré, gestion pro, candidats qualifiés.
       </div>
       <div class="digiy-clarify-actions">
-        <a class="digiy-clarify-btn" id="btn-jobs-pro" href="#">Ouvrir DIGIY JOBS PRO</a>
-        <button class="digiy-clarify-link" id="btn-why" type="button">Pourquoi deux ?</button>
+        <a class="digiy-clarify-btn" id="btn-jobs-pro" href="#">🎯 Ouvrir DIGIY JOBS PRO</a>
+        <button class="digiy-clarify-link" id="btn-why" type="button">❓ Pourquoi deux ?</button>
       </div>
       <div class="digiy-clarify-faq" id="clarify-faq">
-        <div><b>Quand j’utilise JËF ?</b> Pour du ponctuel : 2h, 1 jour, urgence.</div>
-        <div style="margin-top:6px"><b>Quand j’utilise JOBS PRO ?</b> Pour recruter souvent, avec suivi et tri.</div>
+        <div><b>🤔 Quand j'utilise JËF ?</b><br/>Pour du ponctuel : 2h, 1 jour, urgence, petites tâches.</div>
+        <div style="margin-top:8px"><b>💼 Quand j'utilise JOBS PRO ?</b><br/>Pour recruter régulièrement, avec suivi candidats, tri, et processus structuré.</div>
       </div>
     </div>
 
-    <!-- 🔍 Filtres -->
+    <!-- Filtres -->
     <div class="filters">
       <div>
-        <input id="q" placeholder="Ex: livraison, ménage, peinture, dépannage…"/>
+        <input id="q" placeholder="🔍 Ex: livraison, ménage, peinture, dépannage…"/>
       </div>
       <div>
         <select id="zone">
-          <option value="">Toutes zones</option>
+          <option value="">📍 Toutes zones</option>
           <option value="Saly">Saly</option>
           <option value="Dakar">Dakar</option>
           <option value="Mbour">Mbour</option>
@@ -306,7 +568,17 @@
       </div>
     </div>
 
-    <div class="list" id="list"></div>
+    <div class="list" id="list">
+      <!-- Skeleton loader -->
+      <div class="mission">
+        <div style="height:20px;background:rgba(255,255,255,.1);border-radius:8px;width:70%"></div>
+        <div style="height:14px;background:rgba(255,255,255,.08);border-radius:6px;width:50%;margin-top:10px"></div>
+      </div>
+      <div class="mission">
+        <div style="height:20px;background:rgba(255,255,255,.1);border-radius:8px;width:65%"></div>
+        <div style="height:14px;background:rgba(255,255,255,.08);border-radius:6px;width:55%;margin-top:10px"></div>
+      </div>
+    </div>
   </div>
 
   <div class="footer">
@@ -314,26 +586,29 @@
   </div>
 </main>
 
-<!-- ✅ Modal Publish -->
+<!-- Refresh Button -->
+<button class="refresh-btn" onclick="load()" title="Actualiser">🔄</button>
+
+<!-- Modal Publish -->
 <div class="modal" id="modal">
   <div class="modal-card">
     <div class="modal-head">
       <div>
-        <div class="modal-title">+ Publier une mission (JËF)</div>
-        <div style="margin-top:4px;color:rgba(234,255,241,.75);font-weight:850">
-          Simple, direct, terrain.
+        <div class="modal-title">➕ Publier une mission (JËF)</div>
+        <div class="modal-subtitle">
+          Simple, direct, terrain — contact WhatsApp direct.
         </div>
       </div>
-      <button class="modal-close" id="modalClose" type="button">Fermer</button>
+      <button class="modal-close" id="modalClose" type="button">✕</button>
     </div>
 
     <div class="grid">
       <div>
-        <label style="font-weight:900;opacity:.9">Titre mission</label>
+        <label>Titre mission <span style="color:#f87171">*</span></label>
         <input id="f_title" placeholder="Ex: Aide déménagement 2h, Livraison urgente…">
       </div>
       <div>
-        <label style="font-weight:900;opacity:.9">Zone</label>
+        <label>Zone <span style="color:#f87171">*</span></label>
         <select id="f_zone">
           <option value="">Choisir zone</option>
           <option value="Saly">Saly</option>
@@ -344,41 +619,40 @@
         </select>
       </div>
       <div>
-        <label style="font-weight:900;opacity:.9">Téléphone (WhatsApp)</label>
-        <input id="f_phone" placeholder="+221 77 000 00 00">
+        <label>Téléphone (WhatsApp) <span style="color:#f87171">*</span></label>
+        <input id="f_phone" type="tel" placeholder="+221 77 000 00 00">
       </div>
       <div>
-        <label style="font-weight:900;opacity:.9">Statut</label>
+        <label>Statut publication</label>
         <select id="f_status">
-          <option value="pending">En attente (pending)</option>
-          <option value="approved">Publié (approved)</option>
+          <option value="pending">⏳ En attente validation</option>
+          <option value="approved">✅ Publié immédiatement</option>
         </select>
       </div>
     </div>
 
-    <div style="margin-top:10px">
-      <label style="font-weight:900;opacity:.9">Détails</label>
-      <textarea id="f_note" placeholder="Infos utiles : durée, prix, lieu précis, urgence…"></textarea>
+    <div style="margin-top:12px">
+      <label>Détails de la mission</label>
+      <textarea id="f_note" placeholder="Infos utiles : durée, prix estimé, lieu précis, niveau d'urgence…"></textarea>
     </div>
 
     <div class="hint">
-      ⚡ Astuce : si ta sécurité (RLS) n’autorise pas l’insert, on affichera l’erreur clairement.
-      Tu pourras ensuite choisir : soit autoriser l’insertion publique, soit passer par ton serveur/API.
+      💡 <b>Conseil</b> : Sois précis sur la durée, le lieu et la rémunération pour attirer les bonnes personnes rapidement.
     </div>
 
+    <div class="success-msg" id="publishSuccess"></div>
     <div class="danger" id="publishError"></div>
 
-    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-      <button class="btn btn-ghost" id="btnDraft" type="button">Enregistrer en attente</button>
-      <button class="btn btn-primary" id="btnPublish" type="button">Publier</button>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+      <button class="btn btn-ghost" id="btnDraft" type="button">💾 Enregistrer en attente</button>
+      <button class="btn btn-primary" id="btnPublish" type="button">🚀 Publier</button>
     </div>
   </div>
 </div>
 
 <script>
 /* ======================================================
-   ✅ SUPABASE — 1 SEULE FOIS (ANTI "already declared")
-   - On utilise window.digiySupabase pour éviter collisions
+   SUPABASE INIT (singleton global)
 ====================================================== */
 (function initSupabaseOnce(){
   const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
@@ -395,82 +669,69 @@
 })();
 
 /* ======================================================
-   DIGIY JËF — PUBLIC LIST + PUBLISH MODAL
-   Table: public.jef_missions
-   Colonnes attendues: title, zone, phone, note, status, created_at
+   DIGIY JËF — MAIN APP
 ====================================================== */
 (function(){
   const supabase = window.digiySupabase;
-
-  // ✅ HUB link stable (GitHub pages / Hostinger)
   const basePath = location.pathname.includes("/digiy-hub/") ? "/digiy-hub/" : "/";
 
+  // DOM Elements
   const list = document.getElementById("list");
   const q = document.getElementById("q");
   const zone = document.getElementById("zone");
-  const count = document.getElementById("countPill");
+  const countText = document.getElementById("countText");
   const toast = document.getElementById("toast");
+  const statsRow = document.getElementById("statsRow");
+  const statTotal = document.getElementById("statTotal");
+  const statToday = document.getElementById("statToday");
+  const statZones = document.getElementById("statZones");
 
-  const footerHub = document.getElementById("footerHub");
-  footerHub.href = basePath;
-
-  // ✅ Boutons
-  document.getElementById("btn-home").addEventListener("click", ()=> {
-    location.href = basePath;
-  });
-
-  // JOBS PRO placeholder
+  document.getElementById("footerHub").href = basePath;
+  document.getElementById("btn-home").onclick = ()=> location.href = basePath;
   document.getElementById("btn-jobs-pro").href = basePath + "digiy-jobs-pro.html";
 
   // FAQ toggle
-  document.getElementById("btn-why").addEventListener("click", ()=>{
+  document.getElementById("btn-why").onclick = ()=>{
     const faq = document.getElementById("clarify-faq");
-    const open = (faq.style.display === "none" || !faq.style.display);
-    faq.style.display = open ? "block" : "none";
-  });
+    faq.style.display = (faq.style.display === "none" || !faq.style.display) ? "block" : "none";
+  };
 
-  // ===== Modal publish
+  // Modal
   const modal = document.getElementById("modal");
   const modalClose = document.getElementById("modalClose");
   const publishError = document.getElementById("publishError");
-
+  const publishSuccess = document.getElementById("publishSuccess");
   const f_title = document.getElementById("f_title");
   const f_zone = document.getElementById("f_zone");
   const f_phone = document.getElementById("f_phone");
-  const f_note  = document.getElementById("f_note");
-  const f_status= document.getElementById("f_status");
+  const f_note = document.getElementById("f_note");
+  const f_status = document.getElementById("f_status");
 
   function openModal(){
     publishError.style.display = "none";
-    publishError.textContent = "";
+    publishSuccess.style.display = "none";
     modal.classList.add("open");
   }
   function closeModal(){
     modal.classList.remove("open");
   }
-  modalClose.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+  modalClose.onclick = closeModal;
+  modal.onclick = (e)=> { if(e.target === modal) closeModal(); };
 
-  document.getElementById("btn-new").addEventListener("click", ()=>{
-    // si tu crées publish-mission.html plus tard, tu pourras revenir à ta redirection
-    // là, on fait "toujours fonctionnel"
-    openModal();
-  });
+  document.getElementById("btn-new").onclick = openModal;
 
-  // ===== NDIMBAL context (HUB → JËF)
+  // NDIMBAL context
   const ndimbBox = document.getElementById("ndimbBox");
   const ndimbText = document.getElementById("ndimbText");
-  const btnUseCtx = document.getElementById("btn-use-ctx");
-  const btnClearCtx = document.getElementById("btn-clear-ctx");
-
+  
   function getCtx(){
-    try{
-      return JSON.parse(localStorage.getItem("digiy_jef_context") || "null");
-    }catch(e){ return null; }
+    try{ return JSON.parse(localStorage.getItem("digiy_jef_context") || "null"); }
+    catch(e){ return null; }
   }
   function clearCtx(){
     localStorage.removeItem("digiy_jef_context");
   }
+
   const ctx = getCtx();
   if(ctx && (ctx.action || ctx.from)){
     ndimbBox.style.display = "block";
@@ -479,40 +740,66 @@
     ndimbText.innerHTML = `Reçu: <b>${esc(action)}</b> depuis <b>${esc(from)}</b>. Tu veux publier une mission maintenant ?`;
   }
 
-  btnClearCtx.addEventListener("click", ()=>{
+  document.getElementById("btn-clear-ctx").onclick = ()=>{
     clearCtx();
     ndimbBox.style.display = "none";
-  });
+  };
 
-  btnUseCtx.addEventListener("click", ()=>{
-    // préremplit le formulaire depuis le contexte
+  document.getElementById("btn-use-ctx").onclick = ()=>{
     const c = getCtx() || {};
-    f_title.value = (c.title || "♾️ NDIMBAL — Besoin d’aide");
+    f_title.value = (c.title || "♾️ NDIMBAL — Besoin d'aide");
     f_zone.value = (c.zone || "");
     f_note.value = (c.note || "Demande envoyée depuis le HUB (NDIMBAL).");
     f_status.value = "pending";
     openModal();
-  });
+  };
 
-  // ===== utils
+  // Utils
   let cache = [];
 
   function norm(s){ return (s||"").toLowerCase(); }
   function esc(s){
     return String(s ?? "").replace(/[&<>"']/g, m => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      "\"":"&quot;",
-      "'":"&#039;"
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#039;"
     }[m]));
   }
   function cleanPhone(p){
     const raw = String(p||"").trim();
-    // garder + et chiffres
     const plus = raw.startsWith("+") ? "+" : "";
     const digits = raw.replace(/[^\d]/g,"");
     return plus + digits;
+  }
+  function timeLabel(d){
+    const diff = Math.floor((Date.now() - new Date(d).getTime())/86400000);
+    if(diff <= 0) return "Aujourd'hui";
+    if(diff === 1) return "Hier";
+    if(diff < 7) return `Il y a ${diff}j`;
+    if(diff < 30) return `Il y a ${Math.floor(diff/7)}sem`;
+    return `Il y a ${Math.floor(diff/30)}mois`;
+  }
+  function isNew(d){
+    return new Date(d) > Date.now() - 86400000; // 24h
+  }
+
+  function updateStatus(type, text){
+    toast.className = "pill status-" + type;
+    toast.innerHTML = `
+      <span>${type === "ok" ? "✅" : type === "error" ? "❌" : "⏳"}</span>
+      <span>${esc(text)}</span>
+    `;
+  }
+
+  function updateStats(){
+    const today = cache.filter(m => isNew(m.created_at)).length;
+    const zones = new Set(cache.map(m => m.zone).filter(Boolean)).size;
+    
+    statTotal.textContent = cache.length;
+    statToday.textContent = today;
+    statZones.textContent = zones;
+    
+    if(cache.length > 0){
+      statsRow.style.display = "grid";
+    }
   }
 
   function render(){
@@ -525,47 +812,63 @@
       return okQ && okZ;
     });
 
-    count.textContent = filtered.length + (filtered.length>1 ? " missions" : " mission");
+    countText.textContent = filtered.length + (filtered.length>1 ? " missions" : " mission");
     list.innerHTML = "";
 
     if(!filtered.length){
-      list.innerHTML = `<div class="mission">
-        <div class="m-title">Aucune mission</div>
-        <div class="m-meta">Publie une mission ou change le filtre.</div>
-      </div>`;
+      list.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🔍</div>
+          <div>${qq || zz ? "Aucune mission trouvée pour ces critères" : "Aucune mission disponible"}</div>
+        </div>
+      `;
       return;
     }
 
-    // ✅ dédup simple (évite doublons visuels)
+    // Anti-doublon
     const seen = new Set();
 
     filtered.forEach(m=>{
-      const key = `${(m.title||"").trim()}|${(m.zone||"").trim()}|${(m.phone||"").trim()}|${(m.note||"").trim()}`;
+      const key = `${(m.title||"").trim()}|${(m.zone||"").trim()}|${(m.phone||"").trim()}|${(m.created_at||"").toString()}`;
       if(seen.has(key)) return;
       seen.add(key);
 
-      const phoneDigits = String(m.phone||"").replace(/[^\d]/g,"");
-      const wa = phoneDigits
-        ? `https://wa.me/${phoneDigits}?text=${encodeURIComponent("DIGIY JËF ♾️ — Je suis intéressé par: " + (m.title||""))}`
-        : "#";
+      const phoneDigits = cleanPhone(m.phone).replace(/\+/g, '');
+      const waMsg = encodeURIComponent(`DIGIY JËF ♾️ — Je suis intéressé par: ${m.title}`);
+      const waLink = phoneDigits ? `https://wa.me/${phoneDigits}?text=${waMsg}` : "#";
 
       const div = document.createElement("div");
       div.className = "mission";
       div.innerHTML = `
-        <div class="m-title">${esc(m.title)}</div>
-        <div class="m-meta">
-          <span class="pill">📍 ${esc(m.zone || "—")}</span>
-          <span class="pill">📞 ${esc(m.phone || "—")}</span>
-          ${m.created_at ? `<span class="pill">🕒 ${esc(new Date(m.created_at).toLocaleString("fr-FR"))}</span>` : ``}
+        <div class="mission-header">
+          <div class="m-title">${esc(m.title)}</div>
+          ${isNew(m.created_at) ? '<div class="m-badge">NEW</div>' : ''}
         </div>
-        ${m.note ? `<div class="m-meta">📝 ${esc(m.note)}</div>` : ""}
+        <div class="m-meta">
+          <span class="pill">📍 ${esc(m.zone || "Zone non précisée")}</span>
+          <span class="pill">📞 ${esc(m.phone || "—")}</span>
+          ${m.created_at ? `<span class="pill">🕒 ${esc(timeLabel(m.created_at))}</span>` : ''}
+        </div>
+        ${m.note ? `<div class="m-detail">📝 ${esc(m.note)}</div>` : ''}
         <div class="m-actions">
+          ${phoneDigits 
+            ? `<a class="btn btn-wa" href="${waLink}" target="_blank" rel="noopener">💬 WhatsApp direct</a>`
+            : `<button class="btn btn-ghost" type="button" onclick="alert('⚠️ Numéro manquant')">💬 WhatsApp</button>`
+          }
           ${phoneDigits
-            ? `<a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener">WhatsApp direct</a>`
-            : `<button class="btn btn-ghost" type="button" onclick="alert('Numéro manquant sur cette mission')">WhatsApp</button>`
+            ? `<a class="btn btn-ghost" href="tel:${cleanPhone(m.phone)}">📞 Appeler</a>`
+            : ''
           }
         </div>
       `;
+      
+      div.onclick = (e) => {
+        if(e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+        if(phoneDigits){
+          window.open(waLink, '_blank');
+        }
+      };
+
       list.appendChild(div);
     });
   }
@@ -573,12 +876,12 @@
   async function load(){
     try{
       if(!supabase || typeof supabase.from !== "function"){
-        toast.textContent = "Erreur: Supabase client KO";
+        updateStatus("error", "Supabase client KO");
         console.error("Supabase client invalid:", supabase);
         return;
       }
 
-      toast.textContent = "Chargement…";
+      updateStatus("loading", "Chargement…");
 
       const { data, error } = await supabase
         .from("jef_missions")
@@ -588,49 +891,59 @@
         .limit(200);
 
       if(error){
-        toast.textContent = "Erreur Supabase";
+        updateStatus("error", "Erreur Supabase");
         console.error(error);
         return;
       }
 
       cache = data || [];
-      toast.textContent = "OK ✅";
+      updateStatus("ok", `${cache.length} chargées`);
+      updateStats();
       render();
 
     }catch(e){
-      toast.textContent = "Erreur chargement";
+      updateStatus("error", "Erreur chargement");
       console.error("Load exception:", e);
     }
   }
 
   async function createMission(desiredStatus){
     publishError.style.display = "none";
-    publishError.textContent = "";
+    publishSuccess.style.display = "none";
 
-    const title = String(f_title.value||"").trim();
-    const zoneVal = String(f_zone.value||"").trim();
+    const title = f_title.value.trim();
+    const zoneVal = f_zone.value.trim();
     const phoneVal = cleanPhone(f_phone.value);
-    const noteVal  = String(f_note.value||"").trim();
-    const statusVal = desiredStatus || String(f_status.value||"pending");
+    const noteVal = f_note.value.trim();
+    const statusVal = desiredStatus || f_status.value;
 
     if(!title){
       publishError.style.display = "block";
-      publishError.textContent = "⚠️ Mets un titre de mission (obligatoire).";
+      publishError.textContent = "⚠️ Le titre de la mission est obligatoire.";
+      return false;
+    }
+    if(!zoneVal){
+      publishError.style.display = "block";
+      publishError.textContent = "⚠️ La zone est obligatoire.";
+      return false;
+    }
+    if(!phoneVal){
+      publishError.style.display = "block";
+      publishError.textContent = "⚠️ Le numéro WhatsApp est obligatoire.";
       return false;
     }
 
     try{
-      const payloadCtx = getCtx();
       const row = {
         title,
-        zone: zoneVal || null,
-        phone: phoneVal || null,
+        zone: zoneVal,
+        phone: phoneVal,
         note: noteVal || null,
         status: statusVal
       };
 
-      // petit bonus : si tu as une colonne payload, ça passera, sinon ignoré (on ne l’envoie pas)
-      // On garde léger et compatible.
+      document.getElementById("btnPublish").disabled = true;
+      document.getElementById("btnDraft").disabled = true;
 
       const { data, error } = await supabase
         .from("jef_missions")
@@ -640,43 +953,62 @@
 
       if(error){
         publishError.style.display = "block";
-        // message humain + debug utile
-        publishError.innerHTML = `❌ Insert bloqué. <br/>Détail : <b>${esc(error.message || "Erreur")}</b>`;
+        publishError.innerHTML = `❌ Erreur insertion : <b>${esc(error.message || "Erreur")}</b>`;
         console.error("Insert error:", error);
 
-        // tip direct si RLS
         if(String(error.message||"").toLowerCase().includes("row-level security")){
           publishError.innerHTML += `<div style="margin-top:8px">
-            🔒 RLS bloque l’insertion. Solution : autoriser insert public OU passer par ton API serveur.
+            🔒 RLS bloque l'insertion. Solution : autoriser insert public OU passer par API serveur.
           </div>`;
         }
+        
+        document.getElementById("btnPublish").disabled = false;
+        document.getElementById("btnDraft").disabled = false;
         return false;
       }
 
-      // si ça vient de NDIMBAL, on nettoie
-      if(payloadCtx) clearCtx();
+      clearCtx();
+      
+      publishSuccess.style.display = "block";
+      publishSuccess.textContent = statusVal === "approved" 
+        ? "✅ Mission publiée avec succès !" 
+        : "✅ Mission enregistrée en attente de validation !";
 
-      closeModal();
-      toast.textContent = "Publié ✅";
-      await load();
+      setTimeout(() => {
+        closeModal();
+        f_title.value = "";
+        f_zone.value = "";
+        f_phone.value = "";
+        f_note.value = "";
+        f_status.value = "pending";
+        document.getElementById("btnPublish").disabled = false;
+        document.getElementById("btnDraft").disabled = false;
+        load();
+      }, 1500);
+
       return true;
 
     }catch(e){
       publishError.style.display = "block";
       publishError.textContent = "❌ Exception insertion (voir console).";
       console.error("Insert exception:", e);
+      document.getElementById("btnPublish").disabled = false;
+      document.getElementById("btnDraft").disabled = false;
       return false;
     }
   }
 
-  document.getElementById("btnDraft").addEventListener("click", ()=> createMission("pending"));
-  document.getElementById("btnPublish").addEventListener("click", ()=> createMission("approved"));
+  document.getElementById("btnDraft").onclick = ()=> createMission("pending");
+  document.getElementById("btnPublish").onclick = ()=> createMission("approved");
 
-  q.addEventListener("input", render);
-  zone.addEventListener("change", render);
+  q.oninput = render;
+  zone.onchange = render;
 
-  // ✅ charge au démarrage
+  // Init
   load();
+
+  // Auto-refresh every 2 minutes
+  setInterval(load, 120000);
 })();
 </script>
 
