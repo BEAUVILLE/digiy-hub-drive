@@ -38,7 +38,32 @@
       background:linear-gradient(135deg,#16a34a,#22c55e);
       color:#052e16; font-weight:950; cursor:pointer;
     }
+    .btn:disabled{opacity:.6; cursor:not-allowed}
     .note{font-size:13px; color:var(--muted); margin-top:8px}
+    .err{
+      display:none;
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(239,68,68,.35);
+      background:rgba(239,68,68,.12);
+      color:#fecaca;
+      font-weight:900;
+      font-size:13px;
+      line-height:1.35;
+      white-space:pre-wrap;
+    }
+    .ok{
+      display:none;
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(34,197,94,.35);
+      background:rgba(34,197,94,.12);
+      color:#86efac;
+      font-weight:900;
+      font-size:13px;
+    }
     footer{padding:16px; text-align:center; font-size:12px; color:var(--muted)}
     a{color:#86efac; text-decoration:none; font-weight:900}
   </style>
@@ -57,55 +82,131 @@
   </div>
 
   <div class="card">
-    <label>Titre</label>
+    <label>Titre <span style="color:#f87171">*</span></label>
     <input id="title" placeholder="Ex: Livraison urgente – documents"/>
 
-    <label>Zone</label>
+    <label>Zone <span style="color:#f87171">*</span></label>
     <input id="zone" placeholder="Ex: Saly"/>
 
-    <label>Téléphone (WhatsApp)</label>
+    <label>Téléphone (WhatsApp) <span style="color:#f87171">*</span></label>
     <input id="phone" placeholder="+221771234567"/>
 
-    <label>Quand ?</label>
-    <input id="when" placeholder="Ex: aujourd’hui / ce soir / demain matin"/>
+    <label>Quand ? (urgence) <span style="color:#f87171">*</span></label>
+    <input id="when_text" placeholder="Ex: aujourd’hui / ce soir / demain matin"/>
 
     <label>Détails (optionnel)</label>
-    <textarea id="details" rows="3"></textarea>
+    <textarea id="note" rows="3" placeholder="Durée, lieu précis, rémunération, matériel…"></textarea>
 
-    <button class="btn" onclick="submit()">Publier</button>
+    <button class="btn" id="btnSubmit" type="button">Publier</button>
     <div class="note">⚠️ Mets un titre clair (min 6 caractères).</div>
+
+    <div class="err" id="errBox"></div>
+    <div class="ok" id="okBox"></div>
   </div>
 </main>
 
 <footer>
   DIGIYLYFE ♾️ — direct au peuple • 0% commission •
-  <a href="index.html">Retour HUB</a>
+  <a id="hubLink" href="#">Retour HUB</a>
 </footer>
 
 <script>
+/* =========================
+   SUPABASE
+========================= */
 const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY = "TON_ANON_KEY_ICI";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 const SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+/* =========================
+   HUB PATH (GitHub Pages safe)
+========================= */
+const isDrive = location.pathname.includes("/digiy-hub-drive/");
+const basePath = isDrive ? "/digiy-hub-drive/" : "/";
+document.getElementById("hubLink").href = basePath;
+
+/* =========================
+   UI helpers
+========================= */
+const errBox = document.getElementById("errBox");
+const okBox  = document.getElementById("okBox");
+const btn    = document.getElementById("btnSubmit");
+
+function showErr(msg){
+  errBox.style.display = "block";
+  errBox.textContent = msg;
+  okBox.style.display = "none";
+}
+function showOk(msg){
+  okBox.style.display = "block";
+  okBox.textContent = msg;
+  errBox.style.display = "none";
+}
+
+function cleanPhone(p){
+  const raw = String(p||"").trim();
+  const plus = raw.startsWith("+") ? "+" : "";
+  const digits = raw.replace(/[^\d]/g,"");
+  return plus + digits;
+}
+
+/* =========================
+   SUBMIT
+========================= */
 async function submit(){
+  errBox.style.display = "none";
+  okBox.style.display = "none";
+
   const title = document.getElementById("title").value.trim();
-  if(title.length < 6){ alert("⚠️ Mets un titre clair (min 6 caractères)."); return; }
+  const zone  = document.getElementById("zone").value.trim();
+  const phone = cleanPhone(document.getElementById("phone").value);
+  const when_text = document.getElementById("when_text").value.trim();
+  const note  = document.getElementById("note").value.trim();
+
+  if(title.length < 6){ showErr("⚠️ Mets un titre clair (min 6 caractères)."); return; }
+  if(!zone){ showErr("⚠️ Zone obligatoire."); return; }
+  if(!phone){ showErr("⚠️ Téléphone WhatsApp obligatoire."); return; }
+  if(!when_text){ showErr("⚠️ Quand ? (urgence) obligatoire."); return; }
+
+  btn.disabled = true;
+  btn.textContent = "Envoi…";
 
   const payload = {
     title,
-    zone: document.getElementById("zone").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    when: document.getElementById("when").value.trim(),
-    details: document.getElementById("details").value.trim(),
-    status: "pending"
+    zone,
+    phone,
+    when_text,          // ✅ NOM DB
+    note: note || null, // ✅ NOM DB
+    status: "pending"   // ✅ PROD SAFE
   };
 
-  const { error } = await SB.from("jef_missions").insert(payload);
-  if(error){ alert("Erreur. Réessaie."); return; }
+  const { error } = await SB
+    .from("jef_missions")
+    .insert(payload);
 
-  alert("Mission envoyée ✅ En attente de validation.");
-  location.href = "missions.html";
+  if(error){
+    btn.disabled = false;
+    btn.textContent = "Publier";
+
+    // message lisible
+    showErr("❌ Publication refusée :\n" + (error.message || "Erreur inconnue"));
+
+    // indice utile si c'est RLS
+    if(String(error.message||"").toLowerCase().includes("row-level security")){
+      showErr("❌ Publication bloquée (RLS).\nTa policy INSERT sur jef_missions est trop stricte.");
+    }
+    return;
+  }
+
+  showOk("✅ Mission envoyée. En attente de validation admin.");
+  setTimeout(()=>{
+    location.href = basePath + "missions.html";
+  }, 700);
 }
+
+btn.addEventListener("click", submit);
 </script>
 </body>
 </html>
+
