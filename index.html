@@ -8,92 +8,788 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root{
-      --green:#16a34a; --bg:#061b14; --card:#0b2a1f;
-      --line:rgba(255,255,255,.14); --text:#eafff1; --muted:rgba(234,255,241,.78);
+      --green:#16a34a; --green2:#22c55e;
+      --bg:#061b14; --card:#0b2a1f;
+      --line:rgba(255,255,255,.14); 
+      --text:#eafff1; 
+      --muted:rgba(234,255,241,.78);
       --radius:18px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; min-height:100vh; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      margin:0; min-height:100vh; 
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
       background:radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%), var(--bg);
       color:var(--text);
     }
-    header{padding:18px 16px 12px; text-align:center; border-bottom:1px solid var(--line);}
-    main{max-width:560px; margin:0 auto; padding:14px}
+    header{
+      padding:18px 16px 14px; 
+      text-align:center; 
+      border-bottom:1px solid var(--line);
+      background:rgba(6,27,20,.72);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    .brand{
+      font-weight:950;
+      letter-spacing:.12em;
+      font-size:18px;
+    }
+    .subtitle{
+      margin-top:6px;
+      font-weight:800;
+      font-size:12px;
+      color:var(--muted);
+    }
+    main{
+      max-width:580px; 
+      margin:0 auto; 
+      padding:14px;
+      padding-bottom:80px;
+    }
+    
+    /* Progress Bar */
+    .progress-container{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+    }
+    .progress-bar{
+      width:100%;
+      height:8px;
+      background:rgba(0,0,0,.3);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,var(--green),var(--green2));
+      transition:width .3s ease;
+      width:0%;
+    }
+    .progress-text{
+      margin-top:8px;
+      font-size:11px;
+      font-weight:800;
+      color:var(--muted);
+      text-align:center;
+    }
+
     .info-box{
-      background:#ecfdf5; color:#065f46; border:1px solid #bbf7d0;
-      border-radius:14px; padding:12px; font-size:14px; font-weight:700; margin-bottom:14px;
+      background:rgba(236,253,245,.12); 
+      color:#86efac; 
+      border:1px solid rgba(187,247,208,.3);
+      border-radius:14px; 
+      padding:14px; 
+      font-size:13px; 
+      font-weight:800; 
+      margin-bottom:14px;
+      line-height:1.5;
     }
-    .card{background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:var(--radius); padding:14px}
-    label{display:block; font-weight:900; margin:10px 0 6px}
-    input,textarea{
-      width:100%; padding:12px; border-radius:14px; border:1px solid var(--line);
-      background:#052e16; color:var(--text); font-weight:700;
+    .info-box strong{
+      color:#bbf7d0;
     }
+
+    .card{
+      background:rgba(255,255,255,.06); 
+      border:1px solid var(--line); 
+      border-radius:var(--radius); 
+      padding:16px;
+      box-shadow:0 18px 40px rgba(0,0,0,.18);
+    }
+    .card-title{
+      font-weight:950;
+      font-size:16px;
+      margin-bottom:14px;
+    }
+
+    label{
+      display:block; 
+      font-weight:900; 
+      margin:14px 0 6px;
+      font-size:14px;
+    }
+    .required{
+      color:#f87171;
+    }
+
+    input,textarea,select{
+      width:100%; 
+      padding:12px; 
+      border-radius:14px; 
+      border:1px solid var(--line);
+      background:#052e16; 
+      color:var(--text); 
+      font-weight:800;
+      font-size:14px;
+      outline:none;
+      transition:border-color .2s;
+    }
+    input:focus,textarea:focus,select:focus{
+      border-color:var(--green);
+    }
+    input.error,textarea.error,select.error{
+      border-color:#f87171;
+    }
+    textarea{
+      resize:vertical;
+      min-height:80px;
+      line-height:1.5;
+    }
+
+    .input-group{
+      position:relative;
+    }
+    .char-counter{
+      position:absolute;
+      right:12px;
+      bottom:8px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    .time-quick-btns{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .time-btn{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      transition:all .2s;
+    }
+    .time-btn:hover{
+      background:rgba(34,197,94,.15);
+      border-color:rgba(34,197,94,.3);
+    }
+    .time-btn.active{
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#052e16;
+      border-color:transparent;
+    }
+
+    .zone-quick-btns{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+      gap:8px;
+      margin-top:8px;
+    }
+    .zone-btn{
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      transition:all .2s;
+      text-align:center;
+    }
+    .zone-btn:hover{
+      background:rgba(34,197,94,.15);
+      border-color:rgba(34,197,94,.3);
+    }
+    .zone-btn.active{
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#052e16;
+      border-color:transparent;
+    }
+
     .btn{
-      width:100%; margin-top:12px; padding:14px;
-      border-radius:16px; border:none;
+      width:100%; 
+      margin-top:14px; 
+      padding:15px;
+      border-radius:16px; 
+      border:none;
       background:linear-gradient(135deg,#16a34a,#22c55e);
-      color:#052e16; font-weight:950; cursor:pointer;
+      color:#052e16; 
+      font-weight:950; 
+      cursor:pointer;
+      font-size:16px;
+      transition:all .2s;
+      box-shadow:0 2px 8px rgba(34,197,94,.3);
     }
-    .note{font-size:13px; color:var(--muted); margin-top:8px}
-    footer{padding:16px; text-align:center; font-size:12px; color:var(--muted)}
-    a{color:#86efac; text-decoration:none; font-weight:900}
+    .btn:hover:not(:disabled){
+      transform:translateY(-2px);
+      box-shadow:0 4px 12px rgba(34,197,94,.4);
+    }
+    .btn:active:not(:disabled){
+      transform:translateY(0);
+    }
+    .btn:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .btn.ghost{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--text);
+      box-shadow:none;
+    }
+
+    .note{
+      font-size:12px; 
+      color:var(--muted); 
+      margin-top:10px;
+      font-weight:800;
+      line-height:1.4;
+    }
+
+    .success-msg{
+      display:none;
+      margin-top:14px;
+      padding:14px;
+      background:rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.25);
+      border-radius:14px;
+      color:#86efac;
+      font-weight:900;
+      font-size:13px;
+    }
+    .error-msg{
+      display:none;
+      margin-top:14px;
+      padding:14px;
+      background:rgba(239,68,68,.12);
+      border:1px solid rgba(239,68,68,.25);
+      border-radius:14px;
+      color:#fca5a5;
+      font-weight:900;
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    /* Preview Modal */
+    .modal-overlay{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,.75);
+      backdrop-filter:blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      padding:20px;
+    }
+    .modal-overlay.active{
+      display:flex;
+    }
+    .modal{
+      background:rgba(6,27,20,.98);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      max-width:500px;
+      width:100%;
+      max-height:90vh;
+      overflow-y:auto;
+      padding:20px;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+    }
+    .modal-header{
+      font-weight:950;
+      font-size:17px;
+      margin-bottom:16px;
+      text-align:center;
+    }
+    .modal-body{
+      margin-bottom:16px;
+    }
+    .preview-field{
+      margin-bottom:12px;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--line);
+    }
+    .preview-field:last-child{
+      border:none;
+    }
+    .preview-label{
+      font-size:11px;
+      color:var(--muted);
+      font-weight:800;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .preview-value{
+      font-weight:900;
+      font-size:14px;
+    }
+    .modal-actions{
+      display:flex;
+      gap:10px;
+    }
+    .modal-actions button{
+      flex:1;
+      padding:13px;
+      border:none;
+      border-radius:14px;
+      font-weight:950;
+      cursor:pointer;
+      font-size:14px;
+      transition:all .2s;
+    }
+    .modal-confirm{
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#052e16;
+    }
+    .modal-cancel{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+    }
+
+    footer{
+      padding:20px 16px; 
+      text-align:center; 
+      font-size:12px; 
+      color:var(--muted);
+      border-top:1px solid var(--line);
+      background:rgba(6,27,20,.55);
+    }
+    a{
+      color:#86efac; 
+      text-decoration:none; 
+      font-weight:950;
+    }
+
+    @media(max-width:600px){
+      .modal{
+        padding:16px;
+      }
+      .zone-quick-btns{
+        grid-template-columns:repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
 <body>
+
 <header>
-  <div style="font-weight:950;letter-spacing:.12em">♾️ DIGIY NDIMBAL</div>
+  <div class="brand">♾️ DIGIY NDIMBAL</div>
+  <div class="subtitle">Missions courtes • 0% commission • Contact direct</div>
 </header>
+
 <main>
   <div class="info-box">
-    DIGIY NDIMBAL sert à publier des <strong>missions courtes</strong>.<br>
-    Les conditions et le paiement se discutent <strong>librement entre vous</strong>.<br>
-    <strong>0% commission.</strong>
+    💼 DIGIY NDIMBAL sert à publier des <strong>missions courtes et urgentes</strong>.<br>
+    💰 Les conditions et le paiement se discutent <strong>librement entre vous</strong>.<br>
+    ✨ <strong>0% commission</strong> — tu gardes 100% de ce que tu gagnes.
   </div>
+
+  <!-- Progress -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text">Formulaire complété : <span id="progressPercent">0</span>%</div>
+  </div>
+
   <div class="card">
-    <label>Titre</label>
-    <input id="title" placeholder="Ex: Livraison urgente – documents"/>
-    <label>Zone</label>
-    <input id="zone" placeholder="Ex: Saly"/>
-    <label>Téléphone (WhatsApp)</label>
-    <input id="phone" placeholder="+221771234567"/>
-    <label>Quand ?</label>
-    <input id="when_time" placeholder="Ex: aujourd'hui / ce soir / demain matin"/>
-    <label>Détails (optionnel)</label>
-    <textarea id="details" rows="3"></textarea>
-    <button class="btn" onclick="submit()">Publier</button>
-    <div class="note">⚠️ Mets un titre clair (min 6 caractères).</div>
+    <div class="card-title">📋 Détails de la mission</div>
+
+    <label>Titre de la mission <span class="required">*</span></label>
+    <input 
+      id="title" 
+      placeholder="Ex: Livraison urgente de documents à Dakar"
+      maxlength="100"
+      oninput="updateProgress(); updateCharCount('title', 100)"
+    />
+    <div class="char-counter" id="titleCounter" style="position:relative;text-align:right;margin-top:4px">0/100</div>
+
+    <label>Zone / Localisation <span class="required">*</span></label>
+    <input 
+      id="zone" 
+      placeholder="Tape ou sélectionne une zone"
+      oninput="updateProgress()"
+    />
+    <div class="zone-quick-btns">
+      <button class="zone-btn" onclick="selectZone('Saly')">📍 Saly</button>
+      <button class="zone-btn" onclick="selectZone('Dakar')">📍 Dakar</button>
+      <button class="zone-btn" onclick="selectZone('Mbour')">📍 Mbour</button>
+      <button class="zone-btn" onclick="selectZone('Thiès')">📍 Thiès</button>
+    </div>
+
+    <label>Téléphone WhatsApp <span class="required">*</span></label>
+    <input 
+      id="phone" 
+      type="tel"
+      placeholder="+221 77 123 45 67"
+      oninput="updateProgress()"
+    />
+    <button class="btn ghost" onclick="formatPhone()" style="margin-top:8px;padding:10px">
+      📱 Auto-formater numéro
+    </button>
+
+    <label>Quand ? (Urgence) <span class="required">*</span></label>
+    <input 
+      id="when_time" 
+      placeholder="Ex: Aujourd'hui à 14h, Ce soir, Demain matin"
+      oninput="updateProgress()"
+    />
+    <div class="time-quick-btns">
+      <button class="time-btn" onclick="selectTime('Maintenant')">⚡ Maintenant</button>
+      <button class="time-btn" onclick="selectTime('Aujourd\'hui')">📅 Aujourd'hui</button>
+      <button class="time-btn" onclick="selectTime('Ce soir')">🌙 Ce soir</button>
+      <button class="time-btn" onclick="selectTime('Demain')">☀️ Demain</button>
+    </div>
+
+    <label>Détails supplémentaires</label>
+    <div class="input-group">
+      <textarea 
+        id="details" 
+        rows="4" 
+        placeholder="Décris la mission : ce qu'il faut faire, durée estimée, équipement nécessaire, rémunération proposée..."
+        maxlength="500"
+        oninput="updateCharCount('details', 500)"
+      ></textarea>
+      <div class="char-counter" id="detailsCounter">0/500</div>
+    </div>
+
+    <div class="success-msg" id="successMsg"></div>
+    <div class="error-msg" id="errorMsg"></div>
+
+    <button class="btn" id="btnSubmit" onclick="preview()">
+      👁️ Prévisualiser la mission
+    </button>
+
+    <div class="note">
+      ⚠️ <strong>Champs obligatoires :</strong> Titre (min 6 car.), Zone, Téléphone, Quand<br>
+      💾 Ton formulaire est sauvegardé automatiquement
+    </div>
+
+    <button class="btn ghost" onclick="goBack()">
+      ← Retour
+    </button>
   </div>
 </main>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal">
+    <div class="modal-header">👁️ Aperçu de ta mission</div>
+    <div class="modal-body" id="previewContent"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closePreview()">✏️ Modifier</button>
+      <button class="modal-confirm" onclick="submitMission()">📤 Publier</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   DIGIYLYFE ♾️ — direct au peuple • 0% commission •
   <a href="index.html">Retour HUB</a>
 </footer>
+
 <script>
+/* ======================================================
+   SUPABASE
+====================================================== */
 const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 const SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-async function submit(){
+/* ======================================================
+   PROGRESS TRACKING
+====================================================== */
+function updateProgress(){
+  const fields = ["title", "zone", "phone", "when_time"];
+  let filled = 0;
+  
+  fields.forEach(id => {
+    const val = document.getElementById(id).value.trim();
+    if(val) filled++;
+  });
+  
+  const percent = Math.round((filled / fields.length) * 100);
+  document.getElementById("progressFill").style.width = percent + "%";
+  document.getElementById("progressPercent").textContent = percent;
+  
+  saveDraft();
+}
+
+/* ======================================================
+   CHAR COUNTER
+====================================================== */
+function updateCharCount(fieldId, max){
+  const field = document.getElementById(fieldId);
+  const counter = document.getElementById(fieldId + "Counter");
+  const len = field.value.length;
+  counter.textContent = len + "/" + max;
+  
+  if(len > max){
+    field.classList.add("error");
+    counter.style.color = "#f87171";
+  } else {
+    field.classList.remove("error");
+    counter.style.color = "var(--muted)";
+  }
+}
+
+/* ======================================================
+   QUICK SELECTORS
+====================================================== */
+function selectZone(zone){
+  document.getElementById("zone").value = zone;
+  document.querySelectorAll(".zone-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.textContent.includes(zone));
+  });
+  updateProgress();
+}
+
+function selectTime(time){
+  document.getElementById("when_time").value = time;
+  document.querySelectorAll(".time-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.textContent.includes(time));
+  });
+  updateProgress();
+}
+
+/* ======================================================
+   PHONE FORMATTING
+====================================================== */
+function formatPhone(){
+  const input = document.getElementById("phone");
+  let phone = input.value.replace(/\D/g, "");
+  
+  // Remove prefixes
+  if(phone.startsWith("221")) phone = phone.substring(3);
+  if(phone.startsWith("00221")) phone = phone.substring(5);
+  
+  // Validate Senegal format
+  if(phone.length === 9 && phone.startsWith("7")){
+    input.value = "+221" + phone;
+    input.classList.remove("error");
+    updateProgress();
+  } else {
+    showError("⚠️ Format invalide. Numéro sénégalais attendu (ex: 771234567)");
+    input.classList.add("error");
+  }
+}
+
+function validatePhone(phone){
+  const clean = phone.replace(/\D/g, "");
+  const pattern = /^(\+221|00221)?(7[05678])\d{7}$/;
+  return pattern.test(phone.replace(/\s/g, ""));
+}
+
+/* ======================================================
+   DRAFT MANAGEMENT
+====================================================== */
+function saveDraft(){
+  const draft = {
+    title: document.getElementById("title").value,
+    zone: document.getElementById("zone").value,
+    phone: document.getElementById("phone").value,
+    when_time: document.getElementById("when_time").value,
+    details: document.getElementById("details").value,
+    timestamp: Date.now()
+  };
+  localStorage.setItem("ndimbal_draft", JSON.stringify(draft));
+}
+
+function loadDraft(){
+  const draftStr = localStorage.getItem("ndimbal_draft");
+  if(!draftStr) return false;
+  
+  const draft = JSON.parse(draftStr);
+  if(!draft.title && !draft.zone) return false;
+  
+  if(confirm("📝 Reprendre le brouillon sauvegardé ?")){
+    document.getElementById("title").value = draft.title || "";
+    document.getElementById("zone").value = draft.zone || "";
+    document.getElementById("phone").value = draft.phone || "";
+    document.getElementById("when_time").value = draft.when_time || "";
+    document.getElementById("details").value = draft.details || "";
+    updateProgress();
+    updateCharCount("title", 100);
+    updateCharCount("details", 500);
+    return true;
+  }
+  return false;
+}
+
+function clearDraft(){
+  localStorage.removeItem("ndimbal_draft");
+}
+
+/* ======================================================
+   MESSAGES
+====================================================== */
+function showSuccess(msg){
+  const box = document.getElementById("successMsg");
+  box.textContent = msg;
+  box.style.display = "block";
+  document.getElementById("errorMsg").style.display = "none";
+}
+
+function showError(msg){
+  const box = document.getElementById("errorMsg");
+  box.innerHTML = msg;
+  box.style.display = "block";
+  document.getElementById("successMsg").style.display = "none";
+}
+
+function hideMessages(){
+  document.getElementById("successMsg").style.display = "none";
+  document.getElementById("errorMsg").style.display = "none";
+}
+
+/* ======================================================
+   PREVIEW
+====================================================== */
+function preview(){
+  hideMessages();
+  
   const title = document.getElementById("title").value.trim();
-  if(title.length < 6){ alert("⚠️ Mets un titre clair (min 6 caractères)."); return; }
+  const zone = document.getElementById("zone").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const when_time = document.getElementById("when_time").value.trim();
+  const details = document.getElementById("details").value.trim();
+  
+  // Validation
+  if(title.length < 6){
+    showError("⚠️ Le titre doit faire au moins 6 caractères.");
+    document.getElementById("title").focus();
+    return;
+  }
+  if(!zone){
+    showError("⚠️ La zone est obligatoire.");
+    document.getElementById("zone").focus();
+    return;
+  }
+  if(!phone){
+    showError("⚠️ Le téléphone WhatsApp est obligatoire.");
+    document.getElementById("phone").focus();
+    return;
+  }
+  if(!validatePhone(phone)){
+    showError("⚠️ Format téléphone invalide. Utilise +221XXXXXXXXX ou clique sur 'Auto-formater'.");
+    document.getElementById("phone").classList.add("error");
+    document.getElementById("phone").focus();
+    return;
+  }
+  if(!when_time){
+    showError("⚠️ Précise quand tu as besoin de cette mission.");
+    document.getElementById("when_time").focus();
+    return;
+  }
+  
+  // Generate preview
+  const previewHTML = `
+    <div class="preview-field">
+      <div class="preview-label">📋 Titre</div>
+      <div class="preview-value">${esc(title)}</div>
+    </div>
+    <div class="preview-field">
+      <div class="preview-label">📍 Zone</div>
+      <div class="preview-value">${esc(zone)}</div>
+    </div>
+    <div class="preview-field">
+      <div class="preview-label">📱 Contact WhatsApp</div>
+      <div class="preview-value">${esc(phone)}</div>
+    </div>
+    <div class="preview-field">
+      <div class="preview-label">⏰ Quand</div>
+      <div class="preview-value">${esc(when_time)}</div>
+    </div>
+    ${details ? `
+    <div class="preview-field">
+      <div class="preview-label">📝 Détails</div>
+      <div class="preview-value">${esc(details)}</div>
+    </div>` : ''}
+  `;
+  
+  document.getElementById("previewContent").innerHTML = previewHTML;
+  document.getElementById("previewModal").classList.add("active");
+}
+
+function closePreview(){
+  document.getElementById("previewModal").classList.remove("active");
+}
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[m]));
+}
+
+/* ======================================================
+   SUBMIT
+====================================================== */
+async function submitMission(){
+  const btnSubmit = document.getElementById("btnSubmit");
+  btnSubmit.disabled = true;
+  btnSubmit.textContent = "📤 Publication en cours...";
+  
+  closePreview();
   
   const payload = {
-    title,
+    title: document.getElementById("title").value.trim(),
     zone: document.getElementById("zone").value.trim(),
     phone: document.getElementById("phone").value.trim(),
-    when_time: document.getElementById("when_time").value.trim(),
-    details: document.getElementById("details").value.trim(),
+    note: `Quand: ${document.getElementById("when_time").value.trim()}\n\n${document.getElementById("details").value.trim()}`,
     status: "pending"
   };
   
-  const { error } = await SB.from("jef_missions").insert(payload);
-  if(error){ alert("Erreur. Réessaie."); console.error(error); return; }
-  
-  alert("Mission envoyée ✅ En attente de validation.");
-  location.href = "missions.html";
+  try{
+    const { error } = await SB.from("jef_missions").insert(payload);
+    
+    if(error){
+      console.error(error);
+      showError(`❌ Erreur lors de la publication : <b>${esc(error.message)}</b>`);
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = "👁️ Prévisualiser la mission";
+      return;
+    }
+    
+    // Clear draft
+    clearDraft();
+    
+    // Success
+    showSuccess("✅ Mission publiée avec succès ! Elle sera validée dans les 24-48h.");
+    
+    // Redirect after 2s
+    setTimeout(() => {
+      location.href = "digiy-jef.html";
+    }, 2000);
+    
+  }catch(err){
+    console.error(err);
+    showError("❌ Une erreur est survenue. Réessaie dans quelques instants.");
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = "👁️ Prévisualiser la mission";
+  }
 }
+
+/* ======================================================
+   NAVIGATION
+====================================================== */
+function goBack(){
+  if(confirm("⚠️ Quitter sans publier ? (Ton brouillon sera sauvegardé)")){
+    location.href = "index.html";
+  }
+}
+
+/* ======================================================
+   INIT
+====================================================== */
+window.addEventListener("load", () => {
+  loadDraft();
+  updateProgress();
+});
 </script>
+
 </body>
 </html>
