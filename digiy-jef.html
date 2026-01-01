@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -6,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>DIGIY JËF — Jobs & Missions</title>
   <meta name="theme-color" content="#16a34a"/>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -44,7 +42,7 @@
     }
     .brand{font-weight:950; letter-spacing:.08em; font-size:17px}
     .brand small{
-      display:block; font-weight:800; letter-spacing:0; 
+      display:block; font-weight:800; letter-spacing:0;
       opacity:.85; margin-top:3px; font-size:11px;
     }
     .btn{
@@ -52,12 +50,8 @@
       font-weight:950; cursor:pointer; font-size:14px;
       transition:all .2s;
     }
-    .btn:hover{
-      transform:translateY(-2px);
-    }
-    .btn:active{
-      transform:translateY(0);
-    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn:active{transform:translateY(0)}
     .btn-primary{
       background:linear-gradient(135deg,#16a34a,#22c55e);
       color:var(--dark);
@@ -69,7 +63,7 @@
       border:1px solid var(--line);
     }
     main{
-      max-width:980px; margin:0 auto; 
+      max-width:980px; margin:0 auto;
       padding:14px; padding-bottom:80px;
     }
     .card{
@@ -107,7 +101,6 @@
       color:#fca5a5;
     }
 
-    /* Stats Row */
     .stats-row{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
@@ -121,19 +114,9 @@
       padding:12px;
       text-align:center;
     }
-    .stat-value{
-      font-weight:950;
-      font-size:24px;
-      color:var(--green2);
-    }
-    .stat-label{
-      font-weight:800;
-      font-size:11px;
-      color:var(--muted);
-      margin-top:4px;
-    }
+    .stat-value{font-weight:950;font-size:24px;color:var(--green2)}
+    .stat-label{font-weight:800;font-size:11px;color:var(--muted);margin-top:4px}
 
-    /* Clarification JËF vs JOBS PRO */
     .digiy-clarify{
       margin-top:14px;
       background:rgba(236,253,245,.10);
@@ -167,10 +150,7 @@
       font-size:13px;
       transition:all .2s;
     }
-    .digiy-clarify-btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 4px 12px rgba(34,197,94,.3);
-    }
+    .digiy-clarify-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(34,197,94,.3)}
     .digiy-clarify-link{
       background:transparent;
       border:1px solid rgba(255,255,255,.14);
@@ -180,9 +160,7 @@
       font-size:13px;
       transition:all .2s;
     }
-    .digiy-clarify-link:hover{
-      background:rgba(255,255,255,.08);
-    }
+    .digiy-clarify-link:hover{background:rgba(255,255,255,.08)}
     .digiy-clarify-faq{
       margin-top:12px;
       background:rgba(0,0,0,.18);
@@ -196,7 +174,6 @@
       font-size:13px;
     }
 
-    /* NDIMBAL Context */
     .ndimb{
       margin-top:14px;
       background:rgba(250,204,21,.12);
@@ -223,21 +200,15 @@
       line-height:1.4;
       font-size:13px;
     }
-    .ndimb .actions{
-      margin-top:12px;
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .ndimb .actions{margin-top:12px;display:flex; gap:10px; flex-wrap:wrap}
 
-    /* Filters */
     .filters{
-      display:grid; 
-      grid-template-columns:1fr 1fr; 
-      gap:10px; 
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
       margin-top:14px;
     }
-    @media(max-width:700px){ 
-      .filters{grid-template-columns:1fr} 
-    }
+    @media(max-width:700px){ .filters{grid-template-columns:1fr} }
 
     input,select,textarea{
       width:100%; padding:12px; border-radius:14px;
@@ -247,12 +218,9 @@
       font-size:14px;
       transition:border-color .2s;
     }
-    input:focus,select:focus,textarea:focus{
-      border-color:var(--green);
-    }
+    input:focus,select:focus,textarea:focus{border-color:var(--green)}
     textarea{min-height:88px; resize:vertical}
 
-    /* Mission List */
     .list{display:grid; gap:12px; margin-top:14px}
     .mission{
       background:rgba(255,255,255,.05);
@@ -267,85 +235,43 @@
       border-color:rgba(34,197,94,.3);
       transform:translateY(-2px);
     }
-    .mission-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:start;
-      gap:10px;
-    }
-    .m-title{
-      font-weight:950; 
-      font-size:16px;
-      line-height:1.3;
-      flex:1;
-    }
+    .mission-header{display:flex;justify-content:space-between;align-items:start;gap:10px}
+    .m-title{font-weight:950;font-size:16px;line-height:1.3;flex:1}
     .m-badge{
-      padding:5px 9px;
-      border-radius:8px;
-      background:rgba(34,197,94,.15);
-      color:#86efac;
-      font-weight:950;
-      font-size:10px;
-      white-space:nowrap;
+      padding:5px 9px;border-radius:8px;
+      background:rgba(34,197,94,.15);color:#86efac;
+      font-weight:950;font-size:10px;white-space:nowrap;
     }
     .m-meta{
-      margin-top:10px; 
-      display:flex; gap:10px; flex-wrap:wrap;
-      color:var(--muted); 
-      font-weight:800; 
-      font-size:12px;
+      margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-weight:800;font-size:12px;
     }
     .m-detail{
-      margin-top:8px;
-      padding:10px;
-      background:rgba(0,0,0,.15);
-      border-radius:10px;
-      color:rgba(234,255,241,.85);
-      font-weight:800;
-      font-size:12px;
-      line-height:1.4;
+      margin-top:8px;padding:10px;background:rgba(0,0,0,.15);
+      border-radius:10px;color:rgba(234,255,241,.85);
+      font-weight:800;font-size:12px;line-height:1.4;
     }
-    .m-actions{
-      margin-top:12px; 
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .m-actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
     .m-actions .btn{
-      flex:1;
-      min-width:140px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
+      flex:1; min-width:140px;
+      display:flex; align-items:center; justify-content:center; gap:6px;
     }
-    .btn-wa{
-      background:linear-gradient(135deg,#25d366,#128c7e);
-      color:white;
-    }
-    a{color:#86efac; text-decoration:none; font-weight:950}
+    .btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white}
+    a{color:#86efac;text-decoration:none;font-weight:950}
 
-    .empty{
-      text-align:center;
-      padding:40px 20px;
-      color:var(--muted);
-      font-weight:900;
-    }
-    .empty-icon{
-      font-size:48px;
-      opacity:.5;
-      margin-bottom:12px;
-    }
+    .empty{text-align:center;padding:40px 20px;color:var(--muted);font-weight:900}
+    .empty-icon{font-size:48px;opacity:.5;margin-bottom:12px}
 
     .footer{
-      text-align:center; 
+      text-align:center;
       color:rgba(234,255,241,.65);
-      font-weight:800; 
+      font-weight:800;
       padding:24px 10px;
       font-size:12px;
       border-top:1px solid var(--line);
       background:rgba(6,27,20,.6);
     }
 
-    /* Modal Publish */
     .modal{
       position:fixed; inset:0; z-index:500;
       display:none;
@@ -354,11 +280,7 @@
       padding:14px;
       overflow-y:auto;
     }
-    .modal.open{
-      display:flex; 
-      align-items:center; 
-      justify-content:center;
-    }
+    .modal.open{display:flex;align-items:center;justify-content:center}
     .modal-card{
       width:min(720px, 100%);
       background:rgba(6,27,20,.98);
@@ -370,54 +292,27 @@
       overflow-y:auto;
     }
     .modal-head{
-      display:flex; 
-      align-items:flex-start; 
-      justify-content:space-between; 
-      gap:10px;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
       border-bottom:1px solid rgba(255,255,255,.10);
       padding-bottom:12px;
     }
-    .modal-title{
-      font-weight:950; 
-      letter-spacing:.06em;
-      font-size:17px;
-    }
-    .modal-subtitle{
-      margin-top:4px;
-      color:rgba(234,255,241,.75);
-      font-weight:850;
-      font-size:12px;
-    }
+    .modal-title{font-weight:950;letter-spacing:.06em;font-size:17px}
+    .modal-subtitle{margin-top:4px;color:rgba(234,255,241,.75);font-weight:850;font-size:12px}
     .modal-close{
       border:1px solid rgba(255,255,255,.14);
-      background:transparent; 
-      color:var(--text);
-      border-radius:12px; 
-      padding:9px 12px; 
-      font-weight:950; 
-      cursor:pointer;
-      font-size:13px;
+      background:transparent;color:var(--text);
+      border-radius:12px;padding:9px 12px;font-weight:950;cursor:pointer;font-size:13px;
       transition:all .2s;
     }
-    .modal-close:hover{
-      background:rgba(255,255,255,.08);
-    }
+    .modal-close:hover{background:rgba(255,255,255,.08)}
     .grid{
       margin-top:14px;
-      display:grid; 
-      grid-template-columns:1fr 1fr; 
+      display:grid;
+      grid-template-columns:1fr 1fr;
       gap:12px;
     }
-    @media(max-width:700px){ 
-      .grid{grid-template-columns:1fr} 
-    }
-    label{
-      display:block;
-      font-weight:900;
-      opacity:.9;
-      margin-bottom:6px;
-      font-size:13px;
-    }
+    @media(max-width:700px){ .grid{grid-template-columns:1fr} }
+    label{display:block;font-weight:900;opacity:.9;margin-bottom:6px;font-size:13px}
     .hint{
       margin-top:12px;
       color:rgba(234,255,241,.78);
@@ -453,33 +348,20 @@
       font-size:13px;
     }
 
-    /* Refresh Button */
     .refresh-btn{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      width:56px;
-      height:56px;
-      border-radius:50%;
-      border:none;
-      background:linear-gradient(135deg,var(--green),var(--green2));
-      color:#052e16;
-      font-size:24px;
-      cursor:pointer;
+      position:fixed; bottom:20px; right:20px;
+      width:56px;height:56px;border-radius:50%;
+      border:none;background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#052e16;font-size:24px;cursor:pointer;
       box-shadow:0 4px 16px rgba(0,0,0,.4);
-      transition:all .2s;
-      z-index:99;
+      transition:all .2s; z-index:99;
     }
-    .refresh-btn:hover{
-      transform:scale(1.1) rotate(180deg);
-    }
-    .refresh-btn:active{
-      transform:scale(0.95);
-    }
+    .refresh-btn:hover{transform:scale(1.1) rotate(180deg)}
+    .refresh-btn:active{transform:scale(0.95)}
   </style>
 </head>
-<body>
 
+<body>
 <header>
   <div class="top">
     <div class="brand">♾️ DIGIY JËF
@@ -508,11 +390,10 @@
       </div>
     </div>
 
-    <!-- Stats Row -->
     <div class="stats-row" id="statsRow" style="display:none">
       <div class="stat-card">
         <div class="stat-value" id="statTotal">0</div>
-        <div class="stat-label">Missions totales</div>
+        <div class="stat-label">Missions visibles</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="statToday">0</div>
@@ -524,7 +405,6 @@
       </div>
     </div>
 
-    <!-- NDIMBAL Context -->
     <div class="ndimb" id="ndimbBox" style="display:none">
       <h3>♾️ NDIMBAL — Demande venue du HUB</h3>
       <p id="ndimbText">Contexte…</p>
@@ -534,7 +414,6 @@
       </div>
     </div>
 
-    <!-- Clarification -->
     <div class="digiy-clarify">
       <div class="digiy-clarify-title">♾️ DIGIY JËF vs DIGIY JOBS PRO</div>
       <div class="digiy-clarify-text">
@@ -551,11 +430,8 @@
       </div>
     </div>
 
-    <!-- Filtres -->
     <div class="filters">
-      <div>
-        <input id="q" placeholder="🔍 Ex: livraison, ménage, peinture, dépannage…"/>
-      </div>
+      <div><input id="q" placeholder="🔍 Ex: livraison, ménage, peinture, dépannage…"/></div>
       <div>
         <select id="zone">
           <option value="">📍 Toutes zones</option>
@@ -569,7 +445,6 @@
     </div>
 
     <div class="list" id="list">
-      <!-- Skeleton loader -->
       <div class="mission">
         <div style="height:20px;background:rgba(255,255,255,.1);border-radius:8px;width:70%"></div>
         <div style="height:14px;background:rgba(255,255,255,.08);border-radius:6px;width:50%;margin-top:10px"></div>
@@ -586,18 +461,14 @@
   </div>
 </main>
 
-<!-- Refresh Button -->
-<button class="refresh-btn" onclick="load()" title="Actualiser">🔄</button>
+<button class="refresh-btn" onclick="window.DIGIY_JEF_LOAD && window.DIGIY_JEF_LOAD()" title="Actualiser">🔄</button>
 
-<!-- Modal Publish -->
 <div class="modal" id="modal">
   <div class="modal-card">
     <div class="modal-head">
       <div>
         <div class="modal-title">➕ Publier une mission (JËF)</div>
-        <div class="modal-subtitle">
-          Simple, direct, terrain — contact WhatsApp direct.
-        </div>
+        <div class="modal-subtitle">Simple, direct, terrain — contact WhatsApp direct.</div>
       </div>
       <button class="modal-close" id="modalClose" type="button">✕</button>
     </div>
@@ -623,29 +494,27 @@
         <input id="f_phone" type="tel" placeholder="+221 77 000 00 00">
       </div>
       <div>
-        <label>Statut publication</label>
-        <select id="f_status">
-          <option value="pending">⏳ En attente validation</option>
-          <option value="approved">✅ Publié immédiatement</option>
-        </select>
+        <label>Publication</label>
+        <input value="⏳ En attente validation (auto)" disabled style="opacity:.8">
       </div>
     </div>
 
     <div style="margin-top:12px">
       <label>Détails de la mission</label>
-      <textarea id="f_note" placeholder="Infos utiles : durée, prix estimé, lieu précis, niveau d'urgence…"></textarea>
+      <textarea id="f_note" placeholder="Infos utiles : durée, prix estimé, lieu précis, urgence…"></textarea>
     </div>
 
     <div class="hint">
-      💡 <b>Conseil</b> : Sois précis sur la durée, le lieu et la rémunération pour attirer les bonnes personnes rapidement.
+      💡 <b>Conseil</b> : Sois précis sur durée, lieu, rémunération. <br/>
+      🔒 <b>Note</b> : toute mission est d’abord <b>validée</b> avant d’être visible.
     </div>
 
     <div class="success-msg" id="publishSuccess"></div>
     <div class="danger" id="publishError"></div>
 
     <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-      <button class="btn btn-ghost" id="btnDraft" type="button">💾 Enregistrer en attente</button>
-      <button class="btn btn-primary" id="btnPublish" type="button">🚀 Publier</button>
+      <button class="btn btn-ghost" id="btnDraft" type="button">💾 Enregistrer (pending)</button>
+      <button class="btn btn-primary" id="btnPublish" type="button">🚀 Envoyer</button>
     </div>
   </div>
 </div>
@@ -669,13 +538,13 @@
 })();
 
 /* ======================================================
-   DIGIY JËF — MAIN APP
+   DIGIY JËF — PUBLIC
 ====================================================== */
 (function(){
   const supabase = window.digiySupabase;
+
   const basePath = location.pathname.includes("/digiy-hub/") ? "/digiy-hub/" : "/";
 
-  // DOM Elements
   const list = document.getElementById("list");
   const q = document.getElementById("q");
   const zone = document.getElementById("zone");
@@ -688,15 +557,15 @@
 
   document.getElementById("footerHub").href = basePath;
   document.getElementById("btn-home").onclick = ()=> location.href = basePath;
+
+  // ⚠️ mets le vrai lien si tu as un jobs pro existant, sinon laisse un placeholder
   document.getElementById("btn-jobs-pro").href = basePath + "digiy-jobs-pro.html";
 
-  // FAQ toggle
   document.getElementById("btn-why").onclick = ()=>{
     const faq = document.getElementById("clarify-faq");
     faq.style.display = (faq.style.display === "none" || !faq.style.display) ? "block" : "none";
   };
 
-  // Modal
   const modal = document.getElementById("modal");
   const modalClose = document.getElementById("modalClose");
   const publishError = document.getElementById("publishError");
@@ -704,65 +573,29 @@
   const f_title = document.getElementById("f_title");
   const f_zone = document.getElementById("f_zone");
   const f_phone = document.getElementById("f_phone");
-  const f_note = document.getElementById("f_note");
-  const f_status = document.getElementById("f_status");
+  const f_note  = document.getElementById("f_note");
 
   function openModal(){
-    publishError.style.display = "none";
-    publishSuccess.style.display = "none";
+    publishError.style.display="none";
+    publishSuccess.style.display="none";
     modal.classList.add("open");
   }
-  function closeModal(){
-    modal.classList.remove("open");
-  }
+  function closeModal(){ modal.classList.remove("open"); }
   modalClose.onclick = closeModal;
-  modal.onclick = (e)=> { if(e.target === modal) closeModal(); };
+  modal.onclick = (e)=>{ if(e.target===modal) closeModal(); };
 
   document.getElementById("btn-new").onclick = openModal;
 
   // NDIMBAL context
-  const ndimbBox = document.getElementById("ndimbBox");
+  const ndimbBox  = document.getElementById("ndimbBox");
   const ndimbText = document.getElementById("ndimbText");
-  
-  function getCtx(){
-    try{ return JSON.parse(localStorage.getItem("digiy_jef_context") || "null"); }
-    catch(e){ return null; }
-  }
-  function clearCtx(){
-    localStorage.removeItem("digiy_jef_context");
-  }
 
-  const ctx = getCtx();
-  if(ctx && (ctx.action || ctx.from)){
-    ndimbBox.style.display = "block";
-    const action = ctx.action || "NDIMBAL";
-    const from = ctx.from || "HUB";
-    ndimbText.innerHTML = `Reçu: <b>${esc(action)}</b> depuis <b>${esc(from)}</b>. Tu veux publier une mission maintenant ?`;
-  }
-
-  document.getElementById("btn-clear-ctx").onclick = ()=>{
-    clearCtx();
-    ndimbBox.style.display = "none";
-  };
-
-  document.getElementById("btn-use-ctx").onclick = ()=>{
-    const c = getCtx() || {};
-    f_title.value = (c.title || "♾️ NDIMBAL — Besoin d'aide");
-    f_zone.value = (c.zone || "");
-    f_note.value = (c.note || "Demande envoyée depuis le HUB (NDIMBAL).");
-    f_status.value = "pending";
-    openModal();
-  };
-
-  // Utils
-  let cache = [];
-
-  function norm(s){ return (s||"").toLowerCase(); }
   function esc(s){
     return String(s ?? "").replace(/[&<>"']/g, m => ({
       "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#039;"
     }[m]));
   }
+  function norm(s){ return (s||"").toLowerCase(); }
   function cleanPhone(p){
     const raw = String(p||"").trim();
     const plus = raw.startsWith("+") ? "+" : "";
@@ -777,9 +610,34 @@
     if(diff < 30) return `Il y a ${Math.floor(diff/7)}sem`;
     return `Il y a ${Math.floor(diff/30)}mois`;
   }
-  function isNew(d){
-    return new Date(d) > Date.now() - 86400000; // 24h
+  function isNew(d){ return new Date(d) > Date.now() - 86400000; }
+
+  function getCtx(){
+    try{ return JSON.parse(localStorage.getItem("digiy_jef_context") || "null"); }
+    catch(e){ return null; }
   }
+  function clearCtx(){ localStorage.removeItem("digiy_jef_context"); }
+
+  const ctx = getCtx();
+  if(ctx && (ctx.action || ctx.from || ctx.title || ctx.note)){
+    ndimbBox.style.display="block";
+    const action = ctx.action || "NDIMBAL";
+    const from   = ctx.from   || "HUB";
+    ndimbText.innerHTML = `Reçu: <b>${esc(action)}</b> depuis <b>${esc(from)}</b>. Tu veux publier une mission maintenant ?`;
+  }
+
+  document.getElementById("btn-clear-ctx").onclick = ()=>{
+    clearCtx();
+    ndimbBox.style.display="none";
+  };
+
+  document.getElementById("btn-use-ctx").onclick = ()=>{
+    const c = getCtx() || {};
+    f_title.value = (c.title || "♾️ NDIMBAL — Besoin d'aide");
+    f_zone.value  = (c.zone  || "");
+    f_note.value  = (c.note  || "Demande envoyée depuis le HUB (NDIMBAL).");
+    openModal();
+  };
 
   function updateStatus(type, text){
     toast.className = "pill status-" + type;
@@ -789,17 +647,15 @@
     `;
   }
 
+  let cache = [];
+
   function updateStats(){
     const today = cache.filter(m => isNew(m.created_at)).length;
     const zones = new Set(cache.map(m => m.zone).filter(Boolean)).size;
-    
     statTotal.textContent = cache.length;
     statToday.textContent = today;
     statZones.textContent = zones;
-    
-    if(cache.length > 0){
-      statsRow.style.display = "grid";
-    }
+    statsRow.style.display = cache.length ? "grid" : "none";
   }
 
   function render(){
@@ -825,15 +681,13 @@
       return;
     }
 
-    // Anti-doublon
     const seen = new Set();
-
     filtered.forEach(m=>{
-      const key = `${(m.title||"").trim()}|${(m.zone||"").trim()}|${(m.phone||"").trim()}|${(m.created_at||"").toString()}`;
+      const key = `${(m.title||"").trim()}|${(m.zone||"").trim()}|${(m.phone||"").trim()}|${(m.created_at||"")}`;
       if(seen.has(key)) return;
       seen.add(key);
 
-      const phoneDigits = cleanPhone(m.phone).replace(/\+/g, '');
+      const phoneDigits = cleanPhone(m.phone).replace(/\+/g, "");
       const waMsg = encodeURIComponent(`DIGIY JËF ♾️ — Je suis intéressé par: ${m.title}`);
       const waLink = phoneDigits ? `https://wa.me/${phoneDigits}?text=${waMsg}` : "#";
 
@@ -851,22 +705,17 @@
         </div>
         ${m.note ? `<div class="m-detail">📝 ${esc(m.note)}</div>` : ''}
         <div class="m-actions">
-          ${phoneDigits 
+          ${phoneDigits
             ? `<a class="btn btn-wa" href="${waLink}" target="_blank" rel="noopener">💬 WhatsApp direct</a>`
             : `<button class="btn btn-ghost" type="button" onclick="alert('⚠️ Numéro manquant')">💬 WhatsApp</button>`
           }
-          ${phoneDigits
-            ? `<a class="btn btn-ghost" href="tel:${cleanPhone(m.phone)}">📞 Appeler</a>`
-            : ''
-          }
+          ${phoneDigits ? `<a class="btn btn-ghost" href="tel:${cleanPhone(m.phone)}">📞 Appeler</a>` : ''}
         </div>
       `;
-      
-      div.onclick = (e) => {
-        if(e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
-        if(phoneDigits){
-          window.open(waLink, '_blank');
-        }
+
+      div.onclick = (e)=>{
+        if(e.target.tagName === "A" || e.target.tagName === "BUTTON") return;
+        if(phoneDigits) window.open(waLink, "_blank", "noopener");
       };
 
       list.appendChild(div);
@@ -883,6 +732,7 @@
 
       updateStatus("loading", "Chargement…");
 
+      // ✅ PUBLIC : on ne lit QUE approved
       const { data, error } = await supabase
         .from("jef_missions")
         .select("title,zone,phone,note,status,created_at")
@@ -892,7 +742,7 @@
 
       if(error){
         updateStatus("error", "Erreur Supabase");
-        console.error(error);
+        console.error("Load error full:", error);
         return;
       }
 
@@ -907,43 +757,42 @@
     }
   }
 
-  async function createMission(desiredStatus){
-    publishError.style.display = "none";
-    publishSuccess.style.display = "none";
+  // expose for refresh button
+  window.DIGIY_JEF_LOAD = load;
+
+  async function createMission(){
+    publishError.style.display="none";
+    publishSuccess.style.display="none";
 
     const title = f_title.value.trim();
     const zoneVal = f_zone.value.trim();
     const phoneVal = cleanPhone(f_phone.value);
     const noteVal = f_note.value.trim();
-    const statusVal = desiredStatus || f_status.value;
 
     if(!title){
-      publishError.style.display = "block";
-      publishError.textContent = "⚠️ Le titre de la mission est obligatoire.";
+      publishError.style.display="block";
+      publishError.textContent="⚠️ Le titre de la mission est obligatoire.";
       return false;
     }
     if(!zoneVal){
-      publishError.style.display = "block";
-      publishError.textContent = "⚠️ La zone est obligatoire.";
+      publishError.style.display="block";
+      publishError.textContent="⚠️ La zone est obligatoire.";
       return false;
     }
     if(!phoneVal){
-      publishError.style.display = "block";
-      publishError.textContent = "⚠️ Le numéro WhatsApp est obligatoire.";
+      publishError.style.display="block";
+      publishError.textContent="⚠️ Le numéro WhatsApp est obligatoire.";
       return false;
     }
 
     try{
-      const row = {
-        title,
-        zone: zoneVal,
-        phone: phoneVal,
-        note: noteVal || null,
-        status: statusVal
-      };
+      // ✅ PUBLIC : status FORCÉ à pending
+      const row = { title, zone: zoneVal, phone: phoneVal, note: noteVal || null, status: "pending" };
 
-      document.getElementById("btnPublish").disabled = true;
-      document.getElementById("btnDraft").disabled = true;
+      const btnPublish = document.getElementById("btnPublish");
+      const btnDraft = document.getElementById("btnDraft");
+      btnPublish.disabled = true;
+      btnDraft.disabled = true;
 
       const { data, error } = await supabase
         .from("jef_missions")
@@ -952,65 +801,55 @@
         .single();
 
       if(error){
-        publishError.style.display = "block";
+        publishError.style.display="block";
         publishError.innerHTML = `❌ Erreur insertion : <b>${esc(error.message || "Erreur")}</b>`;
-        console.error("Insert error:", error);
+        console.error("Insert error full:", error);
 
         if(String(error.message||"").toLowerCase().includes("row-level security")){
           publishError.innerHTML += `<div style="margin-top:8px">
-            🔒 RLS bloque l'insertion. Solution : autoriser insert public OU passer par API serveur.
+            🔒 RLS bloque l'insertion. Vérifie la policy <b>insert pending</b>.
           </div>`;
         }
-        
-        document.getElementById("btnPublish").disabled = false;
-        document.getElementById("btnDraft").disabled = false;
+        btnPublish.disabled = false;
+        btnDraft.disabled = false;
         return false;
       }
 
       clearCtx();
-      
-      publishSuccess.style.display = "block";
-      publishSuccess.textContent = statusVal === "approved" 
-        ? "✅ Mission publiée avec succès !" 
-        : "✅ Mission enregistrée en attente de validation !";
 
-      setTimeout(() => {
+      publishSuccess.style.display="block";
+      publishSuccess.textContent = "✅ Mission envoyée ! Elle sera visible après validation.";
+
+      setTimeout(()=>{
         closeModal();
-        f_title.value = "";
-        f_zone.value = "";
-        f_phone.value = "";
-        f_note.value = "";
-        f_status.value = "pending";
-        document.getElementById("btnPublish").disabled = false;
-        document.getElementById("btnDraft").disabled = false;
-        load();
-      }, 1500);
+        f_title.value=""; f_zone.value=""; f_phone.value=""; f_note.value="";
+        btnPublish.disabled=false;
+        btnDraft.disabled=false;
+        load(); // reload approved list
+      }, 1400);
 
       return true;
 
     }catch(e){
-      publishError.style.display = "block";
-      publishError.textContent = "❌ Exception insertion (voir console).";
+      publishError.style.display="block";
+      publishError.textContent="❌ Exception insertion (voir console).";
       console.error("Insert exception:", e);
-      document.getElementById("btnPublish").disabled = false;
-      document.getElementById("btnDraft").disabled = false;
+      document.getElementById("btnPublish").disabled=false;
+      document.getElementById("btnDraft").disabled=false;
       return false;
     }
   }
 
-  document.getElementById("btnDraft").onclick = ()=> createMission("pending");
-  document.getElementById("btnPublish").onclick = ()=> createMission("approved");
+  // Les deux boutons font pareil (pending only)
+  document.getElementById("btnDraft").onclick  = ()=> createMission();
+  document.getElementById("btnPublish").onclick = ()=> createMission();
 
   q.oninput = render;
   zone.onchange = render;
 
-  // Init
   load();
-
-  // Auto-refresh every 2 minutes
   setInterval(load, 120000);
 })();
 </script>
-
 </body>
 </html>
