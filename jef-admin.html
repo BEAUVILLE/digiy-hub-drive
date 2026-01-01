@@ -26,9 +26,7 @@
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      background:
-        radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.25), transparent 60%),
-        var(--bg);
+      background: radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.25), transparent 60%), var(--bg);
       color:var(--text);
       min-height:100vh;
     }
@@ -45,72 +43,25 @@
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       flex-wrap:wrap;
     }
-    .brand{
-      font-weight:950; 
-      letter-spacing:.08em;
-      font-size:17px;
-    }
-    .brand small{
-      display:block; 
-      font-weight:850; 
-      letter-spacing:0; 
-      opacity:.85; 
-      margin-top:3px;
-      font-size:11px;
-    }
+    .brand{font-weight:950; letter-spacing:.08em; font-size:17px}
+    .brand small{display:block;font-weight:850;opacity:.85;margin-top:3px;font-size:11px}
+
     .btn{
-      border:none; 
-      border-radius:14px; 
-      padding:11px 14px;
-      font-weight:950; 
-      cursor:pointer;
-      font-size:13px;
+      border:none; border-radius:14px; padding:11px 14px;
+      font-weight:950; cursor:pointer; font-size:13px;
       transition:all .2s;
     }
-    .btn:hover:not(:disabled){
-      transform:translateY(-2px);
-    }
-    .btn:active:not(:disabled){
-      transform:translateY(0);
-    }
-    .btn:disabled{
-      opacity:.5;
-      cursor:not-allowed;
-    }
-    .btn-ghost{
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      border:1px solid var(--line);
-    }
-    .btn-primary{
-      background:linear-gradient(135deg,#16a34a,#22c55e);
-      color:var(--dark);
-      box-shadow:0 2px 8px rgba(34,197,94,.3);
-    }
-    .btn-warn{
-      background:linear-gradient(135deg,#facc15,#fb923c);
-      color:#111827;
-      box-shadow:0 2px 8px rgba(251,191,36,.3);
-    }
-    .btn-danger{
-      background:linear-gradient(135deg,#ef4444,#f97316);
-      color:#fff;
-      box-shadow:0 2px 8px rgba(239,68,68,.3);
-    }
-    main{
-      max-width:1100px; 
-      margin:0 auto; 
-      padding:14px;
-      padding-bottom:80px;
-    }
-    .grid{
-      display:grid; 
-      grid-template-columns:1.2fr .8fr; 
-      gap:14px;
-    }
-    @media(max-width:900px){ 
-      .grid{grid-template-columns:1fr} 
-    }
+    .btn:hover:not(:disabled){transform:translateY(-2px)}
+    .btn:active:not(:disabled){transform:translateY(0)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btn-ghost{background:rgba(255,255,255,.06); color:var(--text); border:1px solid var(--line)}
+    .btn-primary{background:linear-gradient(135deg,#16a34a,#22c55e); color:var(--dark); box-shadow:0 2px 8px rgba(34,197,94,.3)}
+    .btn-warn{background:linear-gradient(135deg,#facc15,#fb923c); color:#111827; box-shadow:0 2px 8px rgba(251,191,36,.3)}
+    .btn-danger{background:linear-gradient(135deg,#ef4444,#f97316); color:#fff; box-shadow:0 2px 8px rgba(239,68,68,.3)}
+
+    main{max-width:1100px;margin:0 auto;padding:14px;padding-bottom:80px}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
 
     .card{
       background:var(--card);
@@ -119,46 +70,20 @@
       padding:16px;
       box-shadow:0 18px 40px rgba(0,0,0,.18);
     }
-    .row{
-      display:flex; 
-      align-items:center; 
-      justify-content:space-between;
-      gap:10px; 
-      flex-wrap:wrap;
-    }
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
     .pill{
-      display:inline-flex; 
-      align-items:center; 
-      gap:6px;
-      padding:7px 11px; 
-      border-radius:999px;
+      display:inline-flex;align-items:center;gap:6px;
+      padding:7px 11px;border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.14);
-      font-weight:900; 
-      font-size:12px;
+      font-weight:900;font-size:12px;
     }
-    .pill.status-ok{
-      background:rgba(34,197,94,.15);
-      border-color:rgba(34,197,94,.3);
-      color:#86efac;
-    }
-    .pill.status-warn{
-      background:rgba(251,191,36,.15);
-      border-color:rgba(251,191,36,.3);
-      color:#fcd34d;
-    }
-    .pill.status-error{
-      background:rgba(239,68,68,.15);
-      border-color:rgba(239,68,68,.3);
-      color:#fca5a5;
-    }
-    .pill.status-pending{
-      background:rgba(147,197,253,.15);
-      border-color:rgba(147,197,253,.3);
-      color:#93c5fd;
-    }
+    .pill.status-ok{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#86efac}
+    .pill.status-warn{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.3);color:#fcd34d}
+    .pill.status-error{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.3);color:#fca5a5}
+    .pill.status-pending{background:rgba(147,197,253,.15);border-color:rgba(147,197,253,.3);color:#93c5fd}
 
-    /* Stats */
     .stats-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
@@ -172,239 +97,88 @@
       padding:12px;
       text-align:center;
     }
-    .stat-value{
-      font-weight:950;
-      font-size:24px;
-      color:var(--green2);
-    }
-    .stat-label{
-      font-weight:800;
-      font-size:10px;
-      color:var(--muted);
-      margin-top:4px;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-    }
+    .stat-value{font-weight:950;font-size:24px;color:var(--green2)}
+    .stat-label{font-weight:800;font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
 
-    .muted{
-      color:var(--muted); 
-      font-weight:850;
-      line-height:1.4;
-    }
-    .list{
-      display:grid; 
-      gap:12px; 
-      margin-top:14px;
-    }
-    .mission{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      padding:14px;
-      transition:all .2s;
-    }
-    .mission:hover{
-      background:rgba(255,255,255,.08);
-      border-color:rgba(34,197,94,.2);
-    }
-    .mission-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:start;
-      gap:10px;
-    }
-    .m-title{
-      font-weight:950; 
-      font-size:16px;
-      line-height:1.3;
-      flex:1;
-    }
-    .m-badge{
-      padding:5px 9px;
-      border-radius:8px;
-      font-weight:950;
-      font-size:10px;
-      white-space:nowrap;
-    }
-    .m-badge.new{
-      background:rgba(34,197,94,.15);
-      color:#86efac;
-    }
-    .m-badge.old{
-      background:rgba(251,191,36,.15);
-      color:#fcd34d;
-    }
-    .m-meta{
-      margin-top:10px; 
-      display:flex; 
-      gap:10px; 
-      flex-wrap:wrap;
-      color:var(--muted); 
-      font-weight:850; 
-      font-size:12px;
-    }
-    .m-note{
-      margin-top:10px;
-      padding:10px;
-      background:rgba(0,0,0,.15);
-      border-radius:10px;
-      color:rgba(234,255,241,.88);
-      font-weight:850;
-      line-height:1.4;
-      font-size:12px;
-    }
-    .actions{
-      margin-top:12px; 
-      display:flex; 
-      gap:10px; 
-      flex-wrap:wrap;
-    }
-    .actions .btn{
-      flex:1;
-      min-width:100px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-    }
-    a{
-      color:#86efac; 
-      text-decoration:none; 
-      font-weight:950;
-    }
+    .muted{color:var(--muted);font-weight:850;line-height:1.4}
+    .list{display:grid;gap:12px;margin-top:14px}
+    .mission{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:14px;transition:all .2s}
+    .mission:hover{background:rgba(255,255,255,.08);border-color:rgba(34,197,94,.2)}
+    .mission-header{display:flex;justify-content:space-between;align-items:start;gap:10px}
+    .m-title{font-weight:950;font-size:16px;line-height:1.3;flex:1}
+    .m-badge{padding:5px 9px;border-radius:8px;font-weight:950;font-size:10px;white-space:nowrap}
+    .m-badge.new{background:rgba(34,197,94,.15);color:#86efac}
+    .m-badge.old{background:rgba(251,191,36,.15);color:#fcd34d}
+    .m-meta{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-weight:850;font-size:12px}
+    .m-note{margin-top:10px;padding:10px;background:rgba(0,0,0,.15);border-radius:10px;color:rgba(234,255,241,.88);font-weight:850;line-height:1.4;font-size:12px}
+    .actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .actions .btn{flex:1;min-width:100px;display:flex;align-items:center;justify-content:center;gap:6px}
+    a{color:#86efac;text-decoration:none;font-weight:950}
 
     input,select{
-      width:100%; 
-      padding:12px; 
-      border-radius:14px;
+      width:100%;padding:12px;border-radius:14px;
       border:1px solid var(--line);
       background:rgba(0,0,0,.18);
-      color:var(--text); 
-      outline:none; 
-      font-weight:850;
-      font-size:14px;
+      color:var(--text);outline:none;font-weight:850;font-size:14px;
       transition:border-color .2s;
     }
-    input:focus,select:focus{
-      border-color:var(--green);
-    }
+    input:focus,select:focus{border-color:var(--green)}
 
     .dangerBox{
-      display:none;
-      margin-top:12px;
+      display:none;margin-top:12px;
       background:rgba(239,68,68,.12);
       border:1px solid rgba(239,68,68,.25);
-      border-radius:14px;
-      padding:12px;
-      color:rgba(255,230,230,.95);
-      font-weight:900;
-      line-height:1.4;
-      font-size:13px;
+      border-radius:14px;padding:12px;color:rgba(255,230,230,.95);
+      font-weight:900;line-height:1.4;font-size:13px;
     }
     .okBox{
-      display:none;
-      margin-top:12px;
+      display:none;margin-top:12px;
       background:rgba(34,197,94,.12);
       border:1px solid rgba(34,197,94,.25);
-      border-radius:14px;
-      padding:12px;
-      color:rgba(134,239,172,.95);
-      font-weight:900;
-      font-size:13px;
+      border-radius:14px;padding:12px;color:rgba(134,239,172,.95);
+      font-weight:900;font-size:13px;
     }
-
-    .empty{
-      text-align:center;
-      padding:40px 20px;
-      color:var(--muted);
-      font-weight:900;
-    }
-    .empty-icon{
-      font-size:48px;
-      opacity:.5;
-      margin-bottom:12px;
-    }
+    .empty{text-align:center;padding:40px 20px;color:var(--muted);font-weight:900}
+    .empty-icon{font-size:48px;opacity:.5;margin-bottom:12px}
 
     .info-panel{
       background:rgba(236,253,245,.08);
       border:1px solid rgba(187,247,208,.2);
-      border-radius:14px;
-      padding:12px;
-      margin-top:12px;
+      border-radius:14px;padding:12px;margin-top:12px;
     }
-    .info-panel strong{
-      color:#86efac;
-    }
-
-    .quick-actions{
-      margin-top:12px;
-      display:grid;
-      gap:10px;
-    }
+    .info-panel strong{color:#86efac}
+    .quick-actions{margin-top:12px;display:grid;gap:10px}
 
     .realtime-indicator{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 10px;
-      border-radius:999px;
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 10px;border-radius:999px;
       background:rgba(34,197,94,.15);
       border:1px solid rgba(34,197,94,.3);
-      font-size:11px;
-      font-weight:900;
-      color:#86efac;
-      margin-top:10px;
+      font-size:11px;font-weight:900;color:#86efac;margin-top:10px;
     }
     .realtime-indicator::before{
-      content:"";
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:#22c55e;
-      animation:pulse-dot 2s infinite;
+      content:"";width:8px;height:8px;border-radius:50%;
+      background:#22c55e;animation:pulse-dot 2s infinite;
     }
-    @keyframes pulse-dot{
-      0%,100%{opacity:1}
-      50%{opacity:.5}
-    }
+    @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.5}}
 
-    /* Skeleton */
     .skeleton{
       background:linear-gradient(90deg,rgba(255,255,255,.05) 25%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.05) 75%);
       background-size:200% 100%;
       animation:shimmer 1.5s infinite;
-      border-radius:8px;
-      height:20px;
-      margin:8px 0;
+      border-radius:8px;height:20px;margin:8px 0;
     }
-    @keyframes shimmer{
-      0%{background-position:200% 0}
-      100%{background-position:-200% 0}
-    }
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-    /* Bulk Actions */
     .bulk-actions{
-      margin-top:12px;
-      padding:12px;
+      margin-top:12px;padding:12px;
       background:rgba(251,191,36,.08);
       border:1px solid rgba(251,191,36,.2);
-      border-radius:14px;
-      display:none;
+      border-radius:14px;display:none;
     }
-    .bulk-actions.active{
-      display:block;
-    }
-    .bulk-actions-title{
-      font-weight:950;
-      font-size:14px;
-      margin-bottom:10px;
-      color:#fcd34d;
-    }
-    .bulk-actions-btns{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .bulk-actions.active{display:block}
+    .bulk-actions-title{font-weight:950;font-size:14px;margin-bottom:10px;color:#fcd34d}
+    .bulk-actions-btns{display:flex;gap:10px;flex-wrap:wrap}
   </style>
 </head>
 
@@ -425,7 +199,6 @@
 
 <main>
   <div class="grid">
-    <!-- LISTE -->
     <div class="card">
       <div class="row">
         <div>
@@ -440,7 +213,6 @@
         </div>
       </div>
 
-      <!-- Stats -->
       <div class="stats-grid" id="statsGrid" style="display:none">
         <div class="stat-card">
           <div class="stat-value" id="statPending">0</div>
@@ -456,7 +228,6 @@
         </div>
       </div>
 
-      <!-- Filtres -->
       <div style="margin-top:12px" class="row">
         <input id="q" placeholder="🔍 Filtrer: mot-clé (titre, note, téléphone)…" style="max-width:520px">
         <select id="zone" style="max-width:220px">
@@ -469,7 +240,6 @@
         </select>
       </div>
 
-      <!-- Bulk Actions -->
       <div class="bulk-actions" id="bulkActions">
         <div class="bulk-actions-title">⚡ Actions groupées (<span id="bulkCount">0</span> sélectionnées)</div>
         <div class="bulk-actions-btns">
@@ -483,7 +253,6 @@
       <div class="okBox" id="okBox"></div>
 
       <div class="list" id="list">
-        <!-- Skeleton -->
         <div class="mission">
           <div class="skeleton" style="width:70%"></div>
           <div class="skeleton" style="width:50%;height:14px"></div>
@@ -495,7 +264,6 @@
       </div>
     </div>
 
-    <!-- INFO / STATUS -->
     <div class="card">
       <div class="row">
         <div style="font-weight:950;font-size:16px">📊 Statut admin</div>
@@ -527,7 +295,6 @@
         <button class="btn btn-ghost" id="openRejected">🟠 Voir rejetées</button>
       </div>
 
-      <!-- User Info -->
       <div id="userInfo" style="margin-top:14px;padding:10px;background:rgba(0,0,0,.15);border-radius:10px;font-size:11px;display:none">
         <div style="font-weight:900;margin-bottom:4px">👤 Connecté en tant que:</div>
         <div id="userEmail" style="color:var(--muted);font-weight:800"></div>
@@ -557,6 +324,10 @@
 (function(){
   const supabase = window.digiySupabase;
 
+  // IMPORTANT: on est sur GitHub Pages (digiy-hub-drive)
+  const REPO_BASE = "https://beauville.github.io/digiy-hub-drive/";
+  const HUB_URL   = "https://beauville.github.io/digiy-hub/"; // ton HUB marketing (si c'est bien celui-là)
+
   // DOM
   const list = document.getElementById("list");
   const q = document.getElementById("q");
@@ -573,10 +344,9 @@
   const userInfo = document.getElementById("userInfo");
   const userEmail = document.getElementById("userEmail");
 
-  // Navigation
-  const basePath = location.pathname.includes("/digiy-hub/") ? "/digiy-hub/" : "/";
-  document.getElementById("btn-hub").onclick = ()=> location.href = basePath;
-  document.getElementById("btn-public").onclick = ()=> location.href = "digiy-jef.html";
+  // Navigation (FIX)
+  document.getElementById("btn-hub").onclick = ()=> location.href = HUB_URL;
+  document.getElementById("btn-public").onclick = ()=> location.href = REPO_BASE + "digiy-jef.html";
   document.getElementById("btn-refresh").onclick = ()=> load();
   document.getElementById("btn-logout").onclick = async ()=>{
     try{ await supabase.auth.signOut(); }catch(e){}
@@ -584,23 +354,25 @@
   };
 
   document.getElementById("openSupabase").onclick = ()=>{
-    alert("💡 Va sur Supabase → Table Editor → public.jef_missions\n(Tu es déjà admin)");
+    alert("💡 Supabase → Table Editor → public.jef_missions");
   };
 
   document.getElementById("openApproved").onclick = async ()=>{
-    const { data } = await supabase
+    const { count, error } = await supabase
       .from("jef_missions")
-      .select("count", { count: 'exact', head: true })
+      .select("*", { count: "exact", head: true })
       .eq("status","approved");
-    alert(`✅ Missions approuvées: ${data || '?'}`);
+    if(error) return alert("Erreur: " + (error.message||""));
+    alert(`✅ Missions approuvées: ${count}`);
   };
 
   document.getElementById("openRejected").onclick = async ()=>{
-    const { data } = await supabase
+    const { count, error } = await supabase
       .from("jef_missions")
-      .select("count", { count: 'exact', head: true })
+      .select("*", { count: "exact", head: true })
       .eq("status","rejected");
-    alert(`🟠 Missions rejetées: ${data || '?'}`);
+    if(error) return alert("Erreur: " + (error.message||""));
+    alert(`🟠 Missions rejetées: ${count}`);
   };
 
   // State
@@ -649,14 +421,12 @@
   function updateStats(){
     const today = cache.filter(m => isNew(m.created_at)).length;
     const old = cache.filter(m => isOld(m.created_at)).length;
-    
+
     statPending.textContent = cache.length;
     statToday.textContent = today;
     statOld.textContent = old;
-    
-    if(cache.length > 0){
-      statsGrid.style.display = "grid";
-    }
+
+    statsGrid.style.display = cache.length > 0 ? "grid" : "none";
   }
 
   function updateBulkActions(){
@@ -671,14 +441,13 @@
 
     const { data: { user }, error: e0 } = await supabase.auth.getUser();
     if(e0) console.error(e0);
-    
+
     if(!user){
       updateStatus("error", "Non connecté");
-      showErr("🔐 Tu n'es pas connecté. Ouvre ton HUB, connecte-toi, puis reviens ici.");
+      showErr("🔐 Tu n'es pas connecté. Connecte-toi via ton système Supabase Auth, puis reviens.");
       return false;
     }
 
-    // Display user info
     userInfo.style.display = "block";
     userEmail.textContent = user.email || user.id;
 
@@ -765,15 +534,11 @@
       list.appendChild(div);
     });
 
-    // Checkbox listeners
     document.querySelectorAll(".mission-checkbox").forEach(cb => {
       cb.onchange = (e) => {
         const id = e.target.dataset.id;
-        if(e.target.checked){
-          selectedIds.add(id);
-        } else {
-          selectedIds.delete(id);
-        }
+        if(e.target.checked) selectedIds.add(id);
+        else selectedIds.delete(id);
         updateBulkActions();
       };
     });
@@ -808,30 +573,18 @@
   }
 
   async function approve(id){
-    const { error } = await supabase
-      .from("jef_missions")
-      .update({ status: "approved" })
-      .eq("id", id);
+    const { error } = await supabase.from("jef_missions").update({ status: "approved" }).eq("id", id);
     if(error) throw error;
   }
-
   async function reject(id){
-    const { error } = await supabase
-      .from("jef_missions")
-      .update({ status: "rejected" })
-      .eq("id", id);
+    const { error } = await supabase.from("jef_missions").update({ status: "rejected" }).eq("id", id);
     if(error) throw error;
   }
-
   async function del(id){
-    const { error } = await supabase
-      .from("jef_missions")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("jef_missions").delete().eq("id", id);
     if(error) throw error;
   }
 
-  // Action handlers
   list.addEventListener("click", async (e)=>{
     const btn = e.target.closest("button[data-act]");
     if(!btn) return;
@@ -842,19 +595,11 @@
     try{
       btn.disabled = true;
 
-      if(act === "approve"){
-        await approve(id);
-        showOk("✅ Mission approuvée");
-      }else if(act === "reject"){
-        await reject(id);
-        showOk("🟠 Mission rejetée");
-      }else if(act === "delete"){
-        if(!confirm("❓ Supprimer définitivement cette mission ?")) {
-          btn.disabled=false;
-          return;
-        }
-        await del(id);
-        showOk("🗑️ Mission supprimée");
+      if(act === "approve"){ await approve(id); showOk("✅ Mission approuvée"); }
+      else if(act === "reject"){ await reject(id); showOk("🟠 Mission rejetée"); }
+      else if(act === "delete"){
+        if(!confirm("❓ Supprimer définitivement cette mission ?")) { btn.disabled=false; return; }
+        await del(id); showOk("🗑️ Mission supprimée");
       }
 
       cache = cache.filter(x => x.id !== id);
@@ -870,40 +615,33 @@
     }
   });
 
-  // Bulk actions
   document.getElementById("bulkApprove").onclick = async () => {
+    if(!selectedIds.size) return;
     if(!confirm(`✅ Approuver ${selectedIds.size} missions ?`)) return;
-    
+
     try{
-      for(const id of selectedIds){
-        await approve(id);
-      }
+      for(const id of selectedIds) await approve(id);
       showOk(`✅ ${selectedIds.size} missions approuvées`);
       cache = cache.filter(x => !selectedIds.has(x.id));
       selectedIds.clear();
-      updateStats();
-      updateBulkActions();
-      render();
+      updateStats(); updateBulkActions(); render();
     }catch(e){
-      showErr("❌ Erreur bulk approve: " + esc(e.message));
+      showErr("❌ Erreur bulk approve: " + esc(e.message||""));
     }
   };
 
   document.getElementById("bulkReject").onclick = async () => {
+    if(!selectedIds.size) return;
     if(!confirm(`🟠 Rejeter ${selectedIds.size} missions ?`)) return;
-    
+
     try{
-      for(const id of selectedIds){
-        await reject(id);
-      }
+      for(const id of selectedIds) await reject(id);
       showOk(`🟠 ${selectedIds.size} missions rejetées`);
       cache = cache.filter(x => !selectedIds.has(x.id));
       selectedIds.clear();
-      updateStats();
-      updateBulkActions();
-      render();
+      updateStats(); updateBulkActions(); render();
     }catch(e){
-      showErr("❌ Erreur bulk reject: " + esc(e.message));
+      showErr("❌ Erreur bulk reject: " + esc(e.message||""));
     }
   };
 
@@ -913,11 +651,9 @@
     render();
   };
 
-  // Filters
   q.oninput = render;
   zone.onchange = render;
 
-  // Realtime
   function setupRealtime(){
     try{
       if(channel) return;
@@ -925,13 +661,10 @@
         .channel("jef_admin_realtime")
         .on("postgres_changes",
           { event: "*", schema: "public", table: "jef_missions" },
-          () => {
-            console.log("🔄 Realtime update detected");
-            load();
-          }
+          () => load()
         )
         .subscribe((status) => {
-          if(status === 'SUBSCRIBED'){
+          if(status === "SUBSCRIBED"){
             realtimeIndicator.style.display = "inline-flex";
           }
         });
@@ -940,7 +673,6 @@
     }
   }
 
-  // Init
   load();
   setupRealtime();
 })();
