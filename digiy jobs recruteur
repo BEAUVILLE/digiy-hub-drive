@@ -70,6 +70,33 @@
       font-weight:800;
       line-height:1.5;
     }
+    .progress-container{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:8px;
+    }
+    .progress-bar{
+      width:100%;
+      height:8px;
+      background:rgba(0,0,0,.3);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,var(--green),var(--green2));
+      transition:width .3s ease;
+      width:0%;
+    }
+    .progress-text{
+      margin-top:8px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+      text-align:center;
+    }
     .card{
       background:rgba(255,255,255,.06);
       border:1px solid var(--line);
@@ -97,6 +124,13 @@
       font-weight:800;
       font-size:14px;
       outline:none;
+      transition:border-color .2s;
+    }
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--green);
+    }
+    input.error, textarea.error, select.error{
+      border-color:#f87171;
     }
     select{
       cursor:pointer;
@@ -105,6 +139,44 @@
       resize:vertical;
       min-height:80px;
       line-height:1.5;
+    }
+    .input-group{
+      position:relative;
+    }
+    .char-counter{
+      position:absolute;
+      right:12px;
+      bottom:8px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .autocomplete-suggestions{
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:#052e16;
+      border:1px solid var(--line);
+      border-radius:14px;
+      margin-top:4px;
+      max-height:200px;
+      overflow-y:auto;
+      z-index:100;
+      display:none;
+    }
+    .autocomplete-suggestions.active{
+      display:block;
+    }
+    .suggestion-item{
+      padding:10px 12px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:800;
+      transition:background .2s;
+    }
+    .suggestion-item:hover{
+      background:rgba(22,163,74,.2);
     }
     .btn{
       width:100%;
@@ -117,6 +189,13 @@
       font-size:16px;
       cursor:pointer;
       margin-top:12px;
+      transition:opacity .2s, transform .1s;
+    }
+    .btn:hover:not(:disabled){
+      transform:translateY(-2px);
+    }
+    .btn:active:not(:disabled){
+      transform:translateY(0);
     }
     .btn:disabled{
       opacity:.5;
@@ -127,6 +206,13 @@
       border:1px solid var(--line);
       color:var(--text);
     }
+    .btn.secondary{
+      background:rgba(34,197,94,.15);
+      color:var(--green2);
+      font-size:14px;
+      padding:10px;
+      margin-top:8px;
+    }
     .note{
       font-size:13px;
       color:var(--muted);
@@ -136,6 +222,118 @@
     .required{
       color:#f87171;
     }
+    .draft-banner{
+      background:rgba(251,191,36,.15);
+      border:1px solid rgba(251,191,36,.4);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+      display:none;
+    }
+    .draft-banner.active{
+      display:block;
+    }
+    .draft-banner strong{
+      color:#fbbf24;
+    }
+    .draft-actions{
+      margin-top:8px;
+      display:flex;
+      gap:8px;
+    }
+    .draft-actions button{
+      flex:1;
+      padding:8px;
+      border-radius:10px;
+      border:none;
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .draft-load{
+      background:var(--green);
+      color:var(--dark);
+    }
+    .draft-delete{
+      background:rgba(255,255,255,.1);
+      color:var(--text);
+    }
+    
+    /* MODAL */
+    .modal-overlay{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background:rgba(0,0,0,.85);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      padding:20px;
+    }
+    .modal-overlay.active{
+      display:flex;
+    }
+    .modal{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      max-width:500px;
+      width:100%;
+      max-height:90vh;
+      overflow-y:auto;
+      padding:20px;
+    }
+    .modal-header{
+      font-weight:950;
+      font-size:18px;
+      margin-bottom:16px;
+      text-align:center;
+    }
+    .modal-body{
+      margin-bottom:16px;
+    }
+    .preview-field{
+      margin-bottom:12px;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--line);
+    }
+    .preview-field:last-child{
+      border:none;
+    }
+    .preview-label{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      margin-bottom:4px;
+    }
+    .preview-value{
+      font-weight:900;
+      font-size:14px;
+    }
+    .modal-actions{
+      display:flex;
+      gap:10px;
+    }
+    .modal-actions button{
+      flex:1;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .modal-confirm{
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:var(--dark);
+    }
+    .modal-cancel{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+    }
+    
     footer{
       text-align:center;
       padding:16px 10px;
@@ -149,6 +347,15 @@
       color:#86efac;
       text-decoration:none;
       font-weight:950;
+    }
+    
+    @media(max-width:600px){
+      .modal{
+        padding:16px;
+      }
+      .draft-actions{
+        flex-direction:column;
+      }
     }
   </style>
 </head>
@@ -172,30 +379,49 @@
     <strong>0% commission • Contact direct • Simplicité</strong>
   </div>
 
+  <!-- DRAFT BANNER -->
+  <div class="draft-banner" id="draftBanner">
+    <strong>📝 Brouillon sauvegardé détecté</strong>
+    <div class="note" style="margin-top:4px">Voulez-vous reprendre là où vous vous êtes arrêté ?</div>
+    <div class="draft-actions">
+      <button class="draft-load" onclick="loadDraft()">✅ Reprendre</button>
+      <button class="draft-delete" onclick="deleteDraft()">🗑️ Supprimer</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text">Formulaire complété : <span id="progressPercent">0</span>%</div>
+  </div>
+
   <div class="card">
     <div class="card-title">📋 Informations entreprise</div>
 
     <label>Nom de l'entreprise <span class="required">*</span></label>
-    <input id="company_name" placeholder="Ex: DIGIYLYFE SARL"/>
+    <input id="company_name" placeholder="Ex: DIGIYLYFE SARL" oninput="updateProgress(); saveDraft()"/>
 
     <label>Votre nom (recruteur)</label>
-    <input id="recruiter_name" placeholder="Ex: Amadou Diallo"/>
+    <input id="recruiter_name" placeholder="Ex: Amadou Diallo" oninput="saveDraft()"/>
 
     <label>Téléphone (WhatsApp) <span class="required">*</span></label>
-    <input id="recruiter_phone" type="tel" placeholder="+221771234567"/>
+    <input id="recruiter_phone" type="tel" placeholder="+221771234567" oninput="updateProgress(); saveDraft()"/>
+    <button class="btn secondary" onclick="formatPhoneNumber()">📱 Auto-formater numéro</button>
 
     <label>Email (optionnel)</label>
-    <input id="recruiter_email" type="email" placeholder="contact@entreprise.sn"/>
+    <input id="recruiter_email" type="email" placeholder="contact@entreprise.sn" oninput="saveDraft()"/>
   </div>
 
   <div class="card">
     <div class="card-title">💼 Détails du poste</div>
 
     <label>Titre du poste <span class="required">*</span></label>
-    <input id="job_title" placeholder="Ex: Développeur Web Full-Stack"/>
+    <input id="job_title" placeholder="Ex: Développeur Web Full-Stack" oninput="updateProgress(); saveDraft()"/>
 
     <label>Type de contrat <span class="required">*</span></label>
-    <select id="job_type">
+    <select id="job_type" onchange="updateProgress(); saveDraft()">
       <option value="">-- Sélectionner --</option>
       <option value="CDI">CDI</option>
       <option value="CDD">CDD</option>
@@ -206,25 +432,34 @@
     </select>
 
     <label>Localisation <span class="required">*</span></label>
-    <input id="location" placeholder="Ex: Dakar, Plateau"/>
+    <div class="input-group" style="position:relative">
+      <input id="location" placeholder="Ex: Dakar, Plateau" oninput="updateProgress(); saveDraft(); showLocationSuggestions(this.value)" autocomplete="off"/>
+      <div class="autocomplete-suggestions" id="locationSuggestions"></div>
+    </div>
 
     <label>Fourchette salariale (optionnel)</label>
-    <input id="salary_range" placeholder="Ex: 300 000 - 500 000 FCFA/mois"/>
+    <input id="salary_range" placeholder="Ex: 300 000 - 500 000 FCFA/mois" oninput="saveDraft()"/>
 
     <label>Description du poste <span class="required">*</span></label>
-    <textarea id="description" rows="5" placeholder="Décrivez les missions, responsabilités, environnement de travail..."></textarea>
+    <div class="input-group">
+      <textarea id="description" rows="5" placeholder="Décrivez les missions, responsabilités, environnement de travail..." oninput="updateProgress(); saveDraft(); updateCharCount('description', 500)"></textarea>
+      <div class="char-counter" id="descriptionCounter">0/500</div>
+    </div>
 
     <label>Profil recherché / Compétences requises</label>
-    <textarea id="requirements" rows="4" placeholder="Ex: Bac+3, 2 ans d'expérience, maîtrise de React/Node.js..."></textarea>
+    <div class="input-group">
+      <textarea id="requirements" rows="4" placeholder="Ex: Bac+3, 2 ans d'expérience, maîtrise de React/Node.js..." oninput="saveDraft(); updateCharCount('requirements', 400)"></textarea>
+      <div class="char-counter" id="requirementsCounter">0/400</div>
+    </div>
   </div>
 
   <div class="card">
-    <button class="btn" id="btnSubmit" onclick="submitOffer()">
-      📤 Publier l'offre
+    <button class="btn" id="btnSubmit" onclick="previewOffer()">
+      👁️ Prévisualiser l'offre
     </button>
     <div class="note">
       ⚠️ Tous les champs marqués <span class="required">*</span> sont obligatoires.<br>
-      Votre offre sera vérifiée avant publication (24-48h).
+      💾 Votre brouillon est sauvegardé automatiquement.
     </div>
 
     <button class="btn ghost" onclick="location.href='index.html'" style="margin-top:10px">
@@ -239,6 +474,18 @@
   <a href="index.html">Retour HUB</a>
 </footer>
 
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal">
+    <div class="modal-header">👁️ Aperçu de votre offre</div>
+    <div class="modal-body" id="previewContent"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closePreview()">✏️ Modifier</button>
+      <button class="modal-confirm" onclick="submitOffer()">📤 Publier</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* =========================
    SUPABASE
@@ -250,17 +497,215 @@ const SUPABASE_ANON_KEY =
 const SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* =========================
-   VALIDATION & SUBMIT
+   LOCATIONS SENEGAL
 ========================= */
-async function submitOffer(){
-  const btnSubmit = document.getElementById("btnSubmit");
+const LOCATIONS = [
+  "Dakar - Plateau",
+  "Dakar - Almadies",
+  "Dakar - Mermoz",
+  "Dakar - Sacré-Cœur",
+  "Dakar - Point E",
+  "Dakar - Ouakam",
+  "Dakar - Ngor",
+  "Dakar - Yoff",
+  "Dakar - Parcelles Assainies",
+  "Dakar - Grand Yoff",
+  "Pikine",
+  "Guédiawaye",
+  "Rufisque",
+  "Thiès",
+  "Saint-Louis",
+  "Mbour",
+  "Kaolack",
+  "Ziguinchor",
+  "Louga",
+  "Tambacounda",
+  "Kolda",
+  "Diourbel",
+  "Sédhiou",
+  "Matam",
+  "Kaffrine"
+];
 
-  // Récupération des valeurs
+/* =========================
+   DRAFT MANAGEMENT
+========================= */
+function saveDraft(){
+  const draft = {
+    company_name: document.getElementById("company_name").value,
+    recruiter_name: document.getElementById("recruiter_name").value,
+    recruiter_phone: document.getElementById("recruiter_phone").value,
+    recruiter_email: document.getElementById("recruiter_email").value,
+    job_title: document.getElementById("job_title").value,
+    job_type: document.getElementById("job_type").value,
+    location: document.getElementById("location").value,
+    salary_range: document.getElementById("salary_range").value,
+    description: document.getElementById("description").value,
+    requirements: document.getElementById("requirements").value,
+    timestamp: Date.now()
+  };
+  localStorage.setItem("digiy_job_draft", JSON.stringify(draft));
+}
+
+function loadDraft(){
+  const draftStr = localStorage.getItem("digiy_job_draft");
+  if(!draftStr) return;
+  
+  const draft = JSON.parse(draftStr);
+  document.getElementById("company_name").value = draft.company_name || "";
+  document.getElementById("recruiter_name").value = draft.recruiter_name || "";
+  document.getElementById("recruiter_phone").value = draft.recruiter_phone || "";
+  document.getElementById("recruiter_email").value = draft.recruiter_email || "";
+  document.getElementById("job_title").value = draft.job_title || "";
+  document.getElementById("job_type").value = draft.job_type || "";
+  document.getElementById("location").value = draft.location || "";
+  document.getElementById("salary_range").value = draft.salary_range || "";
+  document.getElementById("description").value = draft.description || "";
+  document.getElementById("requirements").value = draft.requirements || "";
+  
+  document.getElementById("draftBanner").classList.remove("active");
+  updateProgress();
+  updateCharCount("description", 500);
+  updateCharCount("requirements", 400);
+}
+
+function deleteDraft(){
+  localStorage.removeItem("digiy_job_draft");
+  document.getElementById("draftBanner").classList.remove("active");
+}
+
+function checkDraft(){
+  const draftStr = localStorage.getItem("digiy_job_draft");
+  if(draftStr){
+    const draft = JSON.parse(draftStr);
+    // Vérifier si le brouillon a du contenu
+    if(draft.company_name || draft.job_title || draft.description){
+      document.getElementById("draftBanner").classList.add("active");
+    }
+  }
+}
+
+/* =========================
+   PROGRESS TRACKING
+========================= */
+function updateProgress(){
+  const fields = [
+    "company_name",
+    "recruiter_phone",
+    "job_title",
+    "job_type",
+    "location",
+    "description"
+  ];
+  
+  let filled = 0;
+  fields.forEach(id => {
+    const val = document.getElementById(id).value.trim();
+    if(val) filled++;
+  });
+  
+  const percent = Math.round((filled / fields.length) * 100);
+  document.getElementById("progressFill").style.width = percent + "%";
+  document.getElementById("progressPercent").textContent = percent;
+}
+
+/* =========================
+   CHAR COUNTER
+========================= */
+function updateCharCount(fieldId, max){
+  const field = document.getElementById(fieldId);
+  const counter = document.getElementById(fieldId + "Counter");
+  const len = field.value.length;
+  counter.textContent = len + "/" + max;
+  
+  if(len > max){
+    field.classList.add("error");
+    counter.style.color = "#f87171";
+  } else {
+    field.classList.remove("error");
+    counter.style.color = "var(--muted)";
+  }
+}
+
+/* =========================
+   LOCATION AUTOCOMPLETE
+========================= */
+function showLocationSuggestions(val){
+  const container = document.getElementById("locationSuggestions");
+  
+  if(!val || val.length < 2){
+    container.classList.remove("active");
+    return;
+  }
+  
+  const filtered = LOCATIONS.filter(loc => 
+    loc.toLowerCase().includes(val.toLowerCase())
+  );
+  
+  if(filtered.length === 0){
+    container.classList.remove("active");
+    return;
+  }
+  
+  container.innerHTML = filtered.slice(0, 5).map(loc => 
+    `<div class="suggestion-item" onclick="selectLocation('${loc}')">${loc}</div>`
+  ).join("");
+  
+  container.classList.add("active");
+}
+
+function selectLocation(loc){
+  document.getElementById("location").value = loc;
+  document.getElementById("locationSuggestions").classList.remove("active");
+  updateProgress();
+  saveDraft();
+}
+
+// Fermer suggestions au clic extérieur
+document.addEventListener("click", (e) => {
+  if(!e.target.closest(".input-group")){
+    document.getElementById("locationSuggestions").classList.remove("active");
+  }
+});
+
+/* =========================
+   PHONE FORMATTING
+========================= */
+function formatPhoneNumber(){
+  const input = document.getElementById("recruiter_phone");
+  let phone = input.value.replace(/\D/g, "");
+  
+  // Retirer préfixes
+  if(phone.startsWith("221")) phone = phone.substring(3);
+  if(phone.startsWith("00221")) phone = phone.substring(5);
+  
+  // Vérifier format Sénégal (7X XXXXXXX)
+  if(phone.length === 9 && phone.startsWith("7")){
+    input.value = "+221" + phone;
+    input.classList.remove("error");
+    saveDraft();
+  } else {
+    alert("⚠️ Format invalide. Numéro sénégalais attendu (ex: 771234567)");
+    input.classList.add("error");
+  }
+}
+
+function validatePhone(phone){
+  const clean = phone.replace(/\D/g, "");
+  // +221 7X XXXXXXX
+  const pattern = /^(\+221|00221)?(7[05678])\d{7}$/;
+  return pattern.test(phone.replace(/\s/g, ""));
+}
+
+/* =========================
+   PREVIEW MODAL
+========================= */
+function previewOffer(){
+  // Récupération
   const company_name = document.getElementById("company_name").value.trim();
   const recruiter_name = document.getElementById("recruiter_name").value.trim();
   const recruiter_phone = document.getElementById("recruiter_phone").value.trim();
   const recruiter_email = document.getElementById("recruiter_email").value.trim();
-  
   const job_title = document.getElementById("job_title").value.trim();
   const job_type = document.getElementById("job_type").value;
   const location = document.getElementById("location").value.trim();
@@ -268,45 +713,133 @@ async function submitOffer(){
   const description = document.getElementById("description").value.trim();
   const requirements = document.getElementById("requirements").value.trim();
 
-  // Validation champs obligatoires
+  // Validation
   if(!company_name){
     alert("⚠️ Le nom de l'entreprise est obligatoire.");
+    document.getElementById("company_name").focus();
     return;
   }
   if(!recruiter_phone){
     alert("⚠️ Le téléphone (WhatsApp) est obligatoire.");
+    document.getElementById("recruiter_phone").focus();
+    return;
+  }
+  if(!validatePhone(recruiter_phone)){
+    alert("⚠️ Format téléphone invalide. Utilisez +221XXXXXXXXX");
+    document.getElementById("recruiter_phone").classList.add("error");
+    document.getElementById("recruiter_phone").focus();
     return;
   }
   if(!job_title || job_title.length < 5){
     alert("⚠️ Le titre du poste doit faire au moins 5 caractères.");
+    document.getElementById("job_title").focus();
     return;
   }
   if(!job_type){
     alert("⚠️ Sélectionnez un type de contrat.");
+    document.getElementById("job_type").focus();
     return;
   }
   if(!location){
     alert("⚠️ La localisation est obligatoire.");
+    document.getElementById("location").focus();
     return;
   }
   if(!description || description.length < 20){
     alert("⚠️ La description doit faire au moins 20 caractères.");
+    document.getElementById("description").focus();
+    return;
+  }
+  if(description.length > 500){
+    alert("⚠️ La description ne peut pas dépasser 500 caractères.");
+    document.getElementById("description").focus();
+    return;
+  }
+  if(requirements.length > 400){
+    alert("⚠️ Les compétences ne peuvent pas dépasser 400 caractères.");
+    document.getElementById("requirements").focus();
     return;
   }
 
-  // Confirmation
-  const confirmed = confirm(
-    `📋 Récapitulatif :\n\n` +
-    `Entreprise : ${company_name}\n` +
-    `Poste : ${job_title}\n` +
-    `Type : ${job_type}\n` +
-    `Lieu : ${location}\n\n` +
-    `Publier cette offre ?`
-  );
+  // Afficher preview
+  const previewHTML = `
+    <div class="preview-field">
+      <div class="preview-label">🏢 Entreprise</div>
+      <div class="preview-value">${company_name}</div>
+    </div>
+    ${recruiter_name ? `
+    <div class="preview-field">
+      <div class="preview-label">👤 Recruteur</div>
+      <div class="preview-value">${recruiter_name}</div>
+    </div>` : ''}
+    <div class="preview-field">
+      <div class="preview-label">📱 Contact WhatsApp</div>
+      <div class="preview-value">${recruiter_phone}</div>
+    </div>
+    ${recruiter_email ? `
+    <div class="preview-field">
+      <div class="preview-label">📧 Email</div>
+      <div class="preview-value">${recruiter_email}</div>
+    </div>` : ''}
+    <div class="preview-field">
+      <div class="preview-label">💼 Poste</div>
+      <div class="preview-value">${job_title}</div>
+    </div>
+    <div class="preview-field">
+      <div class="preview-label">📋 Type de contrat</div>
+      <div class="preview-value">${job_type}</div>
+    </div>
+    <div class="preview-field">
+      <div class="preview-label">📍 Localisation</div>
+      <div class="preview-value">${location}</div>
+    </div>
+    ${salary_range ? `
+    <div class="preview-field">
+      <div class="preview-label">💰 Salaire</div>
+      <div class="preview-value">${salary_range}</div>
+    </div>` : ''}
+    <div class="preview-field">
+      <div class="preview-label">📝 Description</div>
+      <div class="preview-value">${description}</div>
+    </div>
+    ${requirements ? `
+    <div class="preview-field">
+      <div class="preview-label">✅ Profil recherché</div>
+      <div class="preview-value">${requirements}</div>
+    </div>` : ''}
+  `;
 
-  if(!confirmed) return;
+  document.getElementById("previewContent").innerHTML = previewHTML;
+  document.getElementById("previewModal").classList.add("active");
+}
 
-  // Désactivation du bouton
+function closePreview(){
+  document.getElementById("previewModal").classList.remove("active");
+}
+
+/* =========================
+   SUBMIT
+========================= */
+async function submitOffer(){
+  const btnSubmit = document.getElementById("btnSubmit");
+  const modal = document.getElementById("previewModal");
+
+  // Récupération
+  const company_name = document.getElementById("company_name").value.trim();
+  const recruiter_name = document.getElementById("recruiter_name").value.trim();
+  const recruiter_phone = document.getElementById("recruiter_phone").value.trim();
+  const recruiter_email = document.getElementById("recruiter_email").value.trim();
+  const job_title = document.getElementById("job_title").value.trim();
+  const job_type = document.getElementById("job_type").value;
+  const location = document.getElementById("location").value.trim();
+  const salary_range = document.getElementById("salary_range").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const requirements = document.getElementById("requirements").value.trim();
+
+  // Fermer modal
+  modal.classList.remove("active");
+
+  // Désactivation
   btnSubmit.disabled = true;
   btnSubmit.textContent = "📤 Publication en cours...";
 
@@ -333,26 +866,37 @@ async function submitOffer(){
       console.error("Erreur Supabase:", error);
       alert("❌ Erreur lors de la publication. Réessayez.");
       btnSubmit.disabled = false;
-      btnSubmit.textContent = "📤 Publier l'offre";
+      btnSubmit.textContent = "👁️ Prévisualiser l'offre";
       return;
     }
 
-    alert(
-      "✅ Offre publiée avec succès !\n\n" +
-      "Votre offre sera validée par notre équipe dans les 24-48h.\n" +
-      "Vous recevrez les candidatures directement par WhatsApp."
-    );
+    // Supprimer brouillon
+    deleteDraft();
 
-    // Retour au HUB
-    location.href = "index.html";
+    // Redirection vers page de confirmation
+    localStorage.setItem("job_published", JSON.stringify({
+      company: company_name,
+      title: job_title,
+      timestamp: Date.now()
+    }));
+
+    location.href = "jobs-confirmation.html";
 
   }catch(err){
     console.error("Erreur:", err);
     alert("❌ Une erreur est survenue. Réessayez.");
     btnSubmit.disabled = false;
-    btnSubmit.textContent = "📤 Publier l'offre";
+    btnSubmit.textContent = "👁️ Prévisualiser l'offre";
   }
 }
+
+/* =========================
+   INIT
+========================= */
+window.addEventListener("load", () => {
+  checkDraft();
+  updateProgress();
+});
 </script>
 
 </body>
