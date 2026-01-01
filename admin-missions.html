@@ -222,7 +222,7 @@ function render(rows, adminOk, user){
   }
 
   rows.forEach(r=>{
-    const whenTxt = r.when ? `⏰ ${esc(r.when)}` : "";
+    const whenTxt = r.when_time ? `⏰ ${esc(r.when_time)}` : "";
     const detTxt  = r.details ? esc(r.details) : "—";
 
     const div = document.createElement("div");
@@ -273,10 +273,10 @@ async function loadMissions(){
     setStatusPill(admin.ok ? "ADMIN OK ✅" : "Connecté (non-admin)");
   }
 
-  // On charge les missions selon filtre
+  // ✅ CORRIGÉ : when → when_time
   const { data, error } = await SB
     .from("jef_missions")
-    .select("id,created_at,title,zone,phone,when,details,status,approved_at,approved_by")
+    .select("id,created_at,title,zone,phone,when_time,details,status,approved_at,approved_by")
     .eq("status", currentFilter)
     .order("created_at", { ascending:false })
     .limit(100);
