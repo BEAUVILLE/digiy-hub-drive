@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>DIGIY ♾️ JOBS — Admin</title>
+  <meta name="theme-color" content="#16a34a"/>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --green:#16a34a; --green2:#22c55e;
+      --bg:#061b14; --card:#0b2a1f; --line:rgba(255,255,255,.14);
+      --text:#eafff1; --muted:rgba(234,255,241,.78); --dark:#052e16;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background: radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.20), transparent 60%), var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      background:rgba(6,27,20,.72);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      flex-wrap:wrap;
+    }
+    .brand{font-weight:950; letter-spacing:.1em}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .btn{
+      border:none; cursor:pointer;
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:950;
+    }
+    .btn.primary{background:linear-gradient(135deg,var(--green),var(--green2)); color:var(--dark)}
+    .btn.ghost{background:rgba(255,255,255,.06); border:1px solid var(--line); color:var(--text)}
+    main{max-width:1000px; margin:0 auto; padding:14px; display:flex; flex-direction:column; gap:12px;}
+    .card{background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:var(--radius); padding:14px;}
+    .muted{color:var(--muted); font-weight:800; font-size:13px}
+    .grid{display:grid; gap:10px}
+    .offer-card{
+      background:rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .offer-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .offer-title{font-weight:950; font-size:17px}
+    .company{color:var(--muted); font-weight:850; font-size:13px; margin-top:4px}
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      font-weight:950; font-size:12px;
+    }
+    .meta{
+      margin:10px 0;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      font-weight:850;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .description{
+      margin:10px 0;
+      padding:10px;
+      background:rgba(0,0,0,.15);
+      border-radius:12px;
+      line-height:1.5;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .actions{margin-top:12px; display:flex; gap:10px; flex-wrap:wrap}
+    .btn.approve{background:linear-gradient(135deg,#16a34a,#22c55e); color:var(--dark)}
+    .btn.reject{background:linear-gradient(135deg,#ef4444,#b91c1c); color:#fee2e2}
+    .btn.small{padding:10px 12px; border-radius:14px}
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#052e16;
+      color:var(--text);
+      font-size:14px;
+      font-weight:800;
+      outline:none;
+    }
+    footer{
+      text-align:center;
+      padding:14px 10px;
+      font-size:12px;
+      font-weight:800;
+      color:rgba(234,255,241,.72);
+      border-top:1px solid rgba(255,255,255,.10);
+      background:rgba(6,27,20,.55);
+    }
+    a{color:#86efac; text-decoration:none; font-weight:950}
+    .hide{display:none}
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="row">
+    <div class="brand">♾️ DIGIY JOBS — ADMIN</div>
+    <span class="pill" id="adminPill">—</span>
+  </div>
+  <div class="row">
+    <button class="btn ghost" onclick="location.href='index.html'">← HUB</button>
+    <button class="btn ghost" onclick="loadOffers()">↻ Rafraîchir</button>
+    <button class="btn primary" id="btnLogin">🔐 Connexion</button>
+    <button class="btn ghost hide" id="btnLogout">⏏ Déconnexion</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="card">
+    <div style="font-weight:950;margin-bottom:6px;">Validation des offres d'emploi</div>
+    <div class="muted">Les offres arrivent en <b>pending</b>. Tu valides ou refuses.</div>
+  </div>
+
+  <div class="card" id="loginCard">
+    <div style="font-weight:950;margin-bottom:10px;">Connexion admin</div>
+    <div class="muted" style="margin-bottom:10px;">Entre ton email/mot de passe Supabase (Auth).</div>
+    <div class="grid">
+      <input id="email" type="email" placeholder="Email admin"/>
+      <input id="password" type="password" placeholder="Mot de passe"/>
+      <button class="btn primary" id="btnDoLogin">Se connecter</button>
+      <div class="muted" id="loginStatus">—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div>
+        <div style="font-weight:950;">Offres en attente</div>
+        <div class="muted" id="countPending">—</div>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="btnShowPending">Pending</button>
+        <button class="btn ghost" id="btnShowApproved">Approved</button>
+        <button class="btn ghost" id="btnShowRejected">Rejected</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="list" class="grid"></div>
+
+</main>
+
+<footer>
+  DIGIYLYFE ♾️ — direct au peuple • 0% commission •
+  <a href="index.html">Retour HUB</a>
+</footer>
+
+<script>
+/* =========================
+   SUPABASE
+========================= */
+const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+
+const SB = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* =========================
+   UI REFS
+========================= */
+const listEl = document.getElementById("list");
+const countPending = document.getElementById("countPending");
+const adminPill = document.getElementById("adminPill");
+
+const loginCard = document.getElementById("loginCard");
+const loginStatus = document.getElementById("loginStatus");
+const btnLogin = document.getElementById("btnLogin");
+const btnLogout = document.getElementById("btnLogout");
+const btnDoLogin = document.getElementById("btnDoLogin");
+
+const btnShowPending = document.getElementById("btnShowPending");
+const btnShowApproved = document.getElementById("btnShowApproved");
+const btnShowRejected = document.getElementById("btnShowRejected");
+
+let currentFilter = "pending";
+
+/* =========================
+   HELPERS
+========================= */
+function esc(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+function setStatusPill(text){
+  adminPill.textContent = text;
+}
+
+function setLoginUI(isAuthed){
+  btnLogout.classList.toggle("hide", !isAuthed);
+  loginCard.classList.toggle("hide", isAuthed);
+}
+
+/* =========================
+   ADMIN CHECK
+========================= */
+async function isAdmin(){
+  const { data: { user } } = await SB.auth.getUser();
+  if(!user) return { ok:false, user:null };
+
+  const { data, error } = await SB
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if(error || !data) return { ok:false, user };
+  return { ok:true, user };
+}
+
+/* =========================
+   LOAD COUNT
+========================= */
+async function loadCountPending(){
+  const { count, error } = await SB
+    .from("job_offers")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "pending");
+
+  if(error) { 
+    countPending.textContent = "Erreur"; 
+    return; 
+  }
+  countPending.textContent = `${count ?? 0} offre(s)`;
+}
+
+/* =========================
+   RENDER
+========================= */
+function renderOffers(rows, adminOk){
+  listEl.innerHTML = "";
+  
+  if(!rows || rows.length === 0){
+    listEl.innerHTML = `<div class="card"><div class="muted">Aucune offre.</div></div>`;
+    return;
+  }
+
+  rows.forEach(r=>{
+    const salaryTxt = r.salary_range ? `💰 ${esc(r.salary_range)}` : "";
+    const reqTxt = r.requirements 
+      ? `<div class="muted" style="margin-top:8px"><strong>Profil :</strong><br>${esc(r.requirements).replace(/\n/g,"<br>")}</div>` 
+      : "";
+
+    const div = document.createElement("div");
+    div.className = "offer-card";
+
+    div.innerHTML = `
+      <div class="offer-header">
+        <div>
+          <div class="offer-title">💼 ${esc(r.job_title)}</div>
+          <div class="company">🏢 ${esc(r.company_name)}</div>
+        </div>
+        <span class="pill">${esc(r.status)}</span>
+      </div>
+
+      <div class="meta">
+        <span class="pill">${esc(r.job_type)}</span>
+        <span>📍 ${esc(r.location)}</span>
+        ${salaryTxt ? `<span>${salaryTxt}</span>` : ""}
+      </div>
+
+      <div class="meta">
+        <span>📞 ${esc(r.recruiter_phone)}</span>
+        ${r.recruiter_email ? `<span>📧 ${esc(r.recruiter_email)}</span>` : ""}
+        ${r.recruiter_name ? `<span>👤 ${esc(r.recruiter_name)}</span>` : ""}
+      </div>
+
+      <div class="description">
+        <strong>Description :</strong><br>
+        ${esc(r.description).replace(/\n/g,"<br>")}
+      </div>
+
+      ${reqTxt}
+
+      <div class="actions">
+        <button class="btn small ghost" onclick="contactRecruiter('${esc(r.recruiter_phone)}', '${esc(r.company_name)}')">
+          💬 WhatsApp
+        </button>
+
+        ${adminOk ? `
+          <button class="btn small approve" onclick="approve('${r.id}')">✅ Valider</button>
+          <button class="btn small reject" onclick="reject('${r.id}')">⛔ Refuser</button>
+        ` : `
+          <span class="pill">🔒 Admin requis</span>
+        `}
+      </div>
+    `;
+
+    listEl.appendChild(div);
+  });
+}
+
+/* =========================
+   LOAD OFFERS
+========================= */
+async function loadOffers(){
+  const admin = await isAdmin();
+  setLoginUI(!!admin.user);
+
+  if(!admin.user){
+    setStatusPill("Non connecté");
+  }else{
+    setStatusPill(admin.ok ? "ADMIN OK ✅" : "Connecté (non-admin)");
+  }
+
+  const { data, error } = await SB
+    .from("job_offers")
+    .select("*")
+    .eq("status", currentFilter)
+    .order("created_at", { ascending:false })
+    .limit(100);
+
+  if(error){
+    listEl.innerHTML = `<div class="card"><div class="muted">Erreur : ${esc(error.message)}</div></div>`;
+    return;
+  }
+
+  await loadCountPending();
+  renderOffers(data || [], admin.ok);
+}
+
+/* =========================
+   APPROVE / REJECT
+========================= */
+async function approve(id){
+  const admin = await isAdmin();
+  if(!admin.ok) return alert("Admin requis.");
+
+  const ok = confirm("Valider cette offre ? Elle sera publique.");
+  if(!ok) return;
+
+  const { error } = await SB.from("job_offers")
+    .update({
+      status:"approved",
+      approved_at: new Date().toISOString(),
+      approved_by: admin.user.id
+    })
+    .eq("id", id);
+
+  if(error) return alert("Erreur: " + error.message);
+  await loadOffers();
+}
+
+async function reject(id){
+  const admin = await isAdmin();
+  if(!admin.ok) return alert("Admin requis.");
+
+  const ok = confirm("Refuser cette offre ?");
+  if(!ok) return;
+
+  const { error } = await SB.from("job_offers")
+    .update({
+      status:"rejected",
+      approved_at: null,
+      approved_by: admin.user.id
+    })
+    .eq("id", id);
+
+  if(error) return alert("Erreur: " + error.message);
+  await loadOffers();
+}
+
+/* =========================
+   CONTACT
+========================= */
+function contactRecruiter(phone, company){
+  const clean = String(phone||"").replace(/\D/g,"");
+  if(!clean) return alert("Numéro indisponible.");
+  
+  const msg = `Salam, j'ai vu votre offre d'emploi (${company}) sur DIGIY JOBS.`;
+  window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+/* =========================
+   LOGIN / LOGOUT
+========================= */
+async function doLogin(){
+  loginStatus.textContent = "Connexion…";
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const { error } = await SB.auth.signInWithPassword({ email, password });
+  if(error){
+    loginStatus.textContent = "❌ " + error.message;
+    return;
+  }
+  loginStatus.textContent = "✅ Connecté";
+  await loadOffers();
+}
+
+async function doLogout(){
+  await SB.auth.signOut();
+  await loadOffers();
+}
+
+/* =========================
+   EVENTS
+========================= */
+btnDoLogin.addEventListener("click", doLogin);
+btnLogin.addEventListener("click", ()=>{ window.scrollTo({top:0,behavior:"smooth"}); });
+btnLogout.addEventListener("click", doLogout);
+
+btnShowPending.addEventListener("click", ()=>{ currentFilter="pending"; loadOffers(); });
+btnShowApproved.addEventListener("click", ()=>{ currentFilter="approved"; loadOffers(); });
+btnShowRejected.addEventListener("click", ()=>{ currentFilter="rejected"; loadOffers(); });
+
+/* =========================
+   START
+========================= */
+loadOffers();
+</script>
+
+</body>
+</html>
