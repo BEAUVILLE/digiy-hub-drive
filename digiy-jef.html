@@ -1,854 +1,662 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>DIGIY JËF — Jobs & Missions</title>
-  <meta name="theme-color" content="#16a34a"/>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0B1020" />
+  <title>DIGIY JOBS — JËF ♾️ (Jobs & Apprentis)</title>
+  <meta name="description" content="DIGIY JOBS (JËF) — Trouver un job, recruter, ou apprendre un métier. Contact direct WhatsApp. 0% commission." />
 
   <style>
     :root{
-      --green:#16a34a; --green2:#22c55e;
-      --bg:#061b14;
-      --card:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.12);
-      --text:#eafff1;
-      --muted:rgba(234,255,241,.75);
-      --dark:#052e16;
-      --radius:18px;
+      --bg:#020617;
+      --bg2:#0b1020;
+      --card:rgba(255,255,255,.04);
+      --line:rgba(148,163,184,.22);
+      --ink:#f9fafb;
+      --muted:rgba(226,232,240,.78);
+      --gold:#facc15;
+      --orange:#f97316;
+      --green:#22c55e;
+      --danger:#ef4444;
+      --shadow:0 18px 55px rgba(0,0,0,.55);
+      --r:18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      color:var(--ink);
       background:
-        radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.25), transparent 60%),
-        var(--bg);
-      color:var(--text);
+        radial-gradient(900px 520px at 12% -10%, rgba(250,204,21,.16), transparent 60%),
+        radial-gradient(900px 520px at 90% 0%, rgba(34,197,94,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
       min-height:100vh;
     }
-    header{
-      position:sticky; top:0; z-index:100;
-      background:rgba(6,27,20,.85);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--line);
-      padding:14px;
-      box-shadow:0 2px 8px rgba(0,0,0,.2);
-    }
+    a{color:inherit}
+    .wrap{max-width:1050px;margin:0 auto;padding:14px}
     .top{
-      max-width:980px; margin:0 auto;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .brand{font-weight:950; letter-spacing:.08em; font-size:17px}
-    .brand small{
-      display:block; font-weight:800; letter-spacing:0;
-      opacity:.85; margin-top:3px; font-size:11px;
-    }
-    .btn{
-      border:none; border-radius:14px; padding:11px 14px;
-      font-weight:950; cursor:pointer; font-size:14px;
-      transition:all .2s;
-    }
-    .btn:hover{transform:translateY(-2px)}
-    .btn:active{transform:translateY(0)}
-    .btn-primary{
-      background:linear-gradient(135deg,#16a34a,#22c55e);
-      color:var(--dark);
-      box-shadow:0 2px 8px rgba(34,197,94,.3);
-    }
-    .btn-ghost{
-      background:rgba(255,255,255,.06);
-      color:var(--text);
       border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.03);
+      box-shadow:var(--shadow);
+      padding:14px 14px 12px;
     }
-    main{
-      max-width:980px; margin:0 auto;
-      padding:14px; padding-bottom:80px;
+    .brand{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .logo{
+      width:46px;height:46px;border-radius:16px;
+      background:linear-gradient(135deg, rgba(250,204,21,.35), rgba(34,197,94,.22));
+      border:1px solid rgba(250,204,21,.35);
+      box-shadow:0 0 22px rgba(250,204,21,.12);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:1000;
+      color:#111827;
     }
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:16px;
-      box-shadow:0 18px 40px rgba(0,0,0,.18);
-    }
-    .row{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
-    }
+    .brand h1{margin:0;font-size:1.1rem;letter-spacing:.2px}
+    .sub{color:var(--muted);font-weight:800;font-size:.92rem;line-height:1.35}
+    .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .pill{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:7px 11px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.14);
-      font-weight:900; font-size:12px;
-      transition:all .2s;
+      border:1px solid rgba(148,163,184,.28);
+      padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.02);
+      color:var(--muted);font-weight:900;font-size:.84rem;
     }
-    .pill.status-ok{
-      background:rgba(34,197,94,.15);
-      border-color:rgba(34,197,94,.3);
-      color:#86efac;
-    }
-    .pill.status-loading{
-      background:rgba(251,191,36,.15);
-      border-color:rgba(251,191,36,.3);
-      color:#fcd34d;
-    }
-    .pill.status-error{
-      background:rgba(239,68,68,.15);
-      border-color:rgba(239,68,68,.3);
-      color:#fca5a5;
-    }
+    .pill strong{color:#fff}
+    .pill.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.10);color:#bbf7d0}
+    .pill.warn{border-color:rgba(250,204,21,.35);background:rgba(250,204,21,.10);color:#fde68a}
 
-    .stats-row{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
-      gap:10px;
-      margin-top:12px;
-    }
-    .stat-card{
-      background:rgba(255,255,255,.04);
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+    .card{
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      text-align:center;
+      background:rgba(255,255,255,.03);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
-    .stat-value{font-weight:950;font-size:24px;color:var(--green2)}
-    .stat-label{font-weight:800;font-size:11px;color:var(--muted);margin-top:4px}
+    .cardHead{
+      padding:12px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    }
+    .cardHead h2{margin:0;font-size:1.02rem}
+    .cardHead small{color:var(--muted);font-weight:800}
+    .cardBody{padding:14px}
 
-    .digiy-clarify{
-      margin-top:14px;
-      background:rgba(236,253,245,.10);
-      border:1px solid rgba(187,247,208,.28);
-      border-radius:16px;
-      padding:14px;
-    }
-    .digiy-clarify-title{
+    .tabs{display:flex;gap:10px;flex-wrap:wrap}
+    .tabBtn{
+      border:1px solid rgba(148,163,184,.32);
+      background:rgba(255,255,255,.02);
+      color:var(--muted);
+      padding:10px 12px;
+      border-radius:999px;
       font-weight:950;
-      letter-spacing:.06em;
-      color:rgba(134,239,172,.95);
-      font-size:15px;
-    }
-    .digiy-clarify-text{
-      margin-top:8px;
-      color:rgba(234,255,241,.88);
-      font-weight:800;
-      line-height:1.4;
-      font-size:13px;
-    }
-    .digiy-clarify-actions{
-      margin-top:12px;
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    .digiy-clarify-btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:11px 14px; border-radius:14px;
-      font-weight:950; text-decoration:none;
-      background:linear-gradient(135deg,#16a34a,#22c55e);
-      color:#052e16;
-      font-size:13px;
-      transition:all .2s;
-    }
-    .digiy-clarify-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(34,197,94,.3)}
-    .digiy-clarify-link{
-      background:transparent;
-      border:1px solid rgba(255,255,255,.14);
-      color:rgba(234,255,241,.9);
-      padding:11px 14px; border-radius:14px;
-      font-weight:900; cursor:pointer;
-      font-size:13px;
-      transition:all .2s;
-    }
-    .digiy-clarify-link:hover{background:rgba(255,255,255,.08)}
-    .digiy-clarify-faq{
-      margin-top:12px;
-      background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:14px;
-      padding:12px;
-      color:rgba(234,255,241,.88);
-      font-weight:800;
-      line-height:1.4;
-      display:none;
-      font-size:13px;
-    }
-
-    .ndimb{
-      margin-top:14px;
-      background:rgba(250,204,21,.12);
-      border:1px solid rgba(250,204,21,.25);
-      border-radius:16px;
-      padding:14px;
-      animation:pulse 2s infinite;
-    }
-    @keyframes pulse{
-      0%,100%{border-color:rgba(250,204,21,.25)}
-      50%{border-color:rgba(250,204,21,.45)}
-    }
-    .ndimb h3{
-      margin:0;
-      font-weight:950;
-      letter-spacing:.06em;
-      color:rgba(250,204,21,.95);
-      font-size:15px;
-    }
-    .ndimb p{
-      margin:10px 0 0;
-      color:rgba(234,255,241,.9);
-      font-weight:850;
-      line-height:1.4;
-      font-size:13px;
-    }
-    .ndimb .actions{margin-top:12px;display:flex; gap:10px; flex-wrap:wrap}
-
-    .filters{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:14px;
-    }
-    @media(max-width:700px){ .filters{grid-template-columns:1fr} }
-
-    input,select,textarea{
-      width:100%; padding:12px; border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.18);
-      color:var(--text); outline:none; font-weight:800;
-      font-size:14px;
-      transition:border-color .2s;
-    }
-    input:focus,select:focus,textarea:focus{border-color:var(--green)}
-    textarea{min-height:88px; resize:vertical}
-
-    .list{display:grid; gap:12px; margin-top:14px}
-    .mission{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      padding:14px;
-      transition:all .2s;
       cursor:pointer;
+      transition:all .15s ease;
+      min-height:44px;
     }
-    .mission:hover{
-      background:rgba(255,255,255,.08);
-      border-color:rgba(34,197,94,.3);
-      transform:translateY(-2px);
+    .tabBtn.active{
+      border-color:rgba(250,204,21,.55);
+      background:rgba(250,204,21,.12);
+      color:#fff;
     }
-    .mission-header{display:flex;justify-content:space-between;align-items:start;gap:10px}
-    .m-title{font-weight:950;font-size:16px;line-height:1.3;flex:1}
-    .m-badge{
-      padding:5px 9px;border-radius:8px;
-      background:rgba(34,197,94,.15);color:#86efac;
-      font-weight:950;font-size:10px;white-space:nowrap;
-    }
-    .m-meta{
-      margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;
-      color:var(--muted);font-weight:800;font-size:12px;
-    }
-    .m-detail{
-      margin-top:8px;padding:10px;background:rgba(0,0,0,.15);
-      border-radius:10px;color:rgba(234,255,241,.85);
-      font-weight:800;font-size:12px;line-height:1.4;
-    }
-    .m-actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
-    .m-actions .btn{
-      flex:1; min-width:140px;
-      display:flex; align-items:center; justify-content:center; gap:6px;
-    }
-    .btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:white}
-    a{color:#86efac;text-decoration:none;font-weight:950}
 
-    .empty{text-align:center;padding:40px 20px;color:var(--muted);font-weight:900}
-    .empty-icon{font-size:48px;opacity:.5;margin-bottom:12px}
+    .fieldGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    @media (max-width:720px){ .fieldGrid{grid-template-columns:1fr} }
+
+    label{display:block;font-size:.86rem;font-weight:950;color:#fff;margin:10px 0 6px}
+    input, select, textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.28);
+      background:rgba(0,0,0,.18);
+      color:var(--ink);
+      padding:12px 12px;
+      font-weight:850;
+      outline:none;
+      transition:all 0.2s ease;
+      min-height:46px;
+    }
+    textarea{min-height:110px;resize:vertical}
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(250,204,21,.15);
+    }
+    .hint{display:block;color:var(--muted);font-weight:800;margin-top:6px;line-height:1.35}
+
+    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{
+      border:0; cursor:pointer;
+      border-radius:14px;
+      padding:12px 12px;
+      font-weight:1000;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(148,163,184,.28);
+      color:var(--muted);
+      transition:all 0.18s ease;
+      min-height:46px;
+    }
+    .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .btn.primary{background:var(--green);border-color:rgba(34,197,94,.25);color:#022c22}
+    .btn.gold{background:rgba(250,204,21,.14);border-color:rgba(250,204,21,.35);color:#fde68a}
+    .btn.orange{background:rgba(249,115,22,.16);border-color:rgba(249,115,22,.35);color:#fed7aa}
+
+    .note{
+      margin-top:10px;
+      padding:10px 12px;border-radius:14px;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      white-space:pre-wrap;
+      display:none;
+    }
+    .note.ok{border-color:rgba(34,197,94,.35);color:#bbf7d0;background:rgba(34,197,94,.09)}
+    .note.bad{border-color:rgba(239,68,68,.35);color:#fecaca;background:rgba(239,68,68,.09)}
+    .note.warn{border-color:rgba(250,204,21,.35);color:#fde68a;background:rgba(250,204,21,.09)}
+
+    .list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    .item{
+      border:1px solid rgba(148,163,184,.22);
+      background:rgba(255,255,255,.02);
+      border-radius:16px;
+      padding:12px;
+      display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
+    }
+    .itemLeft{min-width:0}
+    .itemTitle{font-weight:1100}
+    .itemMeta{color:var(--muted);font-weight:850;font-size:.92rem;margin-top:4px;line-height:1.35}
+    .itemBtns{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+    .tag{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:6px 9px;border-radius:999px;
+      border:1px solid rgba(148,163,184,.22);
+      color:var(--muted);font-weight:950;font-size:.80rem;
+      background:rgba(255,255,255,.02);
+      margin-top:6px;
+    }
+    .tag.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.10);color:#bbf7d0}
+    .tag.gold{border-color:rgba(250,204,21,.35);background:rgba(250,204,21,.10);color:#fde68a}
+    .tag.orange{border-color:rgba(249,115,22,.35);background:rgba(249,115,22,.10);color:#fed7aa}
+
+    .hr{border:0;border-top:1px solid rgba(148,163,184,.18);margin:14px 0}
 
     .footer{
-      text-align:center;
-      color:rgba(234,255,241,.65);
-      font-weight:800;
-      padding:24px 10px;
-      font-size:12px;
-      border-top:1px solid var(--line);
-      background:rgba(6,27,20,.6);
-    }
-
-    .modal{
-      position:fixed; inset:0; z-index:500;
-      display:none;
-      background:rgba(0,0,0,.65);
-      backdrop-filter:blur(8px);
-      padding:14px;
-      overflow-y:auto;
-    }
-    .modal.open{display:flex;align-items:center;justify-content:center}
-    .modal-card{
-      width:min(720px, 100%);
-      background:rgba(6,27,20,.98);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:18px;
-      box-shadow:0 20px 60px rgba(0,0,0,.6);
-      padding:16px;
-      max-height:90vh;
-      overflow-y:auto;
-    }
-    .modal-head{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      padding-bottom:12px;
-    }
-    .modal-title{font-weight:950;letter-spacing:.06em;font-size:17px}
-    .modal-subtitle{margin-top:4px;color:rgba(234,255,241,.75);font-weight:850;font-size:12px}
-    .modal-close{
-      border:1px solid rgba(255,255,255,.14);
-      background:transparent;color:var(--text);
-      border-radius:12px;padding:9px 12px;font-weight:950;cursor:pointer;font-size:13px;
-      transition:all .2s;
-    }
-    .modal-close:hover{background:rgba(255,255,255,.08)}
-    .grid{
       margin-top:14px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    @media(max-width:700px){ .grid{grid-template-columns:1fr} }
-    label{display:block;font-weight:900;opacity:.9;margin-bottom:6px;font-size:13px}
-    .hint{
-      margin-top:12px;
-      color:rgba(234,255,241,.78);
-      font-weight:850;
-      line-height:1.4;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:12px;
-      font-size:12px;
-    }
-    .danger{
-      margin-top:12px;
-      background:rgba(239,68,68,.12);
-      border:1px solid rgba(239,68,68,.25);
-      border-radius:14px;
-      padding:12px;
-      color:rgba(255,230,230,.95);
-      font-weight:900;
-      display:none;
-      font-size:13px;
-      line-height:1.4;
-    }
-    .success-msg{
-      margin-top:12px;
-      background:rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.25);
-      border-radius:14px;
-      padding:12px;
-      color:#86efac;
-      font-weight:900;
-      display:none;
-      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+      font-size:.9rem;
+      text-align:center;
+      opacity:.95;
     }
 
-    .refresh-btn{
-      position:fixed; bottom:20px; right:20px;
-      width:56px;height:56px;border-radius:50%;
-      border:none;background:linear-gradient(135deg,var(--green),var(--green2));
-      color:#052e16;font-size:24px;cursor:pointer;
-      box-shadow:0 4px 16px rgba(0,0,0,.4);
-      transition:all .2s; z-index:99;
+    @media (max-width:720px){
+      .btnRow{flex-direction:column}
+      .btn{width:100%}
+      .item{flex-direction:column}
+      .itemBtns{align-items:stretch}
     }
-    .refresh-btn:hover{transform:scale(1.1) rotate(180deg)}
-    .refresh-btn:active{transform:scale(0.95)}
   </style>
 </head>
-
 <body>
-<header>
-  <div class="top">
-    <div class="brand">♾️ DIGIY JËF
-      <small>Missions rapides • terrain • WhatsApp direct</small>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-      <button class="btn btn-ghost" id="btn-home" type="button">← HUB</button>
-      <button class="btn btn-primary" id="btn-new" type="button">➕ Publier</button>
-    </div>
-  </div>
-</header>
+<div class="wrap">
 
-<main>
-  <div class="card">
-    <div class="row">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">♾️</div>
       <div>
-        <div style="font-weight:950;font-size:16px">🔍 Trouver une mission</div>
-        <div id="toast" class="pill status-loading" style="margin-top:8px">
-          <span>⏳</span>
-          <span>Chargement…</span>
+        <h1>DIGIY JOBS — JËF</h1>
+        <div class="sub">
+          Travail & apprentissage — <strong>contact direct WhatsApp</strong> • 0% commission • terrain first.
         </div>
       </div>
-      <div class="pill" id="countPill">
-        <span>📋</span>
-        <span id="countText">0 mission</span>
-      </div>
     </div>
 
-    <div class="stats-row" id="statsRow" style="display:none">
-      <div class="stat-card">
-        <div class="stat-value" id="statTotal">0</div>
-        <div class="stat-label">Missions visibles</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statToday">0</div>
-        <div class="stat-label">Aujourd'hui</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="statZones">0</div>
-        <div class="stat-label">Zones actives</div>
-      </div>
-    </div>
-
-    <div class="ndimb" id="ndimbBox" style="display:none">
-      <h3>♾️ NDIMBAL — Demande venue du HUB</h3>
-      <p id="ndimbText">Contexte…</p>
-      <div class="actions">
-        <button class="btn btn-primary" id="btn-use-ctx" type="button">✅ Publier cette mission</button>
-        <button class="btn btn-ghost" id="btn-clear-ctx" type="button">🗑️ Ignorer</button>
-      </div>
-    </div>
-
-    <div class="digiy-clarify">
-      <div class="digiy-clarify-title">♾️ DIGIY JËF vs DIGIY JOBS PRO</div>
-      <div class="digiy-clarify-text">
-        <b>JËF</b> : missions rapides, annonces simples, ouvertes à tous.<br/>
-        <b>JOBS PRO</b> : recrutement structuré, gestion pro, candidats qualifiés.
-      </div>
-      <div class="digiy-clarify-actions">
-        <a class="digiy-clarify-btn" id="btn-jobs-pro" href="#">🎯 Ouvrir DIGIY JOBS PRO</a>
-        <button class="digiy-clarify-link" id="btn-why" type="button">❓ Pourquoi deux ?</button>
-      </div>
-      <div class="digiy-clarify-faq" id="clarify-faq">
-        <div><b>🤔 Quand j'utilise JËF ?</b><br/>Pour du ponctuel : 2h, 1 jour, urgence, petites tâches.</div>
-        <div style="margin-top:8px"><b>💼 Quand j'utilise JOBS PRO ?</b><br/>Pour recruter régulièrement, avec suivi candidats, tri, et processus structuré.</div>
-      </div>
-    </div>
-
-    <div class="filters">
-      <div><input id="q" placeholder="🔍 Ex: livraison, ménage, peinture, dépannage…"/></div>
-      <div>
-        <select id="zone">
-          <option value="">📍 Toutes zones</option>
-          <option value="Saly">Saly</option>
-          <option value="Dakar">Dakar</option>
-          <option value="Mbour">Mbour</option>
-          <option value="Thiès">Thiès</option>
-          <option value="Autre">Autre</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="list" id="list">
-      <div class="mission">
-        <div style="height:20px;background:rgba(255,255,255,.1);border-radius:8px;width:70%"></div>
-        <div style="height:14px;background:rgba(255,255,255,.08);border-radius:6px;width:50%;margin-top:10px"></div>
-      </div>
-      <div class="mission">
-        <div style="height:20px;background:rgba(255,255,255,.1);border-radius:8px;width:65%"></div>
-        <div style="height:14px;background:rgba(255,255,255,.08);border-radius:6px;width:55%;margin-top:10px"></div>
-      </div>
+    <div class="pills">
+      <div class="pill ok">✅ Simple</div>
+      <div class="pill warn">🟡 V1</div>
+      <div class="pill"><strong>Astuce :</strong> clique “Contacter” → WhatsApp s’ouvre</div>
     </div>
   </div>
 
-  <div class="footer">
-    DIGIYLYFE ♾️ — direct au peuple • 0% commission • <a href="#" id="footerHub">Retour HUB</a>
-  </div>
-</main>
+  <div class="grid">
 
-<button class="refresh-btn" onclick="window.DIGIY_JEF_LOAD && window.DIGIY_JEF_LOAD()" title="Actualiser">🔄</button>
-
-<div class="modal" id="modal">
-  <div class="modal-card">
-    <div class="modal-head">
-      <div>
-        <div class="modal-title">➕ Publier une mission (JËF)</div>
-        <div class="modal-subtitle">Simple, direct, terrain — contact WhatsApp direct.</div>
+    <section class="card">
+      <div class="cardHead">
+        <div>
+          <h2>🔎 Trouver quelqu’un</h2>
+          <small>Filtre par métier et ville, puis contacte direct.</small>
+        </div>
+        <div class="tabs">
+          <button class="tabBtn active" id="tabWorker" type="button">👷 Trouver un travailleur</button>
+          <button class="tabBtn" id="tabApprentice" type="button">👶 Trouver un apprenti</button>
+        </div>
       </div>
-      <button class="modal-close" id="modalClose" type="button">✕</button>
-    </div>
+      <div class="cardBody">
 
-    <div class="grid">
-      <div>
-        <label>Titre mission <span style="color:#f87171">*</span></label>
-        <input id="f_title" placeholder="Ex: Aide déménagement 2h, Livraison urgente…">
+        <div class="fieldGrid">
+          <div>
+            <label>Métier</label>
+            <select id="fTrade">
+              <option value="">— Tous —</option>
+              <option>Ménage</option>
+              <option>Gardien</option>
+              <option>Bricoleur</option>
+              <option>Plomberie</option>
+              <option>Électricité</option>
+              <option>Mécanique</option>
+              <option>Maçonnerie</option>
+              <option>Menuiserie</option>
+              <option>Soudure</option>
+              <option>Vente boutique</option>
+              <option>Aide-commerçant</option>
+              <option>Cuisine</option>
+              <option>Aide-cuisine</option>
+              <option>Boulangerie</option>
+              <option>Boucherie</option>
+              <option>Service restaurant</option>
+              <option>Manutention</option>
+              <option>Chauffeur</option>
+            </select>
+          </div>
+          <div>
+            <label>Ville</label>
+            <input id="fCity" placeholder="ex: Dakar, Saly, Rufisque..." maxlength="40" />
+          </div>
+        </div>
+
+        <div class="btnRow">
+          <button class="btn gold" id="btnSearch" type="button">🔎 Rechercher</button>
+          <button class="btn" id="btnClear" type="button">↻ Réinitialiser</button>
+          <button class="btn orange" id="btnPost" type="button">➕ Je me rends disponible</button>
+        </div>
+
+        <div class="note" id="searchNote"></div>
+
+        <div class="list" id="results"></div>
+
+        <div class="footer">
+          DIGIY met en relation. Le travail / l’apprentissage se fait directement entre vous.
+        </div>
+
       </div>
-      <div>
-        <label>Zone <span style="color:#f87171">*</span></label>
-        <select id="f_zone">
-          <option value="">Choisir zone</option>
-          <option value="Saly">Saly</option>
-          <option value="Dakar">Dakar</option>
-          <option value="Mbour">Mbour</option>
-          <option value="Thiès">Thiès</option>
-          <option value="Autre">Autre</option>
+    </section>
+
+    <section class="card" id="postCard" style="display:none">
+      <div class="cardHead">
+        <div>
+          <h2>➕ Se rendre disponible</h2>
+          <small>Simple, rapide, terrain. 1 minute.</small>
+        </div>
+        <div class="tabs">
+          <button class="tabBtn active" id="postAsWorker" type="button">👷 Je propose mon travail</button>
+          <button class="tabBtn" id="postAsApprentice" type="button">👶 Je veux apprendre</button>
+        </div>
+      </div>
+      <div class="cardBody">
+
+        <div class="fieldGrid">
+          <div>
+            <label>Prénom *</label>
+            <input id="pName" placeholder="ex: Awa, Mamadou..." maxlength="30" />
+            <span class="hint">On garde ça simple.</span>
+          </div>
+          <div>
+            <label>Téléphone WhatsApp *</label>
+            <input id="pPhone" placeholder="+221 77 123 45 67" maxlength="20" />
+            <span class="hint">C’est ce numéro qui sera contacté.</span>
+          </div>
+        </div>
+
+        <div class="fieldGrid">
+          <div>
+            <label>Ville *</label>
+            <input id="pCity" placeholder="ex: Dakar, Saly..." maxlength="40" />
+          </div>
+          <div>
+            <label>Métier *</label>
+            <select id="pTrade">
+              <option value="">— Choisir —</option>
+              <option>Ménage</option>
+              <option>Gardien</option>
+              <option>Bricoleur</option>
+              <option>Plomberie</option>
+              <option>Électricité</option>
+              <option>Mécanique</option>
+              <option>Maçonnerie</option>
+              <option>Menuiserie</option>
+              <option>Soudure</option>
+              <option>Vente boutique</option>
+              <option>Aide-commerçant</option>
+              <option>Cuisine</option>
+              <option>Aide-cuisine</option>
+              <option>Boulangerie</option>
+              <option>Boucherie</option>
+              <option>Service restaurant</option>
+              <option>Manutention</option>
+              <option>Chauffeur</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="apprenticeExtra" style="display:none">
+          <div class="fieldGrid">
+            <div>
+              <label>Âge (optionnel)</label>
+              <select id="pAge">
+                <option value="">—</option>
+                <option>12–14</option>
+                <option>15–17</option>
+                <option>18–20</option>
+                <option>21–25</option>
+                <option>26+</option>
+              </select>
+              <span class="hint">Optionnel. Juste pour situer.</span>
+            </div>
+            <div>
+              <label>Petit message (optionnel)</label>
+              <input id="pMsg" placeholder="ex: motivé, dispo matin..." maxlength="80" />
+              <span class="hint">80 caractères max. Court.</span>
+            </div>
+          </div>
+        </div>
+
+        <label>Disponible maintenant ?</label>
+        <select id="pAvailable">
+          <option value="yes">✅ Oui</option>
+          <option value="no">🟡 Pas pour le moment</option>
         </select>
+
+        <div class="btnRow">
+          <button class="btn primary" id="btnSaveLocal" type="button">💾 Enregistrer (sur ce téléphone)</button>
+          <button class="btn" id="btnClosePost" type="button">✖ Fermer</button>
+        </div>
+
+        <div class="note" id="postNote"></div>
+
+        <hr class="hr"/>
+
+        <div class="footer">
+          V1 : on stocke sur le téléphone (simple). V2 : synchro Supabase.
+        </div>
+
       </div>
-      <div>
-        <label>Téléphone (WhatsApp) <span style="color:#f87171">*</span></label>
-        <input id="f_phone" type="tel" placeholder="+221 77 000 00 00">
-      </div>
-      <div>
-        <label>Publication</label>
-        <input value="⏳ En attente validation (auto)" disabled style="opacity:.8">
-      </div>
-    </div>
+    </section>
 
-    <div style="margin-top:12px">
-      <label>Détails de la mission</label>
-      <textarea id="f_note" placeholder="Infos utiles : durée, prix estimé, lieu précis, urgence…"></textarea>
-    </div>
-
-    <div class="hint">
-      💡 <b>Conseil</b> : Sois précis sur durée, lieu, rémunération. <br/>
-      🔒 <b>Note</b> : toute mission est d’abord <b>validée</b> avant d’être visible.
-    </div>
-
-    <div class="success-msg" id="publishSuccess"></div>
-    <div class="danger" id="publishError"></div>
-
-    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-      <button class="btn btn-ghost" id="btnDraft" type="button">💾 Enregistrer (pending)</button>
-      <button class="btn btn-primary" id="btnPublish" type="button">🚀 Envoyer</button>
-    </div>
   </div>
 </div>
 
 <script>
-/* ======================================================
-   SUPABASE INIT (singleton global)
-====================================================== */
-(function initSupabaseOnce(){
-  const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-  const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
-
-  if (!window.supabase || !window.supabase.createClient) {
-    console.error("Supabase SDK introuvable. Vérifie le script CDN.");
-    return;
-  }
-  if (!window.digiySupabase) {
-    window.digiySupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-})();
-
-/* ======================================================
-   DIGIY JËF — PUBLIC
-====================================================== */
 (function(){
-  const supabase = window.digiySupabase;
+  "use strict";
 
-  const basePath = location.pathname.includes("/digiy-hub/") ? "/digiy-hub/" : "/";
+  // =========================
+  // V1 SIMPLE: stockage local
+  // =========================
+  // On démarre sans base, pour livrer vite.
+  // Format:
+  // { id, type: "worker"|"apprentice", name, phone, city, trade, age, msg, available, created_at }
+  const KEY = "digiy_jobs_v1";
+  const nowISO = ()=> new Date().toISOString();
 
-  const list = document.getElementById("list");
-  const q = document.getElementById("q");
-  const zone = document.getElementById("zone");
-  const countText = document.getElementById("countText");
-  const toast = document.getElementById("toast");
-  const statsRow = document.getElementById("statsRow");
-  const statTotal = document.getElementById("statTotal");
-  const statToday = document.getElementById("statToday");
-  const statZones = document.getElementById("statZones");
-
-  document.getElementById("footerHub").href = basePath;
-  document.getElementById("btn-home").onclick = ()=> location.href = basePath;
-
-  // ⚠️ mets le vrai lien si tu as un jobs pro existant, sinon laisse un placeholder
-  document.getElementById("btn-jobs-pro").href = basePath + "digiy-jobs-pro.html";
-
-  document.getElementById("btn-why").onclick = ()=>{
-    const faq = document.getElementById("clarify-faq");
-    faq.style.display = (faq.style.display === "none" || !faq.style.display) ? "block" : "none";
-  };
-
-  const modal = document.getElementById("modal");
-  const modalClose = document.getElementById("modalClose");
-  const publishError = document.getElementById("publishError");
-  const publishSuccess = document.getElementById("publishSuccess");
-  const f_title = document.getElementById("f_title");
-  const f_zone = document.getElementById("f_zone");
-  const f_phone = document.getElementById("f_phone");
-  const f_note  = document.getElementById("f_note");
-
-  function openModal(){
-    publishError.style.display="none";
-    publishSuccess.style.display="none";
-    modal.classList.add("open");
+  function loadAll(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    }catch(_e){
+      return [];
+    }
   }
-  function closeModal(){ modal.classList.remove("open"); }
-  modalClose.onclick = closeModal;
-  modal.onclick = (e)=>{ if(e.target===modal) closeModal(); };
+  function saveAll(arr){
+    localStorage.setItem(KEY, JSON.stringify(arr || []));
+  }
 
-  document.getElementById("btn-new").onclick = openModal;
-
-  // NDIMBAL context
-  const ndimbBox  = document.getElementById("ndimbBox");
-  const ndimbText = document.getElementById("ndimbText");
-
+  function sanitizePhone(p){
+    return String(p||"").replace(/\s+/g,"").trim();
+  }
+  function validPhone(p){
+    // simple check Sénégal / international
+    const s = sanitizePhone(p);
+    return /^\+?\d{8,15}$/.test(s);
+  }
   function esc(s){
-    return String(s ?? "").replace(/[&<>"']/g, m => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#039;"
-    }[m]));
+    return String(s||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
   }
-  function norm(s){ return (s||"").toLowerCase(); }
-  function cleanPhone(p){
-    const raw = String(p||"").trim();
-    const plus = raw.startsWith("+") ? "+" : "";
-    const digits = raw.replace(/[^\d]/g,"");
-    return plus + digits;
+  function showNote(el, msg, type){
+    el.style.display="block";
+    el.classList.remove("ok","bad","warn");
+    if(type) el.classList.add(type);
+    el.textContent = msg;
   }
-  function timeLabel(d){
-    const diff = Math.floor((Date.now() - new Date(d).getTime())/86400000);
-    if(diff <= 0) return "Aujourd'hui";
-    if(diff === 1) return "Hier";
-    if(diff < 7) return `Il y a ${diff}j`;
-    if(diff < 30) return `Il y a ${Math.floor(diff/7)}sem`;
-    return `Il y a ${Math.floor(diff/30)}mois`;
-  }
-  function isNew(d){ return new Date(d) > Date.now() - 86400000; }
-
-  function getCtx(){
-    try{ return JSON.parse(localStorage.getItem("digiy_jef_context") || "null"); }
-    catch(e){ return null; }
-  }
-  function clearCtx(){ localStorage.removeItem("digiy_jef_context"); }
-
-  const ctx = getCtx();
-  if(ctx && (ctx.action || ctx.from || ctx.title || ctx.note)){
-    ndimbBox.style.display="block";
-    const action = ctx.action || "NDIMBAL";
-    const from   = ctx.from   || "HUB";
-    ndimbText.innerHTML = `Reçu: <b>${esc(action)}</b> depuis <b>${esc(from)}</b>. Tu veux publier une mission maintenant ?`;
+  function hideNote(el){
+    el.style.display="none";
+    el.textContent="";
+    el.classList.remove("ok","bad","warn");
   }
 
-  document.getElementById("btn-clear-ctx").onclick = ()=>{
-    clearCtx();
-    ndimbBox.style.display="none";
-  };
+  // =========================
+  // UI refs
+  // =========================
+  const tabWorker = document.getElementById("tabWorker");
+  const tabApprentice = document.getElementById("tabApprentice");
+  const fTrade = document.getElementById("fTrade");
+  const fCity = document.getElementById("fCity");
+  const btnSearch = document.getElementById("btnSearch");
+  const btnClear = document.getElementById("btnClear");
+  const btnPost = document.getElementById("btnPost");
+  const results = document.getElementById("results");
+  const searchNote = document.getElementById("searchNote");
 
-  document.getElementById("btn-use-ctx").onclick = ()=>{
-    const c = getCtx() || {};
-    f_title.value = (c.title || "♾️ NDIMBAL — Besoin d'aide");
-    f_zone.value  = (c.zone  || "");
-    f_note.value  = (c.note  || "Demande envoyée depuis le HUB (NDIMBAL).");
-    openModal();
-  };
+  const postCard = document.getElementById("postCard");
+  const postAsWorker = document.getElementById("postAsWorker");
+  const postAsApprentice = document.getElementById("postAsApprentice");
+  const apprenticeExtra = document.getElementById("apprenticeExtra");
 
-  function updateStatus(type, text){
-    toast.className = "pill status-" + type;
-    toast.innerHTML = `
-      <span>${type === "ok" ? "✅" : type === "error" ? "❌" : "⏳"}</span>
-      <span>${esc(text)}</span>
-    `;
+  const pName = document.getElementById("pName");
+  const pPhone = document.getElementById("pPhone");
+  const pCity = document.getElementById("pCity");
+  const pTrade = document.getElementById("pTrade");
+  const pAge = document.getElementById("pAge");
+  const pMsg = document.getElementById("pMsg");
+  const pAvailable = document.getElementById("pAvailable");
+  const btnSaveLocal = document.getElementById("btnSaveLocal");
+  const btnClosePost = document.getElementById("btnClosePost");
+  const postNote = document.getElementById("postNote");
+
+  // =========================
+  // State
+  // =========================
+  let filterType = "worker";     // "worker" | "apprentice"
+  let postType = "worker";       // "worker" | "apprentice"
+
+  function setFilterType(t){
+    filterType = t;
+    tabWorker.classList.toggle("active", t==="worker");
+    tabApprentice.classList.toggle("active", t==="apprentice");
+    runSearch();
   }
 
-  let cache = [];
-
-  function updateStats(){
-    const today = cache.filter(m => isNew(m.created_at)).length;
-    const zones = new Set(cache.map(m => m.zone).filter(Boolean)).size;
-    statTotal.textContent = cache.length;
-    statToday.textContent = today;
-    statZones.textContent = zones;
-    statsRow.style.display = cache.length ? "grid" : "none";
+  function setPostType(t){
+    postType = t;
+    postAsWorker.classList.toggle("active", t==="worker");
+    postAsApprentice.classList.toggle("active", t==="apprentice");
+    apprenticeExtra.style.display = (t==="apprentice") ? "block" : "none";
   }
 
-  function render(){
-    const qq = norm(q.value);
-    const zz = zone.value;
+  tabWorker.addEventListener("click", ()=> setFilterType("worker"));
+  tabApprentice.addEventListener("click", ()=> setFilterType("apprentice"));
 
-    const filtered = cache.filter(m=>{
-      const okQ = !qq || norm(m.title).includes(qq) || norm(m.note||"").includes(qq);
-      const okZ = !zz || m.zone === zz;
-      return okQ && okZ;
-    });
+  postAsWorker.addEventListener("click", ()=> setPostType("worker"));
+  postAsApprentice.addEventListener("click", ()=> setPostType("apprentice"));
 
-    countText.textContent = filtered.length + (filtered.length>1 ? " missions" : " mission");
-    list.innerHTML = "";
+  btnPost.addEventListener("click", ()=>{
+    hideNote(postNote);
+    postCard.style.display = "block";
+    window.scrollTo({ top: document.body.scrollHeight, behavior:"smooth" });
+  });
 
-    if(!filtered.length){
-      list.innerHTML = `
-        <div class="empty">
-          <div class="empty-icon">🔍</div>
-          <div>${qq || zz ? "Aucune mission trouvée pour ces critères" : "Aucune mission disponible"}</div>
-        </div>
-      `;
+  btnClosePost.addEventListener("click", ()=>{
+    postCard.style.display = "none";
+    hideNote(postNote);
+  });
+
+  btnClear.addEventListener("click", ()=>{
+    fTrade.value = "";
+    fCity.value = "";
+    hideNote(searchNote);
+    runSearch();
+  });
+
+  btnSearch.addEventListener("click", runSearch);
+  fTrade.addEventListener("change", runSearch);
+  fCity.addEventListener("input", ()=>{
+    // petit debounce simple
+    clearTimeout(window.__dj_t);
+    window.__dj_t = setTimeout(runSearch, 160);
+  });
+
+  // =========================
+  // WhatsApp helper
+  // =========================
+  function waLink(phone, text){
+    const p = sanitizePhone(phone).replace(/^\+/, "");
+    const msg = encodeURIComponent(text || "");
+    return "https://wa.me/" + p + (msg ? ("?text=" + msg) : "");
+  }
+
+  // =========================
+  // Render
+  // =========================
+  function renderList(items){
+    results.innerHTML = "";
+
+    if(!items.length){
+      showNote(searchNote, "ℹ️ Aucun profil pour l’instant. Clique “Je me rends disponible” pour être visible.", "warn");
       return;
     }
+    showNote(searchNote, `✅ ${items.length} profil(s) trouvé(s).`, "ok");
 
-    const seen = new Set();
-    filtered.forEach(m=>{
-      const key = `${(m.title||"").trim()}|${(m.zone||"").trim()}|${(m.phone||"").trim()}|${(m.created_at||"")}`;
-      if(seen.has(key)) return;
-      seen.add(key);
+    items.forEach(x=>{
+      const t = x.type === "apprentice" ? "Apprenti" : "Travailleur";
+      const tagClass = x.type === "apprentice" ? "orange" : "ok";
+      const dispo = x.available === "yes" ? "✅ Dispo" : "🟡 Pas dispo";
+      const age = x.type==="apprentice" && x.age ? ` • Âge: ${esc(x.age)}` : "";
+      const msg = x.msg ? ` • "${esc(x.msg)}"` : "";
+      const when = x.created_at ? x.created_at.slice(0,10) : "";
 
-      const phoneDigits = cleanPhone(m.phone).replace(/\+/g, "");
-      const waMsg = encodeURIComponent(`DIGIY JËF ♾️ — Je suis intéressé par: ${m.title}`);
-      const waLink = phoneDigits ? `https://wa.me/${phoneDigits}?text=${waMsg}` : "#";
+      const hello = (x.type==="apprentice")
+        ? `Bonjour, je cherche un apprenti en ${x.trade || "métier"} à ${x.city || "ma ville"}.`
+        : `Bonjour, je cherche quelqu’un pour ${x.trade || "un travail"} à ${x.city || "ma ville"}.`;
 
       const div = document.createElement("div");
-      div.className = "mission";
+      div.className = "item";
       div.innerHTML = `
-        <div class="mission-header">
-          <div class="m-title">${esc(m.title)}</div>
-          ${isNew(m.created_at) ? '<div class="m-badge">NEW</div>' : ''}
+        <div class="itemLeft">
+          <div class="itemTitle">${esc(x.name || "Profil")} • ${esc(x.trade || "—")}</div>
+          <div class="itemMeta">
+            📍 ${esc(x.city || "—")} • ${dispo}${age}${msg}<br>
+            📅 Ajouté: ${esc(when || "—")}
+          </div>
+          <div class="tag ${tagClass}">${x.type==="apprentice" ? "👶 APPRENTI" : "👷 TRAVAILLEUR"}</div>
         </div>
-        <div class="m-meta">
-          <span class="pill">📍 ${esc(m.zone || "Zone non précisée")}</span>
-          <span class="pill">📞 ${esc(m.phone || "—")}</span>
-          ${m.created_at ? `<span class="pill">🕒 ${esc(timeLabel(m.created_at))}</span>` : ''}
-        </div>
-        ${m.note ? `<div class="m-detail">📝 ${esc(m.note)}</div>` : ''}
-        <div class="m-actions">
-          ${phoneDigits
-            ? `<a class="btn btn-wa" href="${waLink}" target="_blank" rel="noopener">💬 WhatsApp direct</a>`
-            : `<button class="btn btn-ghost" type="button" onclick="alert('⚠️ Numéro manquant')">💬 WhatsApp</button>`
-          }
-          ${phoneDigits ? `<a class="btn btn-ghost" href="tel:${cleanPhone(m.phone)}">📞 Appeler</a>` : ''}
+        <div class="itemBtns">
+          <a class="btn primary" target="_blank" rel="noopener"
+             href="${waLink(x.phone, hello)}">💬 Contacter</a>
+          <button class="btn" type="button" data-copy="${esc(x.phone||"")}">📋 Copier</button>
         </div>
       `;
+      results.appendChild(div);
+    });
 
-      div.onclick = (e)=>{
-        if(e.target.tagName === "A" || e.target.tagName === "BUTTON") return;
-        if(phoneDigits) window.open(waLink, "_blank", "noopener");
-      };
-
-      list.appendChild(div);
+    results.querySelectorAll("[data-copy]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        try{
+          const p = b.getAttribute("data-copy") || "";
+          await navigator.clipboard.writeText(p);
+          showNote(searchNote, "✅ Numéro copié.", "ok");
+        }catch(_e){
+          showNote(searchNote, "⚠️ Impossible de copier. Copie manuelle.", "warn");
+        }
+      });
     });
   }
 
-  async function load(){
-    try{
-      if(!supabase || typeof supabase.from !== "function"){
-        updateStatus("error", "Supabase client KO");
-        console.error("Supabase client invalid:", supabase);
-        return;
-      }
+  function runSearch(){
+    hideNote(searchNote);
 
-      updateStatus("loading", "Chargement…");
+    const trade = String(fTrade.value||"").trim().toLowerCase();
+    const city = String(fCity.value||"").trim().toLowerCase();
+    const all = loadAll();
 
-      // ✅ PUBLIC : on ne lit QUE approved
-      const { data, error } = await supabase
-        .from("jef_missions")
-        .select("title,zone,phone,note,status,created_at")
-        .eq("status","approved")
-        .order("created_at",{ascending:false})
-        .limit(200);
-
-      if(error){
-        updateStatus("error", "Erreur Supabase");
-        console.error("Load error full:", error);
-        return;
-      }
-
-      cache = data || [];
-      updateStatus("ok", `${cache.length} chargées`);
-      updateStats();
-      render();
-
-    }catch(e){
-      updateStatus("error", "Erreur chargement");
-      console.error("Load exception:", e);
-    }
-  }
-
-  // expose for refresh button
-  window.DIGIY_JEF_LOAD = load;
-
-  async function createMission(){
-    publishError.style.display="none";
-    publishSuccess.style.display="none";
-
-    const title = f_title.value.trim();
-    const zoneVal = f_zone.value.trim();
-    const phoneVal = cleanPhone(f_phone.value);
-    const noteVal = f_note.value.trim();
-
-    if(!title){
-      publishError.style.display="block";
-      publishError.textContent="⚠️ Le titre de la mission est obligatoire.";
-      return false;
-    }
-    if(!zoneVal){
-      publishError.style.display="block";
-      publishError.textContent="⚠️ La zone est obligatoire.";
-      return false;
-    }
-    if(!phoneVal){
-      publishError.style.display="block";
-      publishError.textContent="⚠️ Le numéro WhatsApp est obligatoire.";
-      return false;
-    }
-
-    try{
-      // ✅ PUBLIC : status FORCÉ à pending
-      const row = { title, zone: zoneVal, phone: phoneVal, note: noteVal || null, status: "pending" };
-
-      const btnPublish = document.getElementById("btnPublish");
-      const btnDraft = document.getElementById("btnDraft");
-      btnPublish.disabled = true;
-      btnDraft.disabled = true;
-
-      const { data, error } = await supabase
-        .from("jef_missions")
-        .insert(row)
-        .select()
-        .single();
-
-      if(error){
-        publishError.style.display="block";
-        publishError.innerHTML = `❌ Erreur insertion : <b>${esc(error.message || "Erreur")}</b>`;
-        console.error("Insert error full:", error);
-
-        if(String(error.message||"").toLowerCase().includes("row-level security")){
-          publishError.innerHTML += `<div style="margin-top:8px">
-            🔒 RLS bloque l'insertion. Vérifie la policy <b>insert pending</b>.
-          </div>`;
-        }
-        btnPublish.disabled = false;
-        btnDraft.disabled = false;
-        return false;
-      }
-
-      clearCtx();
-
-      publishSuccess.style.display="block";
-      publishSuccess.textContent = "✅ Mission envoyée ! Elle sera visible après validation.";
-
-      setTimeout(()=>{
-        closeModal();
-        f_title.value=""; f_zone.value=""; f_phone.value=""; f_note.value="";
-        btnPublish.disabled=false;
-        btnDraft.disabled=false;
-        load(); // reload approved list
-      }, 1400);
-
+    const filtered = all.filter(x=>{
+      if(x.type !== filterType) return false;
+      if(trade && String(x.trade||"").toLowerCase() !== trade) return false;
+      if(city && !String(x.city||"").toLowerCase().includes(city)) return false;
       return true;
+    }).sort((a,b)=>{
+      const ta = String(a.created_at||"");
+      const tb = String(b.created_at||"");
+      return tb.localeCompare(ta);
+    });
 
-    }catch(e){
-      publishError.style.display="block";
-      publishError.textContent="❌ Exception insertion (voir console).";
-      console.error("Insert exception:", e);
-      document.getElementById("btnPublish").disabled=false;
-      document.getElementById("btnDraft").disabled=false;
-      return false;
-    }
+    renderList(filtered);
   }
 
-  // Les deux boutons font pareil (pending only)
-  document.getElementById("btnDraft").onclick  = ()=> createMission();
-  document.getElementById("btnPublish").onclick = ()=> createMission();
+  // =========================
+  // Save local
+  // =========================
+  btnSaveLocal.addEventListener("click", ()=>{
+    hideNote(postNote);
 
-  q.oninput = render;
-  zone.onchange = render;
+    const name = String(pName.value||"").trim();
+    const phone = String(pPhone.value||"").trim();
+    const city = String(pCity.value||"").trim();
+    const trade = String(pTrade.value||"").trim();
+    const available = String(pAvailable.value||"yes");
+    const age = (postType==="apprentice") ? String(pAge.value||"").trim() : "";
+    const msg = (postType==="apprentice") ? String(pMsg.value||"").trim() : "";
 
-  load();
-  setInterval(load, 120000);
+    if(name.length < 2) return showNote(postNote, "❌ Mets ton prénom (au moins 2 lettres).", "bad");
+    if(!validPhone(phone)) return showNote(postNote, "❌ Téléphone invalide. Mets un numéro international (ex: +221...).", "bad");
+    if(city.length < 2) return showNote(postNote, "❌ Mets ta ville.", "bad");
+    if(!trade) return showNote(postNote, "❌ Choisis un métier.", "bad");
+
+    const all = loadAll();
+    const entry = {
+      id: "dj_" + Math.random().toString(36).slice(2,10),
+      type: postType,
+      name,
+      phone: sanitizePhone(phone),
+      city,
+      trade,
+      age: age || "",
+      msg: msg || "",
+      available,
+      created_at: nowISO()
+    };
+    all.unshift(entry);
+    saveAll(all);
+
+    showNote(postNote, "✅ Enregistré ! Tu es visible sur ce téléphone. (V2 : synchro).", "ok");
+
+    // reset small
+    pName.value = "";
+    pPhone.value = "";
+    pCity.value = "";
+    pTrade.value = "";
+    pAge.value = "";
+    pMsg.value = "";
+    pAvailable.value = "yes";
+
+    postCard.style.display = "none";
+    runSearch();
+    window.scrollTo({ top: 0, behavior:"smooth" });
+  });
+
+  // Init
+  setFilterType("worker");
+  setPostType("worker");
+  runSearch();
 })();
 </script>
 </body>
