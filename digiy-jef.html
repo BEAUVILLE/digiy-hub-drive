@@ -1,662 +1,104 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0B1020" />
-  <title>DIGIY JOBS — JËF ♾️ (Jobs & Apprentis)</title>
-  <meta name="description" content="DIGIY JOBS (JËF) — Trouver un job, recruter, ou apprendre un métier. Contact direct WhatsApp. 0% commission." />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0b1020" />
+<title>DIGIY JOBS (JËF) ∞ — Accueil</title>
 
-  <style>
-    :root{
-      --bg:#020617;
-      --bg2:#0b1020;
-      --card:rgba(255,255,255,.04);
-      --line:rgba(148,163,184,.22);
-      --ink:#f9fafb;
-      --muted:rgba(226,232,240,.78);
-      --gold:#facc15;
-      --orange:#f97316;
-      --green:#22c55e;
-      --danger:#ef4444;
-      --shadow:0 18px 55px rgba(0,0,0,.55);
-      --r:18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(900px 520px at 12% -10%, rgba(250,204,21,.16), transparent 60%),
-        radial-gradient(900px 520px at 90% 0%, rgba(34,197,94,.12), transparent 60%),
-        linear-gradient(180deg, var(--bg2), var(--bg));
-      min-height:100vh;
-    }
-    a{color:inherit}
-    .wrap{max-width:1050px;margin:0 auto;padding:14px}
-    .top{
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:rgba(255,255,255,.03);
-      box-shadow:var(--shadow);
-      padding:14px 14px 12px;
-    }
-    .brand{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .logo{
-      width:46px;height:46px;border-radius:16px;
-      background:linear-gradient(135deg, rgba(250,204,21,.35), rgba(34,197,94,.22));
-      border:1px solid rgba(250,204,21,.35);
-      box-shadow:0 0 22px rgba(250,204,21,.12);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:1000;
-      color:#111827;
-    }
-    .brand h1{margin:0;font-size:1.1rem;letter-spacing:.2px}
-    .sub{color:var(--muted);font-weight:800;font-size:.92rem;line-height:1.35}
-    .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .pill{
-      border:1px solid rgba(148,163,184,.28);
-      padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.02);
-      color:var(--muted);font-weight:900;font-size:.84rem;
-    }
-    .pill strong{color:#fff}
-    .pill.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.10);color:#bbf7d0}
-    .pill.warn{border-color:rgba(250,204,21,.35);background:rgba(250,204,21,.10);color:#fde68a}
-
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
-    .card{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .cardHead{
-      padding:12px 14px;
-      border-bottom:1px solid var(--line);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-    }
-    .cardHead h2{margin:0;font-size:1.02rem}
-    .cardHead small{color:var(--muted);font-weight:800}
-    .cardBody{padding:14px}
-
-    .tabs{display:flex;gap:10px;flex-wrap:wrap}
-    .tabBtn{
-      border:1px solid rgba(148,163,184,.32);
-      background:rgba(255,255,255,.02);
-      color:var(--muted);
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:950;
-      cursor:pointer;
-      transition:all .15s ease;
-      min-height:44px;
-    }
-    .tabBtn.active{
-      border-color:rgba(250,204,21,.55);
-      background:rgba(250,204,21,.12);
-      color:#fff;
-    }
-
-    .fieldGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    @media (max-width:720px){ .fieldGrid{grid-template-columns:1fr} }
-
-    label{display:block;font-size:.86rem;font-weight:950;color:#fff;margin:10px 0 6px}
-    input, select, textarea{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(148,163,184,.28);
-      background:rgba(0,0,0,.18);
-      color:var(--ink);
-      padding:12px 12px;
-      font-weight:850;
-      outline:none;
-      transition:all 0.2s ease;
-      min-height:46px;
-    }
-    textarea{min-height:110px;resize:vertical}
-    input:focus, textarea:focus, select:focus{
-      border-color:var(--gold);
-      box-shadow:0 0 0 3px rgba(250,204,21,.15);
-    }
-    .hint{display:block;color:var(--muted);font-weight:800;margin-top:6px;line-height:1.35}
-
-    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{
-      border:0; cursor:pointer;
-      border-radius:14px;
-      padding:12px 12px;
-      font-weight:1000;
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(148,163,184,.28);
-      color:var(--muted);
-      transition:all 0.18s ease;
-      min-height:46px;
-    }
-    .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
-    .btn.primary{background:var(--green);border-color:rgba(34,197,94,.25);color:#022c22}
-    .btn.gold{background:rgba(250,204,21,.14);border-color:rgba(250,204,21,.35);color:#fde68a}
-    .btn.orange{background:rgba(249,115,22,.16);border-color:rgba(249,115,22,.35);color:#fed7aa}
-
-    .note{
-      margin-top:10px;
-      padding:10px 12px;border-radius:14px;
-      border:1px solid rgba(148,163,184,.25);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      white-space:pre-wrap;
-      display:none;
-    }
-    .note.ok{border-color:rgba(34,197,94,.35);color:#bbf7d0;background:rgba(34,197,94,.09)}
-    .note.bad{border-color:rgba(239,68,68,.35);color:#fecaca;background:rgba(239,68,68,.09)}
-    .note.warn{border-color:rgba(250,204,21,.35);color:#fde68a;background:rgba(250,204,21,.09)}
-
-    .list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-    .item{
-      border:1px solid rgba(148,163,184,.22);
-      background:rgba(255,255,255,.02);
-      border-radius:16px;
-      padding:12px;
-      display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
-    }
-    .itemLeft{min-width:0}
-    .itemTitle{font-weight:1100}
-    .itemMeta{color:var(--muted);font-weight:850;font-size:.92rem;margin-top:4px;line-height:1.35}
-    .itemBtns{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
-    .tag{
-      display:inline-flex;align-items:center;gap:7px;
-      padding:6px 9px;border-radius:999px;
-      border:1px solid rgba(148,163,184,.22);
-      color:var(--muted);font-weight:950;font-size:.80rem;
-      background:rgba(255,255,255,.02);
-      margin-top:6px;
-    }
-    .tag.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.10);color:#bbf7d0}
-    .tag.gold{border-color:rgba(250,204,21,.35);background:rgba(250,204,21,.10);color:#fde68a}
-    .tag.orange{border-color:rgba(249,115,22,.35);background:rgba(249,115,22,.10);color:#fed7aa}
-
-    .hr{border:0;border-top:1px solid rgba(148,163,184,.18);margin:14px 0}
-
-    .footer{
-      margin-top:14px;
-      color:var(--muted);
-      font-weight:800;
-      font-size:.9rem;
-      text-align:center;
-      opacity:.95;
-    }
-
-    @media (max-width:720px){
-      .btnRow{flex-direction:column}
-      .btn{width:100%}
-      .item{flex-direction:column}
-      .itemBtns{align-items:stretch}
-    }
-  </style>
+<style>
+:root{
+  --bg:#020617; --bg2:#0b1020; --card:#0b1220; --line:rgba(148,163,184,.28);
+  --ink:#f9fafb; --muted:#cbd5e1; --gold:#facc15; --green:#22c55e; --danger:#ef4444;
+  --radius:18px; --tap:52px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;color:var(--ink);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:18px;font-weight:800;
+  background:
+    radial-gradient(900px 520px at 12% -10%, rgba(250,204,21,.16), transparent 60%),
+    radial-gradient(900px 520px at 90% 0%, rgba(34,197,94,.12), transparent 60%),
+    linear-gradient(180deg, var(--bg2), var(--bg));
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{width:100%;max-width:520px;margin:0 auto;padding:14px}
+.top{
+  border:1px solid var(--line);background:rgba(255,255,255,.03);
+  border-radius:var(--radius);padding:14px;
+}
+h1{margin:0;font-size:clamp(22px,6vw,30px);font-weight:1000}
+.sub{margin-top:8px;color:var(--muted);font-weight:850;line-height:1.35;font-size:16px}
+.card{
+  margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);
+  border-radius:var(--radius);overflow:hidden;
+}
+.cardHead{padding:14px;border-bottom:1px solid var(--line)}
+.cardBody{padding:14px}
+.btnRow{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.btn{
+  width:100%;min-height:var(--tap);
+  border-radius:16px;border:1px solid rgba(148,163,184,.28);
+  background:rgba(255,255,255,.03);color:var(--ink);
+  font-size:18px;font-weight:1000;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn:active{transform:scale(.99)}
+.btn.primary{background:var(--green);border-color:rgba(34,197,94,.25);color:#022c22}
+.btn.gold{background:rgba(250,204,21,.14);border-color:rgba(250,204,21,.35);color:#fde68a}
+.btn.ghost{background:rgba(255,255,255,.02)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pill{
+  border:1px solid rgba(148,163,184,.25);border-radius:999px;padding:8px 10px;
+  background:rgba(255,255,255,.02);color:var(--muted);font-weight:950;font-size:14px;
+}
+.small{font-size:15px;color:var(--muted);font-weight:850;line-height:1.35}
+hr{border:none;border-top:1px solid rgba(148,163,184,.18);margin:12px 0}
+</style>
 </head>
+
 <body>
 <div class="wrap">
-
   <div class="top">
-    <div class="brand">
-      <div class="logo">♾️</div>
-      <div>
-        <h1>DIGIY JOBS — JËF</h1>
-        <div class="sub">
-          Travail & apprentissage — <strong>contact direct WhatsApp</strong> • 0% commission • terrain first.
-        </div>
-      </div>
+    <h1>💼 DIGIY JOBS (JËF) <span style="opacity:.9">∞</span></h1>
+    <div class="sub">
+      Simple et terrain : <strong>apprentis</strong> ↔ <strong>recruteurs</strong><br>
+      Plomberie • Élec • Mécanique • Vente • Métiers de bouche
     </div>
-
     <div class="pills">
-      <div class="pill ok">✅ Simple</div>
-      <div class="pill warn">🟡 V1</div>
-      <div class="pill"><strong>Astuce :</strong> clique “Contacter” → WhatsApp s’ouvre</div>
+      <div class="pill">📍 Sénégal first</div>
+      <div class="pill">📱 Téléphone d’abord</div>
+      <div class="pill">🤝 Humain & direct</div>
     </div>
   </div>
 
-  <div class="grid">
-
-    <section class="card">
-      <div class="cardHead">
-        <div>
-          <h2>🔎 Trouver quelqu’un</h2>
-          <small>Filtre par métier et ville, puis contacte direct.</small>
-        </div>
-        <div class="tabs">
-          <button class="tabBtn active" id="tabWorker" type="button">👷 Trouver un travailleur</button>
-          <button class="tabBtn" id="tabApprentice" type="button">👶 Trouver un apprenti</button>
-        </div>
+  <div class="card">
+    <div class="cardHead" style="font-weight:1000">Choisis ton camp 😄</div>
+    <div class="cardBody">
+      <div class="btnRow">
+        <button class="btn primary" id="goApprenti">🧑‍🔧 Je cherche un apprentissage</button>
+        <button class="btn gold" id="goRecruteur">🏪 Je cherche un apprenti</button>
+        <button class="btn ghost" id="goExplorer">🔎 Explorer (voir les annonces)</button>
       </div>
-      <div class="cardBody">
 
-        <div class="fieldGrid">
-          <div>
-            <label>Métier</label>
-            <select id="fTrade">
-              <option value="">— Tous —</option>
-              <option>Ménage</option>
-              <option>Gardien</option>
-              <option>Bricoleur</option>
-              <option>Plomberie</option>
-              <option>Électricité</option>
-              <option>Mécanique</option>
-              <option>Maçonnerie</option>
-              <option>Menuiserie</option>
-              <option>Soudure</option>
-              <option>Vente boutique</option>
-              <option>Aide-commerçant</option>
-              <option>Cuisine</option>
-              <option>Aide-cuisine</option>
-              <option>Boulangerie</option>
-              <option>Boucherie</option>
-              <option>Service restaurant</option>
-              <option>Manutention</option>
-              <option>Chauffeur</option>
-            </select>
-          </div>
-          <div>
-            <label>Ville</label>
-            <input id="fCity" placeholder="ex: Dakar, Saly, Rufisque..." maxlength="40" />
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn gold" id="btnSearch" type="button">🔎 Rechercher</button>
-          <button class="btn" id="btnClear" type="button">↻ Réinitialiser</button>
-          <button class="btn orange" id="btnPost" type="button">➕ Je me rends disponible</button>
-        </div>
-
-        <div class="note" id="searchNote"></div>
-
-        <div class="list" id="results"></div>
-
-        <div class="footer">
-          DIGIY met en relation. Le travail / l’apprentissage se fait directement entre vous.
-        </div>
-
+      <hr>
+      <div class="small">
+        💡 Ici c’est “propre & rapide”. Après, on branche Supabase pour que tout le monde se voie (effet réseau).
       </div>
-    </section>
-
-    <section class="card" id="postCard" style="display:none">
-      <div class="cardHead">
-        <div>
-          <h2>➕ Se rendre disponible</h2>
-          <small>Simple, rapide, terrain. 1 minute.</small>
-        </div>
-        <div class="tabs">
-          <button class="tabBtn active" id="postAsWorker" type="button">👷 Je propose mon travail</button>
-          <button class="tabBtn" id="postAsApprentice" type="button">👶 Je veux apprendre</button>
-        </div>
-      </div>
-      <div class="cardBody">
-
-        <div class="fieldGrid">
-          <div>
-            <label>Prénom *</label>
-            <input id="pName" placeholder="ex: Awa, Mamadou..." maxlength="30" />
-            <span class="hint">On garde ça simple.</span>
-          </div>
-          <div>
-            <label>Téléphone WhatsApp *</label>
-            <input id="pPhone" placeholder="+221 77 123 45 67" maxlength="20" />
-            <span class="hint">C’est ce numéro qui sera contacté.</span>
-          </div>
-        </div>
-
-        <div class="fieldGrid">
-          <div>
-            <label>Ville *</label>
-            <input id="pCity" placeholder="ex: Dakar, Saly..." maxlength="40" />
-          </div>
-          <div>
-            <label>Métier *</label>
-            <select id="pTrade">
-              <option value="">— Choisir —</option>
-              <option>Ménage</option>
-              <option>Gardien</option>
-              <option>Bricoleur</option>
-              <option>Plomberie</option>
-              <option>Électricité</option>
-              <option>Mécanique</option>
-              <option>Maçonnerie</option>
-              <option>Menuiserie</option>
-              <option>Soudure</option>
-              <option>Vente boutique</option>
-              <option>Aide-commerçant</option>
-              <option>Cuisine</option>
-              <option>Aide-cuisine</option>
-              <option>Boulangerie</option>
-              <option>Boucherie</option>
-              <option>Service restaurant</option>
-              <option>Manutention</option>
-              <option>Chauffeur</option>
-            </select>
-          </div>
-        </div>
-
-        <div id="apprenticeExtra" style="display:none">
-          <div class="fieldGrid">
-            <div>
-              <label>Âge (optionnel)</label>
-              <select id="pAge">
-                <option value="">—</option>
-                <option>12–14</option>
-                <option>15–17</option>
-                <option>18–20</option>
-                <option>21–25</option>
-                <option>26+</option>
-              </select>
-              <span class="hint">Optionnel. Juste pour situer.</span>
-            </div>
-            <div>
-              <label>Petit message (optionnel)</label>
-              <input id="pMsg" placeholder="ex: motivé, dispo matin..." maxlength="80" />
-              <span class="hint">80 caractères max. Court.</span>
-            </div>
-          </div>
-        </div>
-
-        <label>Disponible maintenant ?</label>
-        <select id="pAvailable">
-          <option value="yes">✅ Oui</option>
-          <option value="no">🟡 Pas pour le moment</option>
-        </select>
-
-        <div class="btnRow">
-          <button class="btn primary" id="btnSaveLocal" type="button">💾 Enregistrer (sur ce téléphone)</button>
-          <button class="btn" id="btnClosePost" type="button">✖ Fermer</button>
-        </div>
-
-        <div class="note" id="postNote"></div>
-
-        <hr class="hr"/>
-
-        <div class="footer">
-          V1 : on stocke sur le téléphone (simple). V2 : synchro Supabase.
-        </div>
-
-      </div>
-    </section>
-
+    </div>
   </div>
 </div>
 
 <script>
 (function(){
   "use strict";
-
-  // =========================
-  // V1 SIMPLE: stockage local
-  // =========================
-  // On démarre sans base, pour livrer vite.
-  // Format:
-  // { id, type: "worker"|"apprentice", name, phone, city, trade, age, msg, available, created_at }
-  const KEY = "digiy_jobs_v1";
-  const nowISO = ()=> new Date().toISOString();
-
-  function loadAll(){
-    try{
-      const raw = localStorage.getItem(KEY);
-      const arr = raw ? JSON.parse(raw) : [];
-      return Array.isArray(arr) ? arr : [];
-    }catch(_e){
-      return [];
-    }
-  }
-  function saveAll(arr){
-    localStorage.setItem(KEY, JSON.stringify(arr || []));
-  }
-
-  function sanitizePhone(p){
-    return String(p||"").replace(/\s+/g,"").trim();
-  }
-  function validPhone(p){
-    // simple check Sénégal / international
-    const s = sanitizePhone(p);
-    return /^\+?\d{8,15}$/.test(s);
-  }
-  function esc(s){
-    return String(s||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
-  }
-  function showNote(el, msg, type){
-    el.style.display="block";
-    el.classList.remove("ok","bad","warn");
-    if(type) el.classList.add(type);
-    el.textContent = msg;
-  }
-  function hideNote(el){
-    el.style.display="none";
-    el.textContent="";
-    el.classList.remove("ok","bad","warn");
-  }
-
-  // =========================
-  // UI refs
-  // =========================
-  const tabWorker = document.getElementById("tabWorker");
-  const tabApprentice = document.getElementById("tabApprentice");
-  const fTrade = document.getElementById("fTrade");
-  const fCity = document.getElementById("fCity");
-  const btnSearch = document.getElementById("btnSearch");
-  const btnClear = document.getElementById("btnClear");
-  const btnPost = document.getElementById("btnPost");
-  const results = document.getElementById("results");
-  const searchNote = document.getElementById("searchNote");
-
-  const postCard = document.getElementById("postCard");
-  const postAsWorker = document.getElementById("postAsWorker");
-  const postAsApprentice = document.getElementById("postAsApprentice");
-  const apprenticeExtra = document.getElementById("apprenticeExtra");
-
-  const pName = document.getElementById("pName");
-  const pPhone = document.getElementById("pPhone");
-  const pCity = document.getElementById("pCity");
-  const pTrade = document.getElementById("pTrade");
-  const pAge = document.getElementById("pAge");
-  const pMsg = document.getElementById("pMsg");
-  const pAvailable = document.getElementById("pAvailable");
-  const btnSaveLocal = document.getElementById("btnSaveLocal");
-  const btnClosePost = document.getElementById("btnClosePost");
-  const postNote = document.getElementById("postNote");
-
-  // =========================
-  // State
-  // =========================
-  let filterType = "worker";     // "worker" | "apprentice"
-  let postType = "worker";       // "worker" | "apprentice"
-
-  function setFilterType(t){
-    filterType = t;
-    tabWorker.classList.toggle("active", t==="worker");
-    tabApprentice.classList.toggle("active", t==="apprentice");
-    runSearch();
-  }
-
-  function setPostType(t){
-    postType = t;
-    postAsWorker.classList.toggle("active", t==="worker");
-    postAsApprentice.classList.toggle("active", t==="apprentice");
-    apprenticeExtra.style.display = (t==="apprentice") ? "block" : "none";
-  }
-
-  tabWorker.addEventListener("click", ()=> setFilterType("worker"));
-  tabApprentice.addEventListener("click", ()=> setFilterType("apprentice"));
-
-  postAsWorker.addEventListener("click", ()=> setPostType("worker"));
-  postAsApprentice.addEventListener("click", ()=> setPostType("apprentice"));
-
-  btnPost.addEventListener("click", ()=>{
-    hideNote(postNote);
-    postCard.style.display = "block";
-    window.scrollTo({ top: document.body.scrollHeight, behavior:"smooth" });
-  });
-
-  btnClosePost.addEventListener("click", ()=>{
-    postCard.style.display = "none";
-    hideNote(postNote);
-  });
-
-  btnClear.addEventListener("click", ()=>{
-    fTrade.value = "";
-    fCity.value = "";
-    hideNote(searchNote);
-    runSearch();
-  });
-
-  btnSearch.addEventListener("click", runSearch);
-  fTrade.addEventListener("change", runSearch);
-  fCity.addEventListener("input", ()=>{
-    // petit debounce simple
-    clearTimeout(window.__dj_t);
-    window.__dj_t = setTimeout(runSearch, 160);
-  });
-
-  // =========================
-  // WhatsApp helper
-  // =========================
-  function waLink(phone, text){
-    const p = sanitizePhone(phone).replace(/^\+/, "");
-    const msg = encodeURIComponent(text || "");
-    return "https://wa.me/" + p + (msg ? ("?text=" + msg) : "");
-  }
-
-  // =========================
-  // Render
-  // =========================
-  function renderList(items){
-    results.innerHTML = "";
-
-    if(!items.length){
-      showNote(searchNote, "ℹ️ Aucun profil pour l’instant. Clique “Je me rends disponible” pour être visible.", "warn");
-      return;
-    }
-    showNote(searchNote, `✅ ${items.length} profil(s) trouvé(s).`, "ok");
-
-    items.forEach(x=>{
-      const t = x.type === "apprentice" ? "Apprenti" : "Travailleur";
-      const tagClass = x.type === "apprentice" ? "orange" : "ok";
-      const dispo = x.available === "yes" ? "✅ Dispo" : "🟡 Pas dispo";
-      const age = x.type==="apprentice" && x.age ? ` • Âge: ${esc(x.age)}` : "";
-      const msg = x.msg ? ` • "${esc(x.msg)}"` : "";
-      const when = x.created_at ? x.created_at.slice(0,10) : "";
-
-      const hello = (x.type==="apprentice")
-        ? `Bonjour, je cherche un apprenti en ${x.trade || "métier"} à ${x.city || "ma ville"}.`
-        : `Bonjour, je cherche quelqu’un pour ${x.trade || "un travail"} à ${x.city || "ma ville"}.`;
-
-      const div = document.createElement("div");
-      div.className = "item";
-      div.innerHTML = `
-        <div class="itemLeft">
-          <div class="itemTitle">${esc(x.name || "Profil")} • ${esc(x.trade || "—")}</div>
-          <div class="itemMeta">
-            📍 ${esc(x.city || "—")} • ${dispo}${age}${msg}<br>
-            📅 Ajouté: ${esc(when || "—")}
-          </div>
-          <div class="tag ${tagClass}">${x.type==="apprentice" ? "👶 APPRENTI" : "👷 TRAVAILLEUR"}</div>
-        </div>
-        <div class="itemBtns">
-          <a class="btn primary" target="_blank" rel="noopener"
-             href="${waLink(x.phone, hello)}">💬 Contacter</a>
-          <button class="btn" type="button" data-copy="${esc(x.phone||"")}">📋 Copier</button>
-        </div>
-      `;
-      results.appendChild(div);
-    });
-
-    results.querySelectorAll("[data-copy]").forEach(b=>{
-      b.addEventListener("click", async ()=>{
-        try{
-          const p = b.getAttribute("data-copy") || "";
-          await navigator.clipboard.writeText(p);
-          showNote(searchNote, "✅ Numéro copié.", "ok");
-        }catch(_e){
-          showNote(searchNote, "⚠️ Impossible de copier. Copie manuelle.", "warn");
-        }
-      });
-    });
-  }
-
-  function runSearch(){
-    hideNote(searchNote);
-
-    const trade = String(fTrade.value||"").trim().toLowerCase();
-    const city = String(fCity.value||"").trim().toLowerCase();
-    const all = loadAll();
-
-    const filtered = all.filter(x=>{
-      if(x.type !== filterType) return false;
-      if(trade && String(x.trade||"").toLowerCase() !== trade) return false;
-      if(city && !String(x.city||"").toLowerCase().includes(city)) return false;
-      return true;
-    }).sort((a,b)=>{
-      const ta = String(a.created_at||"");
-      const tb = String(b.created_at||"");
-      return tb.localeCompare(ta);
-    });
-
-    renderList(filtered);
-  }
-
-  // =========================
-  // Save local
-  // =========================
-  btnSaveLocal.addEventListener("click", ()=>{
-    hideNote(postNote);
-
-    const name = String(pName.value||"").trim();
-    const phone = String(pPhone.value||"").trim();
-    const city = String(pCity.value||"").trim();
-    const trade = String(pTrade.value||"").trim();
-    const available = String(pAvailable.value||"yes");
-    const age = (postType==="apprentice") ? String(pAge.value||"").trim() : "";
-    const msg = (postType==="apprentice") ? String(pMsg.value||"").trim() : "";
-
-    if(name.length < 2) return showNote(postNote, "❌ Mets ton prénom (au moins 2 lettres).", "bad");
-    if(!validPhone(phone)) return showNote(postNote, "❌ Téléphone invalide. Mets un numéro international (ex: +221...).", "bad");
-    if(city.length < 2) return showNote(postNote, "❌ Mets ta ville.", "bad");
-    if(!trade) return showNote(postNote, "❌ Choisis un métier.", "bad");
-
-    const all = loadAll();
-    const entry = {
-      id: "dj_" + Math.random().toString(36).slice(2,10),
-      type: postType,
-      name,
-      phone: sanitizePhone(phone),
-      city,
-      trade,
-      age: age || "",
-      msg: msg || "",
-      available,
-      created_at: nowISO()
-    };
-    all.unshift(entry);
-    saveAll(all);
-
-    showNote(postNote, "✅ Enregistré ! Tu es visible sur ce téléphone. (V2 : synchro).", "ok");
-
-    // reset small
-    pName.value = "";
-    pPhone.value = "";
-    pCity.value = "";
-    pTrade.value = "";
-    pAge.value = "";
-    pMsg.value = "";
-    pAvailable.value = "yes";
-
-    postCard.style.display = "none";
-    runSearch();
-    window.scrollTo({ top: 0, behavior:"smooth" });
-  });
-
-  // Init
-  setFilterType("worker");
-  setPostType("worker");
-  runSearch();
+  // Pages dans le même repo digiy-hub-drive
+  const go = (p)=> location.href = "./" + p;
+  document.getElementById("goApprenti").onclick = ()=> go("digiy-jef-apprenti.html");
+  document.getElementById("goRecruteur").onclick = ()=> go("digiy-jef-recruteur.html");
+  document.getElementById("goExplorer").onclick = ()=> go("digiy-jef-explorer.html"); // optionnel (tu peux le créer plus tard)
 })();
 </script>
 </body>
