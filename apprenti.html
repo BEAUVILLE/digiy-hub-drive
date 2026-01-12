@@ -5,777 +5,188 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>DIGIY JËF ∞ — Apprenti (Téléphone + PIN)</title>
   <meta name="theme-color" content="#071a12" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
 
-<body>
-
-  <!-- Bouton retour JËF -->
-  <div style="padding:12px">
-    <button class="btn ghost small" onclick="location.href='digiy-jef.html'">
-      ← Retour JËF
-    </button>
-  </div>
-
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>DIGIY JËF ∞ — Apprenti (Téléphone + PIN)</title>
-  <meta name="theme-color" content="#071a12" />
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <!-- STYLE MOBILE FIRST -->
   <style>
     :root{
       --bg:#020617;
-      --bg2:#071a12;
-      --card:rgba(255,255,255,.04);
-      --line:rgba(148,163,184,.22);
+      --card:rgba(255,255,255,.05);
+      --line:rgba(148,163,184,.28);
       --ink:#f9fafb;
-      --muted:rgba(226,232,240,.75);
+      --muted:#cbd5e1;
       --green:#22c55e;
       --gold:#facc15;
-      --bad:#ef4444;
-      --shadow:0 18px 50px rgba(0,0,0,.55);
-      --r:20px;
+      --radius:18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      color:var(--ink);
+      font-family:system-ui,-apple-system,sans-serif;
       background:
-        radial-gradient(900px 520px at 15% -10%, rgba(34,197,94,.16), transparent 60%),
-        radial-gradient(900px 520px at 90% 0%, rgba(250,204,21,.12), transparent 60%),
-        linear-gradient(180deg,var(--bg2),var(--bg));
+        radial-gradient(800px 500px at 10% -10%, rgba(34,197,94,.18), transparent 60%),
+        linear-gradient(180deg,#071a12,var(--bg));
+      color:var(--ink);
       min-height:100vh;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:14px}
-    .top{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      border-radius:22px;
+    .wrap{
+      max-width:520px;
+      margin:0 auto;
       padding:14px;
-      box-shadow:var(--shadow);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:46px;height:46px;border-radius:16px;
-      background:linear-gradient(135deg, rgba(34,197,94,.35), rgba(250,204,21,.22));
-      border:1px solid rgba(34,197,94,.35);
-      box-shadow:0 0 24px rgba(34,197,94,.18);
-    }
-    h1{margin:0;font-size:1.1rem;letter-spacing:.3px;font-weight:1000}
-    .sub{color:var(--muted);font-weight:900;font-size:.98rem;margin-top:2px}
-    .pills{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .pill{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(148,163,184,.35);
-      background:rgba(255,255,255,.02);
-      color:var(--muted);
-      font-weight:1000;
-      font-size:1rem;
-    }
-    .pill.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.10);color:#bbf7d0}
-    .pill.warn{border-color:rgba(250,204,21,.35);background:rgba(250,204,21,.10);color:#fde68a}
-
-    .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin-top:14px}
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
-
     .card{
       border:1px solid var(--line);
       background:var(--card);
-      border-radius:var(--r);
-      box-shadow:var(--shadow);
-      overflow:hidden;
+      border-radius:var(--radius);
+      padding:16px;
     }
-    .cardHead{
-      padding:12px 14px;
-      border-bottom:1px solid var(--line);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-    }
-    .cardHead h2{margin:0;font-size:1.05rem;font-weight:1100}
-    .cardHead small{color:var(--muted);font-weight:900;font-size:.95rem}
-    .cardBody{padding:14px}
-
-    label{display:block;margin:12px 0 6px;font-weight:1100;font-size:1.02rem}
-    input, textarea, select{
-      width:100%;
-      padding:14px 14px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.20);
-      color:var(--ink);
-      outline:none;
+    h1{
+      margin:0;
+      font-size:1.4rem;
       font-weight:1000;
-      font-size:1.05rem;
+      text-align:center;
+    }
+    .sub{
+      text-align:center;
+      margin-top:8px;
+      color:var(--muted);
+      font-weight:900;
+      font-size:1rem;
+      line-height:1.4;
+    }
+    label{
+      display:block;
+      margin:12px 0 6px;
+      font-weight:1000;
+      font-size:1rem;
+    }
+    input,select,textarea{
+      width:100%;
+      min-height:52px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--ink);
+      font-size:1rem;
+      font-weight:900;
     }
     textarea{min-height:120px;resize:vertical}
-    small.hint{display:block;margin-top:6px;color:var(--muted);font-weight:900;line-height:1.35;font-size:.98rem}
-
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:720px){ .row{grid-template-columns:1fr} }
-
-    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .btn{
-      border:0; cursor:pointer;
+      width:100%;
+      min-height:56px;
       border-radius:16px;
-      padding:14px 14px;
-      font-weight:1100;
-      font-size:1.05rem;
-      background:rgba(255,255,255,.05);
       border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
       color:var(--ink);
-      transition:.18s ease;
-      min-height:52px;
+      font-size:1.05rem;
+      font-weight:1000;
+      cursor:pointer;
+      margin-top:10px;
     }
-    .btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
-    .btn.primary{background:var(--green);color:#052e16;border-color:rgba(34,197,94,.35)}
-    .btn.gold{background:rgba(250,204,21,.14);border-color:rgba(250,204,21,.35);color:#fde68a}
-    .btn.danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fecaca}
+    .btn.primary{
+      background:rgba(34,197,94,.22);
+      border-color:rgba(34,197,94,.35);
+      color:#bbf7d0;
+    }
     .btn.ghost{background:rgba(255,255,255,.02)}
-    .btn.small{padding:12px 12px;border-radius:14px;font-size:1rem;min-height:48px}
-    .btn.ghost{background:rgba(255,255,255,.02)}
-    .btn.small{padding:12px 12px;border-radius:14px;font-size:1rem;min-height:48px}
+    .btn.small{
+      padding:12px;
+      min-height:48px;
+      font-size:1rem;
+      border-radius:14px;
+    }
     .note{
       margin-top:10px;
-      padding:12px 12px;
-      border-radius:16px;
-      border:1px solid rgba(148,163,184,.25);
-      background:rgba(255,255,255,.03);
+      font-weight:900;
+      font-size:.95rem;
       color:var(--muted);
-      white-space:pre-wrap;
-      display:none;
-      font-weight:950;
-      font-size:1rem;
-    }
-    .note.ok{border-color:rgba(34,197,94,.35);color:#bbf7d0;background:rgba(34,197,94,.10)}
-    .note.bad{border-color:rgba(239,68,68,.35);color:#fecaca;background:rgba(239,68,68,.10)}
-    .note.warn{border-color:rgba(250,204,21,.35);color:#fde68a;background:rgba(250,204,21,.10)}
-
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .chip{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(148,163,184,.25);
-      background:rgba(255,255,255,.02);
-      color:var(--ink);
-      font-weight:1000;
-      font-size:1rem;
-      cursor:pointer;
-      user-select:none;
-    }
-    .chip input{width:18px;height:18px}
-    .list{display:flex;flex-direction:column;gap:10px}
-    .item{
-      border:1px solid rgba(148,163,184,.22);
-      background:rgba(255,255,255,.02);
-      border-radius:18px;
-      padding:12px;
-    }
-    .itemTop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .itemTop strong{font-weight:1200}
-    .itemSub{margin-top:6px;color:var(--muted);font-weight:900;line-height:1.45}
-    .tag{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;border-radius:999px;
-      border:1px solid rgba(148,163,184,.25);
-      color:var(--muted);
-      font-weight:1000;
-      font-size:.98rem;
-    }
-    .tag.ok{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.10);color:#bbf7d0}
-    .tag.gold{border-color:rgba(250,204,21,.35);background:rgba(250,204,21,.10);color:#fde68a}
-
-    /* Mobile confort */
-    @media (max-width:720px){
-      .wrap{padding:12px}
-      .btn{width:100%}
-      .btnRow{flex-direction:column}
-      input,textarea,select{font-size:1.07rem}
-      label{font-size:1.05rem}
-      .pill{font-size:1.02rem}
     }
   </style>
 </head>
 
 <body>
+
   <div class="wrap">
-    <div class="top">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>DIGIY JËF ∞</h1>
-          <div class="sub">Apprenti • Téléphone + PIN • Terrain-first</div>
-        </div>
-      </div>
-      <div class="pills">
-        <div class="pill" id="pillPhone">📞 <strong>—</strong></div>
-        <div class="pill warn" id="pillState">🔒 Déconnecté</div>
-        <button class="btn ghost small" id="btnReset" style="display:none">🔁 Changer tel / PIN</button>
+
+    <!-- RETOUR -->
+    <button class="btn ghost small" onclick="location.href='digiy-jef.html'">
+      ← Retour JËF
+    </button>
+
+    <!-- HEADER -->
+    <div class="card">
+      <h1>👨🏾‍🎓 Je cherche un apprentissage</h1>
+      <div class="sub">
+        Plomberie • Électricité • Mécanique • Vente • Métiers de bouche<br>
+        Téléphone + PIN • Simple • Humain
       </div>
     </div>
 
-    <div class="grid">
-      <!-- LEFT: LOGIN + PROFIL -->
-      <section class="card">
-        <div class="cardHead">
-          <div>
-            <h2>🔑 Entrer (Téléphone + PIN)</h2>
-            <small>Sans SMS. Simple. Rapide.</small>
-          </div>
-        </div>
-        <div class="cardBody">
+    <!-- FORMULAIRE -->
+    <div class="card">
+      <label>Ton prénom</label>
+      <input id="name" placeholder="ex: Moussa">
 
-          <div id="loginBox">
-            <label>Téléphone (Wave / WhatsApp)</label>
-            <input id="iPhone" placeholder="+221 77 123 45 67" />
+      <label>Métier recherché</label>
+      <select id="trade">
+        <option value="">— Choisir —</option>
+        <option>Plomberie</option>
+        <option>Électricité</option>
+        <option>Mécanique</option>
+        <option>Vente</option>
+        <option>Métier de bouche</option>
+        <option>Autre</option>
+      </select>
 
-            <label>PIN (4 chiffres)</label>
-            <input id="iPin" inputmode="numeric" placeholder="ex: 1234" maxlength="4" />
+      <label>Ville / Quartier</label>
+      <input id="city" placeholder="ex: Dakar, Pikine">
 
-            <div class="btnRow">
-              <button class="btn primary" id="btnEnter">✅ Entrer</button>
-              <button class="btn" id="btnDemo">⚡ Demo</button>
-            </div>
+      <label>Téléphone (WhatsApp)</label>
+      <input id="phone" placeholder="+221 77 123 45 67">
 
-            <small class="hint">
-              Ton PIN reste chez toi. DIGIY ne t’envoie rien.<br>
-              Si tu changes de téléphone : tu remets le même Tel + PIN → tu retrouves ton accès.
-            </small>
-            <div class="note" id="loginNote"></div>
-          </div>
+      <label>PIN (4 chiffres)</label>
+      <input id="pin" type="number" placeholder="ex: 1234">
 
-          <div id="profileBox" style="display:none">
-            <div class="row">
-              <div>
-                <label>Ton prénom *</label>
-                <input id="pName" placeholder="ex: Ibrahima" maxlength="60" />
-              </div>
-              <div>
-                <label>Ville *</label>
-                <input id="pCity" placeholder="ex: Dakar, Saly, Thiès..." maxlength="60" />
-              </div>
-            </div>
+      <label>Petite description</label>
+      <textarea id="bio" placeholder="Motivé, sérieux, disponible..."></textarea>
 
-            <div class="row">
-              <div>
-                <label>Âge (optionnel)</label>
-                <input id="pAge" type="number" min="12" max="80" placeholder="ex: 17" />
-              </div>
-              <div>
-                <label>Contact WhatsApp</label>
-                <input id="pWa" placeholder="+221 77 123 45 67" maxlength="20" />
-              </div>
-            </div>
+      <button class="btn primary" onclick="saveLocal()">
+        📤 Publier mon profil
+      </button>
 
-            <label>Je veux apprendre *</label>
-            <div class="chips" id="tradeChips"></div>
-            <small class="hint">Choisis 1 ou plusieurs métiers.</small>
-
-            <label>Petite présentation</label>
-            <textarea id="pBio" placeholder="En 3 phrases : qui tu es, ce que tu veux apprendre, ta dispo…"></textarea>
-
-            <div class="btnRow">
-              <button class="btn primary" id="btnSaveProfile">💾 Enregistrer mon profil</button>
-            </div>
-
-            <div class="note" id="profileNote"></div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- RIGHT: PUBLIE DEMANDE + LISTE -->
-      <section class="card">
-        <div class="cardHead">
-          <div>
-            <h2>📣 Demande d’apprentissage</h2>
-            <small>Tu postes, les pros te contactent.</small>
-          </div>
-        </div>
-        <div class="cardBody">
-
-          <div id="offerBox" style="display:none">
-            <label>Titre *</label>
-            <input id="oTitle" placeholder="ex: Apprenti plombier disponible à Dakar" maxlength="120" />
-
-            <div class="row">
-              <div>
-                <label>Métier *</label>
-                <select id="oTrade"></select>
-              </div>
-              <div>
-                <label>Disponibilité *</label>
-                <select id="oAvail">
-                  <option value="journée">Journée</option>
-                  <option value="soir">Soir</option>
-                  <option value="weekend">Week-end</option>
-                  <option value="flex">Flexible</option>
-                </select>
-              </div>
-            </div>
-
-            <label>Message *</label>
-            <textarea id="oMsg" placeholder="Explique ce que tu cherches, ta ville, ton niveau, tes horaires…"></textarea>
-
-            <div class="btnRow">
-              <button class="btn gold" id="btnPostOffer">🚀 Publier ma demande</button>
-              <button class="btn" id="btnRefresh">↻ Actualiser la liste</button>
-            </div>
-
-            <div class="note" id="offerNote"></div>
-          </div>
-
-          <hr style="border:none;border-top:1px solid rgba(148,163,184,.18);margin:12px 0">
-
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-            <div style="font-weight:1100;font-size:1.05rem">🧾 Demandes récentes</div>
-            <div class="tag gold" id="countTag">—</div>
-          </div>
-
-          <div class="list" id="publicList" style="margin-top:10px"></div>
-          <div class="note" id="listNote"></div>
-
-        </div>
-      </section>
+      <div id="msg" class="note"></div>
     </div>
+
   </div>
 
-<script>
-/* =============================
-   SUPABASE (ton projet)
-============================= */
-const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+  <!-- JS SIMPLE (V1 local) -->
+  <script>
+    function saveLocal(){
+      const profile = {
+        name: name.value.trim(),
+        trade: trade.value,
+        city: city.value.trim(),
+        phone: phone.value.trim(),
+        bio: bio.value.trim(),
+        pin: pin.value.trim(),
+        created_at: new Date().toISOString()
+      };
 
-/* Injecte automatiquement x-digiy-secret sur CHAQUE requête */
-function makeClient(){
-  return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    global: {
-      fetch: (url, options = {}) => {
-        const secret = localStorage.getItem("DIGIY_JEF_SECRET") || "";
-        const headers = new Headers(options.headers || {});
-        if(secret) headers.set("x-digiy-secret", secret);
-        return fetch(url, { ...options, headers });
+      if(!profile.name || !profile.trade || !profile.phone || profile.pin.length < 4){
+        msg.textContent = "❌ Remplis au minimum prénom, métier, téléphone et PIN.";
+        return;
       }
+
+      localStorage.setItem("digiy_jef_apprenti", JSON.stringify(profile));
+      msg.textContent = "✅ Profil enregistré. Visible localement (V1).";
     }
-  });
-}
-let SB = makeClient();
+  </script>
 
-/* =============================
-   DOM
-============================= */
-const pillPhone = document.getElementById("pillPhone");
-const pillState = document.getElementById("pillState");
-const btnReset = document.getElementById("btnReset");
-
-const loginBox = document.getElementById("loginBox");
-const iPhone = document.getElementById("iPhone");
-const iPin = document.getElementById("iPin");
-const btnEnter = document.getElementById("btnEnter");
-const btnDemo = document.getElementById("btnDemo");
-const loginNote = document.getElementById("loginNote");
-
-const profileBox = document.getElementById("profileBox");
-const pName = document.getElementById("pName");
-const pCity = document.getElementById("pCity");
-const pAge = document.getElementById("pAge");
-const pWa = document.getElementById("pWa");
-const pBio = document.getElementById("pBio");
-const tradeChips = document.getElementById("tradeChips");
-const btnSaveProfile = document.getElementById("btnSaveProfile");
-const profileNote = document.getElementById("profileNote");
-
-const offerBox = document.getElementById("offerBox");
-const oTitle = document.getElementById("oTitle");
-const oTrade = document.getElementById("oTrade");
-const oAvail = document.getElementById("oAvail");
-const oMsg = document.getElementById("oMsg");
-const btnPostOffer = document.getElementById("btnPostOffer");
-const btnRefresh = document.getElementById("btnRefresh");
-const offerNote = document.getElementById("offerNote");
-
-const publicList = document.getElementById("publicList");
-const listNote = document.getElementById("listNote");
-const countTag = document.getElementById("countTag");
-
-/* =============================
-   DATA
-============================= */
-const TRADES = [
-  "Plomberie",
-  "Électricité",
-  "Mécanique",
-  "Vente / Boutique",
-  "Métier de bouche",
-  "Menuiserie",
-  "Climatisation",
-  "Carrelage / Maçonnerie",
-  "Peinture",
-  "Couture"
-];
-
-function showNote(el, msg, type){
-  el.style.display = "block";
-  el.classList.remove("ok","bad","warn");
-  if(type) el.classList.add(type);
-  el.textContent = msg;
-}
-function hideNote(el){
-  el.style.display = "none";
-  el.textContent = "";
-  el.classList.remove("ok","bad","warn");
-}
-
-function normalizePhone(raw){
-  const s = String(raw||"").replace(/\s+/g,"").trim();
-  // accepte +221XXXXXXXXX ou 77XXXXXXX
-  if(!s) return "";
-  if(s.startsWith("+221")) return s;
-  const digits = s.replace(/\D/g,"");
-  if(digits.length === 9 && (digits.startsWith("7") || digits.startsWith("8") || digits.startsWith("9"))){
-    return "+221" + digits;
-  }
-  if(digits.length === 12 && digits.startsWith("221")) return "+" + digits;
-  return s.startsWith("+") ? s : ("+" + digits);
-}
-
-/* Secret dérivé du téléphone + PIN (récupérable) */
-async function deriveSecret(phone, pin){
-  const msg = `DIGIY_JEF|${phone}|${pin}|v1`;
-  const enc = new TextEncoder().encode(msg);
-  const buf = await crypto.subtle.digest("SHA-256", enc);
-  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
-  return hex; // 64 chars
-}
-
-function selectedTrades(){
-  const out = [];
-  tradeChips.querySelectorAll("input[type=checkbox]").forEach(cb=>{
-    if(cb.checked) out.push(cb.value);
-  });
-  return out;
-}
-
-function setConnectedUI(on){
-  if(on){
-    pillState.textContent = "✅ Connecté";
-    pillState.classList.remove("warn");
-    pillState.classList.add("ok");
-    btnReset.style.display = "inline-flex";
-    loginBox.style.display = "none";
-    profileBox.style.display = "block";
-    offerBox.style.display = "block";
-  }else{
-    pillState.textContent = "🔒 Déconnecté";
-    pillState.classList.remove("ok");
-    pillState.classList.add("warn");
-    btnReset.style.display = "none";
-    loginBox.style.display = "block";
-    profileBox.style.display = "none";
-    offerBox.style.display = "none";
-  }
-}
-
-/* =============================
-   UI INIT
-============================= */
-(function initUI(){
-  // chips métiers
-  tradeChips.innerHTML = TRADES.map(t => `
-    <label class="chip"><input type="checkbox" value="${t}"> ${t}</label>
-  `).join("");
-
-  // select métiers
-  oTrade.innerHTML = TRADES.map(t => `<option value="${t}">${t}</option>`).join("");
-
-  // default
-  const savedPhone = localStorage.getItem("DIGIY_JEF_PHONE") || "";
-  if(savedPhone){
-    pillPhone.innerHTML = `📞 <strong>${savedPhone}</strong>`;
-  }
-})();
-
-/* =============================
-   ENTER (tel + PIN)
-============================= */
-btnDemo.onclick = ()=>{
-  iPhone.value = "+221771234567";
-  iPin.value = "1234";
-  showNote(loginNote, "✅ Demo rempli. Clique “Entrer”.", "ok");
-};
-
-btnEnter.onclick = async ()=>{
-  hideNote(loginNote);
-  hideNote(profileNote);
-  hideNote(offerNote);
-
-  const phone = normalizePhone(iPhone.value);
-  const pin = String(iPin.value||"").trim();
-
-  if(!phone || phone.length < 10) return showNote(loginNote, "❌ Téléphone invalide.", "bad");
-  if(!/^\d{4}$/.test(pin)) return showNote(loginNote, "❌ PIN invalide (4 chiffres).", "bad");
-
-  btnEnter.disabled = true;
-  btnEnter.textContent = "…";
-
-  try{
-    const secret = await deriveSecret(phone, pin);
-
-    localStorage.setItem("DIGIY_JEF_PHONE", phone);
-    localStorage.setItem("DIGIY_JEF_SECRET", secret);
-
-    // rebuild client (le fetch lit localStorage à chaque call)
-    SB = makeClient();
-
-    pillPhone.innerHTML = `📞 <strong>${phone}</strong>`;
-    setConnectedUI(true);
-
-    showNote(loginNote, "✅ OK. Tu es connecté par téléphone.", "ok");
-
-    // charge profil si existe (lecture publique)
-    await loadMyProfile();
-    await loadPublicOffers();
-  }catch(e){
-    console.error(e);
-    showNote(loginNote, "❌ Erreur: " + (e?.message || e), "bad");
-  }finally{
-    btnEnter.disabled = false;
-    btnEnter.textContent = "✅ Entrer";
-  }
-};
-
-btnReset.onclick = ()=>{
-  if(!confirm("Changer téléphone / PIN ? (ça déconnecte ce tel)")) return;
-  localStorage.removeItem("DIGIY_JEF_PHONE");
-  localStorage.removeItem("DIGIY_JEF_SECRET");
-  pillPhone.innerHTML = "📞 <strong>—</strong>";
-  setConnectedUI(false);
-  showNote(loginNote, "ℹ️ Déconnecté. Mets ton téléphone + PIN.", "warn");
-};
-
-/* =============================
-   PROFILE
-============================= */
-async function loadMyProfile(){
-  hideNote(profileNote);
-  const phone = localStorage.getItem("DIGIY_JEF_PHONE") || "";
-  if(!phone) return;
-
-  // lecture publique (si ta table est private, on enlève ça)
-  const { data, error } = await SB
-    .from("jef_profiles")
-    .select("id,display_name,city,age,whatsapp,bio,trades,owner_phone,owner_secret,updated_at,created_at")
-    .eq("owner_phone", phone)
-    .order("updated_at", { ascending:false })
-    .limit(1);
-
-  if(error){
-    console.warn(error);
-    return showNote(profileNote, "⚠️ Profil non récupéré (policies/colonnes ?). Tu peux quand même enregistrer.", "warn");
-  }
-
-  const me = (data && data[0]) ? data[0] : null;
-  if(!me){
-    return showNote(profileNote, "ℹ️ Pas de profil encore. Remplis puis “Enregistrer”.", "warn");
-  }
-
-  pName.value = me.display_name || "";
-  pCity.value = me.city || "";
-  pAge.value = me.age || "";
-  pWa.value = me.whatsapp || phone;
-  pBio.value = me.bio || "";
-
-  // check trades
-  const t = Array.isArray(me.trades) ? me.trades : [];
-  tradeChips.querySelectorAll("input[type=checkbox]").forEach(cb=>{
-    cb.checked = t.includes(cb.value);
-  });
-
-  showNote(profileNote, "✅ Profil chargé. Tu peux modifier puis enregistrer.", "ok");
-}
-
-btnSaveProfile.onclick = async ()=>{
-  hideNote(profileNote);
-
-  const phone = localStorage.getItem("DIGIY_JEF_PHONE") || "";
-  const secret = localStorage.getItem("DIGIY_JEF_SECRET") || "";
-  if(!phone || !secret) return showNote(profileNote, "❌ Reconnecte-toi (tel + PIN).", "bad");
-
-  const name = pName.value.trim();
-  const city = pCity.value.trim();
-  const trades = selectedTrades();
-
-  if(name.length < 2) return showNote(profileNote, "❌ Mets ton prénom (min 2 lettres).", "bad");
-  if(city.length < 2) return showNote(profileNote, "❌ Mets ta ville.", "bad");
-  if(trades.length < 1) return showNote(profileNote, "❌ Choisis au moins 1 métier.", "bad");
-
-  btnSaveProfile.disabled = true;
-  btnSaveProfile.textContent = "…";
-
-  try{
-    // Upsert si contrainte unique sur owner_phone, sinon insert (doublons possibles)
-    const payload = {
-      owner_phone: phone,
-      owner_secret: secret,
-      display_name: name,
-      city: city,
-      age: pAge.value ? Number(pAge.value) : null,
-      whatsapp: normalizePhone(pWa.value) || phone,
-      bio: pBio.value.trim() || null,
-      trades: trades
-    };
-
-    // Tentative UPSERT (si unique owner_phone)
-    let res = await SB.from("jef_profiles").upsert(payload, { onConflict: "owner_phone" }).select("id").single();
-
-    // Si upsert échoue (pas de contrainte), fallback insert
-    if(res.error){
-      console.warn("Upsert failed, fallback insert:", res.error);
-      const ins = await SB.from("jef_profiles").insert(payload).select("id").single();
-      if(ins.error) throw ins.error;
-      res = ins;
-    }
-
-    showNote(profileNote, "✅ Profil enregistré!", "ok");
-  }catch(e){
-    console.error(e);
-    showNote(profileNote, "❌ Enregistrement refusé:\n" + (e?.message || e), "bad");
-  }finally{
-    btnSaveProfile.disabled = false;
-    btnSaveProfile.textContent = "💾 Enregistrer mon profil";
-  }
-};
-
-/* =============================
-   OFFERS (Demandes d’apprentissage)
-============================= */
-btnPostOffer.onclick = async ()=>{
-  hideNote(offerNote);
-
-  const phone = localStorage.getItem("DIGIY_JEF_PHONE") || "";
-  const secret = localStorage.getItem("DIGIY_JEF_SECRET") || "";
-  if(!phone || !secret) return showNote(offerNote, "❌ Reconnecte-toi (tel + PIN).", "bad");
-
-  const title = oTitle.value.trim();
-  const trade = oTrade.value;
-  const avail = oAvail.value;
-  const msg = oMsg.value.trim();
-
-  if(title.length < 8) return showNote(offerNote, "❌ Titre trop court (min 8).", "bad");
-  if(!trade) return showNote(offerNote, "❌ Choisis un métier.", "bad");
-  if(msg.length < 20) return showNote(offerNote, "❌ Message trop court (min 20).", "bad");
-
-  btnPostOffer.disabled = true;
-  btnPostOffer.textContent = "…";
-
-  try{
-    const payload = {
-      owner_phone: phone,
-      owner_secret: secret,
-      kind: "apprenti",
-      title,
-      trade,
-      availability: avail,
-      message: msg,
-      city_hint: (pCity.value || "").trim() || null,
-      contact_phone: phone
-    };
-
-    const { error } = await SB.from("jef_offers").insert(payload);
-    if(error) throw error;
-
-    showNote(offerNote, "✅ Demande publiée! Les pros peuvent te contacter.", "ok");
-    oTitle.value = "";
-    oMsg.value = "";
-    await loadPublicOffers();
-  }catch(e){
-    console.error(e);
-    showNote(offerNote, "❌ Publication refusée:\n" + (e?.message || e), "bad");
-  }finally{
-    btnPostOffer.disabled = false;
-    btnPostOffer.textContent = "🚀 Publier ma demande";
-  }
-};
-
-btnRefresh.onclick = ()=> loadPublicOffers();
-
-async function loadPublicOffers(){
-  hideNote(listNote);
-  publicList.innerHTML = "";
-  countTag.textContent = "…";
-
-  try{
-    const { data, error } = await SB
-      .from("jef_offers")
-      .select("id,kind,title,trade,availability,message,city_hint,contact_phone,created_at")
-      .eq("kind","apprenti")
-      .order("created_at", { ascending:false })
-      .limit(30);
-
-    if(error) throw error;
-
-    const rows = data || [];
-    countTag.textContent = `${rows.length} demande(s)`;
-
-    if(rows.length === 0){
-      return showNote(listNote, "ℹ️ Aucune demande pour l’instant.", "warn");
-    }
-
-    rows.forEach(r=>{
-      const div = document.createElement("div");
-      div.className = "item";
-      const d = (r.created_at||"").slice(0,16).replace("T"," ");
-      const city = r.city_hint ? `📍 ${r.city_hint}` : "";
-      const phone = r.contact_phone ? `📞 ${r.contact_phone}` : "";
-
-      div.innerHTML = `
-        <div class="itemTop">
-          <strong>${escapeHtml(r.title||"Demande")}</strong>
-          <span class="tag ok">🛠️ ${escapeHtml(r.trade||"")}</span>
-        </div>
-        <div class="itemSub">
-          ${city ? city + "<br>" : ""}
-          ⏱️ ${escapeHtml(r.availability||"")} • 🕒 ${escapeHtml(d)}<br>
-          ${escapeHtml((r.message||"").slice(0,240))}${(r.message||"").length>240 ? "…" : ""}<br>
-          ${phone ? "<br><strong>"+escapeHtml(phone)+"</strong>" : ""}
-        </div>
-      `;
-      publicList.appendChild(div);
-    });
-  }catch(e){
-    console.error(e);
-    countTag.textContent = "—";
-    showNote(listNote, "⚠️ Liste indisponible (table/policies ?).\nErreur: " + (e?.message || e), "warn");
-  }
-}
-
-function escapeHtml(s){
-  return String(s||"").replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[m]));
-}
-
-/* =============================
-   AUTO INIT (si déjà connecté)
-============================= */
-(function boot(){
-  const phone = localStorage.getItem("DIGIY_JEF_PHONE") || "";
-  const secret = localStorage.getItem("DIGIY_JEF_SECRET") || "";
-  if(phone && secret){
-    pillPhone.innerHTML = `📞 <strong>${phone}</strong>`;
-    setConnectedUI(true);
-    loadMyProfile();
-    loadPublicOffers();
-  }else{
-    setConnectedUI(false);
-    loadPublicOffers(); // liste publique même sans connexion
-  }
-})();
-</script>
 </body>
 </html>
